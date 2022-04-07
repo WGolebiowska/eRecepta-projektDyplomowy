@@ -1,3 +1,5 @@
+using eRecepta_projektDyplomowy.Configuration;
+using eRecepta_projektDyplomowy.Controllers.Services;
 using eRecepta_projektDyplomowy.Data;
 using eRecepta_projektDyplomowy.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -47,6 +50,10 @@ namespace eRecepta_projektDyplomowy
             {
                 configuration.RootPath = "ClientApp/build";
             });
+            // Mail configuration
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+            services.AddTransient<IEmailSender, MailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
