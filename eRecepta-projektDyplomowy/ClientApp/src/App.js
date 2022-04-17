@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Footer, Blog, Possibility, Features, WhatGPT3, Header, Recepta, Konsultacje } from './containers';
+import { Footer, Blog, Possibility, Features, WhatGPT3, Header, Recepta, Konsultacje, Personel, Kontakt } from './containers';
 import { CTA, Brand, Navbar } from './components';
 import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
@@ -35,8 +35,9 @@ export default class App extends Component {
                         <Navbar />
                         <Recepta />
                         <Konsultacje />
-                        <Header />
                     </div>
+                    <Personel />
+                    {/* <Kontakt /> */}
                     <Brand />
                     <WhatGPT3 />
                     <Features />
@@ -44,6 +45,7 @@ export default class App extends Component {
                     <CTA />
                     <Blog />
                     <Footer />
+                        <Header />
                 </div>
                 </Router>
         );
