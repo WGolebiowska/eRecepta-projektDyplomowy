@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace eRecepta_projektDyplomowy.Models
 {
-    public class Doctor //:User
+    public class Doctor :ApplicationUser
     {
        // [Key]
         public string MedicalDegree { get; set; }

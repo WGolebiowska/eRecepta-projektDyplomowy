@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace eRecepta_projektDyplomowy.Models
 {
-    public class Patient // : User
+    public class Patient : ApplicationUser
     {
         // [Key]
 

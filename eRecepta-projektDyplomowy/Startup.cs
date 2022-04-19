@@ -1,4 +1,5 @@
 using eRecepta_projektDyplomowy.Configuration;
+using eRecepta_projektDyplomowy.Configuration.Profiles;
 using eRecepta_projektDyplomowy.Controllers.Services;
 using eRecepta_projektDyplomowy.Data;
 using eRecepta_projektDyplomowy.Models;
@@ -14,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace eRecepta_projektDyplomowy
 {
@@ -54,6 +56,8 @@ namespace eRecepta_projektDyplomowy
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddTransient<IEmailSender, MailService>();
+            services.AddTransient(typeof(ILogger), typeof(Logger<Startup>));
+            services.AddAutoMapper(typeof(MainProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
