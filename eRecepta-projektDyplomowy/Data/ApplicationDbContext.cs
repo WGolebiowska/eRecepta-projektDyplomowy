@@ -1,4 +1,4 @@
-﻿using eRecepta_projektDyplomowy.Models;
+using eRecepta_projektDyplomowy.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -12,13 +12,20 @@ namespace eRecepta_projektDyplomowy.Data
 {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
+        public virtual DbSet<Appointment> Appointments { get; set; }
+        public virtual DbSet<Form> Forms { get; set; }
+        public virtual DbSet<Illness> Illnesses { get; set; }
+        public virtual DbSet<Medicine> Medicines { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<Prescription> Prescriptions { get; set; }
+        public virtual DbSet<PrescriptionEntry> PrescriptionEntries { get; set; }
+
         public ApplicationDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
-<<<<<<< Updated upstream
-=======
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -34,7 +41,7 @@ namespace eRecepta_projektDyplomowy.Data
                     .HasValue<ApplicationUser>(0)
                     .HasValue<Doctor>(1)
                     .HasValue<Patient>(2);
-
+                    
             modelBuilder.Entity<Order>()
                     .HasMany(ord => ord.Payment)
                     .WithOne(pay => pay.Order)
@@ -124,6 +131,5 @@ namespace eRecepta_projektDyplomowy.Data
                     .IsRequired();*/
 
         }
->>>>>>> Stashed changes
     }
 }
