@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eRecepta_projektDyplomowy.Models
 {
     public class Payment
     {
-        //[Key]
-        public int Id { get; set; }
-
-        public Order Order { get; set; }
+        public int PaymentId { get; set; }
+        public virtual Order Order { get; set; }
+        public int OrderId { get; set; }
         public string Type { get; set; }
         public string Status { get; set; }
         public DateTime PaymentTime { get; set; }
