@@ -9,11 +9,9 @@ namespace eRecepta_projektDyplomowy.Models
 {
     public class MedicineIllness
     {
-        [Key]
-        public int MedicineIllnessId { get; set; }
-
-        public virtual List<Prescription> Prescription { get; set; }
-        public virtual List<Medicine> Medicine { get; set; }
-        public virtual List<Illness> Illness { get; set; }
+        public virtual Medicine Medicine { get; set; }
+        public int MedicineId { get; set; }
+        public virtual Illness Illness { get; set; }
+        public int IllnessId { get; set; }
     }
 }

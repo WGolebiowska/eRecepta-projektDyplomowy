@@ -9,10 +9,9 @@ namespace eRecepta_projektDyplomowy.Models
 {
     public class Payment
     {
-        [Key]
         public int PaymentId { get; set; }
-
-        public Order Order { get; set; }
+        public virtual Order Order { get; set; }
+        public int OrderId { get; set; }
         public string Type { get; set; }
         public string Status { get; set; }
         public DateTime PaymentTime { get; set; }
