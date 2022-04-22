@@ -19,7 +19,7 @@ const featuresData = [
   },
 ];
 
-const Features = () => (
+const eRecepta = () => (
   <div className="gpt3__features section__padding" id="features">
  <div>
 
@@ -35,4 +35,4 @@ const Features = () => (
   </div>
 );
 
-export default Features;
+export default eRecepta;

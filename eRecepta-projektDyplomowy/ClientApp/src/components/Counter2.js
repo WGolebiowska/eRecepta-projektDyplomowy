@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { Recepta } from '../containers';
 
 
-export class Counter extends Component {
-  static displayName = Counter.name;
+export class Counter2 extends Component {
+  static displayName = Counter2.name;
 
   constructor(props) {
     super(props);
@@ -21,9 +21,9 @@ export class Counter extends Component {
   render() {
     return (
       <div>
-        <h1>eRecepta</h1>
+        <h1>eKonsultacja</h1>
 
-        <Recepta />
+        {/* <Recepta /> */}
 
         <h1>Counter</h1>
 
