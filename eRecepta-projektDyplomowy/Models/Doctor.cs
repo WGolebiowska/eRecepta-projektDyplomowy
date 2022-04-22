@@ -12,7 +12,5 @@ namespace eRecepta_projektDyplomowy.Models
         public string Specialty { get; set; }
         public virtual List<Appointment> Appointments { get; set; }
         public virtual List<Prescription> Prescriptions { get; set; }
-        public string Timetable { get; set; }
     }
-
 }

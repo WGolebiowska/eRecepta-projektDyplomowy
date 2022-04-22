@@ -1,6 +1,8 @@
+using AutoMapper;
 using eRecepta_projektDyplomowy.Configuration;
 using eRecepta_projektDyplomowy.Configuration.Profiles;
 using eRecepta_projektDyplomowy.Controllers.Services;
+using eRecepta_projektDyplomowy.Controllers.Services.Interfaces;
 using eRecepta_projektDyplomowy.Data;
 using eRecepta_projektDyplomowy.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -58,6 +60,8 @@ namespace eRecepta_projektDyplomowy
             services.AddTransient<IEmailSender, MailService>();
             services.AddTransient(typeof(ILogger), typeof(Logger<Startup>));
             services.AddAutoMapper(typeof(MainProfile));
+            services.AddTransient<IAppointmentService, AppointmentService>();
+            //services.AddTransient<IDoctorService, DoctorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

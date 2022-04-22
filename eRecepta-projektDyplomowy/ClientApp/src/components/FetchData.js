@@ -6,11 +6,15 @@ export class FetchData extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true };
+      this.state = {
+          forecasts: [], loading: true,
+          appointments: [], loading: true
+      };
   }
 
   componentDidMount() {
-    this.populateWeatherData();
+      //this.populateWeatherData();
+      this.getAppointments();
   }
 
   static renderForecastsTable(forecasts) {
@@ -38,10 +42,37 @@ export class FetchData extends Component {
     );
   }
 
+    static renderAppointmentsTable(appointments) {
+        return (
+            <table className='table table-striped' aria-labelledby="tabelLabel">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Date</th>
+                        <th>Doctor Id</th>
+                        <th>Doctor name</th>
+                        <th>Doctor surname</th>
+                        <th>Appointment notes</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {appointments.map(appointment =>
+                        <tr key={appointment.appointmentId}>
+                            <td>{appointment.appointmentDate}</td>
+                            <td>{appointment.doctorId}</td>
+                            <td>{appointment.doctorName}</td>
+                            <td>{appointment.doctorSurname}</td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
+        );
+    }
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : FetchData.renderForecastsTable(this.state.forecasts);
+        : FetchData.renderAppointmentsTable(this.state.appointments);
 
     return (
       <div>
@@ -59,5 +90,13 @@ export class FetchData extends Component {
     });
     const data = await response.json();
     this.setState({ forecasts: data, loading: false });
-  }
+    }
+    async getAppointments() {
+        const token = await authService.getAccessToken();
+        const response = await fetch('/api/Appointment', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` },
+        });
+        const data = await response.json();
+        this.setState({ appointments: data, loading: false });
+    }
 }

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using eRecepta_projektDyplomowy.Models;
+using eRecepta_projektDyplomowy.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +13,12 @@ namespace eRecepta_projektDyplomowy.Configuration.Profiles
         public MainProfile()
         {
             //AutoMapper maps
-            //CreateMap<Product, ProductVm>().ReverseMap();
-            //CreateMap<AddOrUpdateProductVm, Product>();}
+            CreateMap<Appointment, AppointmentVm>().ReverseMap();
+            CreateMap<AddOrUpdateAppointmentVm, Appointment>().ReverseMap();
+            //CreateMap<Patient, PatientVm>().ReverseMap();
+            //CreateMap<AddOrUpdatePatientVm, Patient>().ReverseMap();
+            CreateMap<Doctor, DoctorVm>().ReverseMap();
+            CreateMap<AddOrUpdateDoctorVm, Doctor>().ReverseMap();
         }
     }
 }

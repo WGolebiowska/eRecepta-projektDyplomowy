@@ -23,8 +23,5 @@ namespace eRecepta_projektDyplomowy.Models
         public int OrderId { get; set; }
         public bool Valid { get; set; }
         public string PrescriptionNotes { get; set; }
-
-
-
     }
 }

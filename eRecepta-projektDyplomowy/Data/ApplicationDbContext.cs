@@ -1,4 +1,4 @@
-using eRecepta_projektDyplomowy.Models;
+﻿using eRecepta_projektDyplomowy.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +19,7 @@ namespace eRecepta_projektDyplomowy.Data
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<PrescriptionEntry> PrescriptionEntries { get; set; }
+        public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         public ApplicationDbContext(
             DbContextOptions options,
@@ -33,6 +34,10 @@ namespace eRecepta_projektDyplomowy.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+           // modelBuilder.Entity<ApplicationUser>()
+           //     .Property(e => e.Id)
+           //     .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<ApplicationUser>()
                     .ToTable("AspNetUsers")
@@ -81,7 +86,7 @@ namespace eRecepta_projektDyplomowy.Data
 
             modelBuilder.Entity<Doctor>()
                     .HasMany(doc => doc.Appointments)
-                    .WithOne(app => app.Doctor)            
+                    .WithOne(app => app.Doctor)
                     .HasForeignKey(app => app.DoctorId)
                     .IsRequired();
 
@@ -92,7 +97,7 @@ namespace eRecepta_projektDyplomowy.Data
                     .IsRequired();
 
             modelBuilder.Entity<PrescriptionEntry>()
-                .HasKey(pe => new { pe.PrescriptionId, pe. MedicineId });
+                .HasKey(pe => new { pe.PrescriptionId, pe.MedicineId });
 
             modelBuilder.Entity<PrescriptionEntry>()
                     .HasOne(pe => pe.Prescription)
@@ -107,11 +112,11 @@ namespace eRecepta_projektDyplomowy.Data
                     .IsRequired();
 
             modelBuilder.Entity<MedicineIllness>()
-                .HasKey(mi => new { mi.MedicineId, mi.IllnessId});
+                .HasKey(mi => new { mi.MedicineId, mi.IllnessId });
 
             modelBuilder.Entity<MedicineIllness>()
                     .HasOne(mi => mi.Medicine)
-                    .WithMany(med => med.MedicinesIllnesses) 
+                    .WithMany(med => med.MedicinesIllnesses)
                     .HasForeignKey(mi => mi.MedicineId)
                     .IsRequired();
 
