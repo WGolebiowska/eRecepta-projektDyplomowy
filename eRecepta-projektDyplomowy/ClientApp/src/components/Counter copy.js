@@ -21,8 +21,6 @@ export class Counter extends Component {
   render() {
     return (
       <div>
-        <h1>eRecepta</h1>
-
         <Recepta />
 
         <h1>Counter</h1>

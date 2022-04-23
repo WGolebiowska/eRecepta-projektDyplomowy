@@ -40,7 +40,7 @@
 .gpt3__whatgpt3-heading {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
     
     margin: 4rem 0 2rem;
@@ -52,6 +52,8 @@
     font-weight: 800;
     font-family: var(--font-family);
     max-width: 510px;
+    color: whitesmoke;
+    text-align: center;
 }
 
 .gpt3__whatgpt3-heading p {
@@ -63,7 +65,7 @@
     cursor: pointer;
 }
 
-.gpt3__whatgpt3-container {
+.gpt3__whatgpt3-container1 {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -71,8 +73,16 @@
     margin-top: 2rem;
 }
 
+.gpt3__whatgpt3-container1 img {
+        /* border-radius: 50%; */
+        width: 100px;
+        /* padding: ; */
+        box-sizing: border-box;
+    
+}
+
 /* Customizing feature component as per needs */
-.gpt3__whatgpt3-container .gpt3__features-container__feature {
+.gpt3__whatgpt3-container1 .gpt3__features-container__feature {
     flex: 1;
     margin: 1rem;
     min-width: 210px;
@@ -81,7 +91,7 @@
 }
 
 /* Customizing feature component as per needs */
-.gpt3__whatgpt3-container .gpt3__features-container_feature-text {
+.gpt3__whatgpt3-container1 .gpt3__features-container_feature-text {
     margin-top: 0.5rem;
 }
 
@@ -116,7 +126,7 @@
 
 @media screen and (max-width: 350px) {
     /* Customizing feature component as per needs */
-    .gpt3__whatgpt3-container .gpt3__features-container__feature {
+    .gpt3__whatgpt3-container1 .gpt3__features-container__feature {
         margin: 1rem 0;
         min-width: 100%;
     }
