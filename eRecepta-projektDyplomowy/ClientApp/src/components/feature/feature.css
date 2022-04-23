@@ -10,8 +10,8 @@
 
 .gpt3__features-container__feature-title {
     flex: 1;
-    max-width: 180px;
-    margin-right: 2rem;
+    /* max-width: 180px; */
+    /* margin-right: 2rem; */
 }
 
 .gpt3__features-container__feature-title h1 {
@@ -21,6 +21,9 @@
     line-height: 24px;
     letter-spacing: -0.04em;
     color: #fff;
+    display:flex;
+    justify-content: center;
+    /* text-align: center; */
 }
 /* 
 .gpt3__features-container__feature-title div {
@@ -40,9 +43,11 @@
 .gpt3__features-container_feature-text p {
     font-family: var(--font-family);
     font-weight: 500;
-    font-size: 26px;
+    font-size: 20px;
     line-height: 24px;
     color: var(--color-text);
+    text-align: center;
+    /* display: flex; */
 }
 
 @media screen and (max-width: 550px) {
