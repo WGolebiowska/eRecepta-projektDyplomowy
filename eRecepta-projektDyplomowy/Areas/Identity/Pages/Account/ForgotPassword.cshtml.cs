@@ -31,8 +31,8 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Pole {0} jest wymagane.")]
+            [EmailAddress(ErrorMessage = "Nieprawid³owy adres Email.")]
             public string Email { get; set; }
         }
 
@@ -59,8 +59,8 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "eRecepta - resetowanie has³a",
+                    $"Abe zresetowac swoje has³o dostêpu do konta w serwisie eRecepta, proszê kliknij <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>tutaj</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

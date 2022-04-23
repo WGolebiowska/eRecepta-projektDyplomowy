@@ -22,7 +22,8 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
+        [Required(ErrorMessage = "Pole {0} jest wymagane.")]
+        [Display(Name = "Login")]
         public string Username { get; set; }
 
         [TempData]
@@ -33,9 +34,22 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Phone]
-            [Display(Name = "Phone number")]
+            [Phone(ErrorMessage = "Nieprawid³owy numer telefonu.")]
+            [Display(Name = "Numer telefonu")]
             public string PhoneNumber { get; set; }
+            [Required(ErrorMessage = "Pole {0} jest wymagane.")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Imiê")]
+            public string Name { get; set; }
+            [Required(ErrorMessage = "Pole {0} jest wymagane.")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Nazwisko")]
+            public string Surname { get; set; }
+            [Required(ErrorMessage = "Pole {0} jest wymagane.")]
+            [RegularExpression(@"^[\d]{11}$", ErrorMessage = "{0} musi siê sk³adaæ z 11 cyfr.")]
+            [DataType(DataType.Text)]
+            [Display(Name = "PESEL")]
+            public string PESEL { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -47,6 +61,9 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                Name = user.Name,
+                Surname = user.Surname,
+                PESEL = user.PESEL,
                 PhoneNumber = phoneNumber
             };
         }
@@ -88,8 +105,25 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            if (Input.Name != user.Name)
+            {
+                user.Name = Input.Name;
+            }
+
+            if (Input.Surname != user.Surname)
+            {
+                user.Surname = Input.Surname;
+            }
+
+            if (Input.PESEL != user.PESEL)
+            {
+                user.PESEL = Input.PESEL;
+            }
+
+            await _userManager.UpdateAsync(user);
+
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Twój profil zosta³ zaktualizowany.";
             return RedirectToPage();
         }
     }
