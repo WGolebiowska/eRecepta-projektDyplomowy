@@ -30,7 +30,8 @@ export default class App extends Component {
                 {/* <Route path='/counter' component={Counter} /> */}
                 <Route path='/erecepta' component={Counter} />
                 <Route path='/ekonsultacja' component={Counter2} />
-                <AuthorizeRoute path='/fetch-data' component={FetchData} />
+                {/* <AuthorizeRoute path='/fetch-data' component={FetchData} /> */}
+                <Route path='/fetch-data' component={FetchData} />
                 <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
                 </Layout>
                 </Router>

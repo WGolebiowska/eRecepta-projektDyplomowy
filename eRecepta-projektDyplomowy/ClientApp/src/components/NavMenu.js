@@ -26,7 +26,7 @@ export class NavMenu extends Component {
   render () {
     return (
       <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
+        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3 bg-info text-white" light>
           <Container>
           {/* <NavbarBrand tag={Link} to="/">eRecepta_projektDyplomowy</NavbarBrand> */}
             <NavbarBrand tag={Link} to="/" >
@@ -39,13 +39,13 @@ export class NavMenu extends Component {
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem> */}
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/ekonsultacja">eKonsultacja</NavLink>
+                  <NavLink tag={Link} className="text-white" to="/ekonsultacja">eKonsultacja</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/erecepta">eRecepta</NavLink>
+                  <NavLink tag={Link} className="text-white" to="/erecepta">eRecepta</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/fetch-data">eKartoteka</NavLink>
+                  <NavLink tag={Link} className="text-white" to="/fetch-data">eKartoteka</NavLink>
                 </NavItem>
                 <LoginMenu>
                 </LoginMenu>

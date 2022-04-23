@@ -1,20 +1,20 @@
 import React from 'react';
 import Feature from '../../components/feature/Feature';
 import './whatGPT3.css';
+import step1 from '../../assets/step1.png';
+import step2 from '../../assets/step2.png';
+import step3 from '../../assets/step3.png';
+
 
 const WhatGPT3 = () => (
   <div className="gpt3__whatgpt3 section__margin" id="wgpt3">
-    <div className="gpt3__whatgpt3-feature">
-      <Feature title="What is GPT-3" text="We so opinion friends me message as delight. Whole front do of plate heard oh ought. His defective nor convinced residence own. Connection has put impossible own apartments boisterous. At jointure ladyship an insisted so humanity he. Friendly bachelor entrance to on by." />
-    </div>
     <div className="gpt3__whatgpt3-heading">
-      <h1 className="gradient__text">The possibilities are beyond your imagination</h1>
-      <p>Explore the Library</p>
+      <h1 className="gradient__textl">Całą operację przeprowadzisz w 3 prostych krokach</h1>
     </div>
-    <div className="gpt3__whatgpt3-container">
-      <Feature title="Chatbots" text="We so opinion friends me message as delight. Whole front do of plate heard oh ought." />
-      <Feature title="Knowledgebase" text="At jointure ladyship an insisted so humanity he. Friendly bachelor entrance to on by. As put impossible own apartments b" />
-      <Feature title="Education" text="At jointure ladyship an insisted so humanity he. Friendly bachelor entrance to on by. As put impossible own apartments b" />
+    <div className="gpt3__whatgpt3-container1">
+      <Feature title={<img src={step1} />} text="Wypełnij ankietę eKonsultacji lub eRecepty" />
+      <Feature title={<img src={step2} />} text="Opłać poradę medyczną" />
+      <Feature title={<img src={step3} />} text="Receptę otrzymasz SMSem oraz mailem" />
     </div>
   </div>
 );
