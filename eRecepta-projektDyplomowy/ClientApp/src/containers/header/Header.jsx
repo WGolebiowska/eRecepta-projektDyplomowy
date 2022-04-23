@@ -9,8 +9,8 @@ const Header = () => (
     {/* <div className="gpt3_header_bg"> */}
 
     <div className="gpt3__header-content">
-      <h1 className="gradient__textl">E-recepta – recepta online</h1>
-      <p>Konsultacje lekarskie online. Bez rezerwacji, bez kolejek, bez stresu - jesteśmy dla Ciebie 24 godziny, 7 dni w tygodniu. Stały koszt usług, bez żadnych dodatkowych opłat. Wystawiamy refundowane e-recepty, zwolnienia lekarskie z pracy lub uczelni.</p>
+      <h1 className="gradient__textl">eRecepta – recepta online</h1>
+      <p>Konsultacje lekarskie online. Bez rezerwacji, bez kolejek, bez stresu - jesteśmy dla Ciebie 24 godziny na dobę, 7 dni w tygodniu. Stały koszt usług, bez żadnych dodatkowych opłat. Wystawiamy refundowane e-recepty, e-zwolnienia lekarskie L4.</p>
 
       {/* <div className="gpt3__header-content__input">
         <input type="email" placeholder="Your Email Address" />

@@ -8,10 +8,12 @@ namespace eRecepta_projektDyplomowy.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public string Id { get; set; }
         public int UserType { get; set; }
+        [PersonalData]
         public string Name { get; set; }
+        [PersonalData]
         public string Surname { get; set; }
+        [PersonalData]
         public string PESEL { get; set; }
         public bool IsInsured { get; set; }
     }

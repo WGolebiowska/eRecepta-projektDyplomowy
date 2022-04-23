@@ -30,7 +30,7 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Pole {0} jest wymagane.")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
         }

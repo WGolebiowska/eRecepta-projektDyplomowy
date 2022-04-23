@@ -46,21 +46,41 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Pole {0} jest wymagane.")]
+            [EmailAddress (ErrorMessage = "Nieprawidłowy adres Email.")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Pole {0} jest wymagane.")]
+            [StringLength(100, ErrorMessage = "{0} musi mieć co najmniej {2} i maksymalnie {1} znaków.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Hasło")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Powtórz hasło")]
+            [Compare("Password", ErrorMessage = "Wpisane hasła są niezgodne.")]
             public string ConfirmPassword { get; set; }
+
+            [Required(ErrorMessage = "Pole {0} jest wymagane.")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Imię")]
+            public string Name { get; set; }
+
+            [Required(ErrorMessage = "Pole {0} jest wymagane.")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Nazwisko")]
+            public string Surname { get; set; }
+
+            [Required(ErrorMessage = "Pole {0} jest wymagane.")]
+            [RegularExpression(@"^[\d]{11}$", ErrorMessage = "{0} musi się składać z 11 cyfr.")]
+            [DataType(DataType.Text)]
+            [Display(Name = "PESEL")]
+            public string PESEL { get; set; }
+
+            [Phone(ErrorMessage = "Nieprawidłowy numer telefonu.")]
+            [Display(Name = "Numer telefonu")]
+            public string PhoneNumber { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -75,7 +95,7 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Name = Input.Name, Surname = Input.Surname, PESEL = Input.PESEL, PhoneNumber = Input.PhoneNumber };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -89,8 +109,8 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "eRecepta - zatwierdzenie adresu Email",
+                        $"Aby potwierdzić swój adres email i aktywować swoje konto w serwisie eRecepta, proszę kliknij <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>tutaj</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
