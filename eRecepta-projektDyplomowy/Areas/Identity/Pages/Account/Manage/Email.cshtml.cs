@@ -45,7 +45,7 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
-            [EmailAddress(ErrorMessage = "Nieprawid�owy adres Email.")]
+            [EmailAddress(ErrorMessage = "Nieprawidłowy adres Email.")]
             [Display(Name = "Nowy adres Email")]
             public string NewEmail { get; set; }
         }
@@ -101,14 +101,14 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
                     protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "eRecepta - Potwierdź swój adres Email",
+                    $"Proszę potwierdzić swój adres Email klikając <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>tutaj</a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = "Wiadomość z linkiem do potwierdzenia została wysłana na Twój adres Email.";
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = "Twój Email nie został zmieniony.";
             return RedirectToPage();
         }
 
@@ -137,10 +137,10 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                "eRecepta - Potwierdź swój adres Email",
+                $"Proszę potwierdzić swój adres Email klikając <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>tutaj</a>.");
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = "Wiadomość z linkiem do potwierdzenia została wysłana na Twój adres Email.";
             return RedirectToPage();
         }
     }

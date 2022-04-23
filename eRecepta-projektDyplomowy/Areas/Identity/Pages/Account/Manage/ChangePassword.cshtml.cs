@@ -36,17 +36,17 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
         {
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
             [DataType(DataType.Password)]
-            [Display(Name = "Obecne has≥o")]
+            [Display(Name = "Obecne has≈Ço")]
             public string OldPassword { get; set; }
 
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
             [DataType(DataType.Password)]
-            [Display(Name = "Nowe has≥o")]
+            [Display(Name = "Nowe has≈Ço")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Potwierdü nowe has≥o")]
-            [Compare("NewPassword", ErrorMessage = "Wpisane has≥a sπ niezgodne.")]
+            [Display(Name = "Potwierd≈∫ nowe has≈Ço")]
+            [Compare("NewPassword", ErrorMessage = "Wpisane has≈Ça sƒÖ niezgodne.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -92,7 +92,7 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Pomyúlnie zmieniono has≥o.";
+            StatusMessage = "Pomy≈õlnie zmieniono has≈Ço.";
 
             return RedirectToPage();
         }

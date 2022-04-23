@@ -44,7 +44,7 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
             var result = await _userManager.ChangeEmailAsync(user, email, code);
             if (!result.Succeeded)
             {
-                StatusMessage = "Wyst¹pi³ b³¹d przy zmianie adresu Email.";
+                StatusMessage = "WystÄ…piÅ‚ bÅ‚Ä…d przy zmianie adresu Email.";
                 return Page();
             }
 
@@ -53,7 +53,7 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
             var setUserNameResult = await _userManager.SetUserNameAsync(user, email);
             if (!setUserNameResult.Succeeded)
             {
-                StatusMessage = "Wyst¹pi³ b³¹d przy zmianie loginu.";
+                StatusMessage = "WystÄ…piÅ‚ bÅ‚Ä…d przy zmianie loginu.";
                 return Page();
             }
 

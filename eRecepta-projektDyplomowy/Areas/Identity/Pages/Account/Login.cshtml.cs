@@ -44,14 +44,15 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
-            [EmailAddress(ErrorMessage = "Nieprawid³owy adres Email.")]
+            [EmailAddress(ErrorMessage = "NieprawidÅ‚owy adres Email.")]
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
+            [Display(Name = "HasÅ‚o")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Zapamiêtaj mnie")]
+            [Display(Name = "ZapamiÄ™taj mnie")]
             public bool RememberMe { get; set; }
         }
 

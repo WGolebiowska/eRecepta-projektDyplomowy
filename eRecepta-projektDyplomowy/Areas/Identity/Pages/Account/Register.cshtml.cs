@@ -47,24 +47,24 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
-            [EmailAddress (ErrorMessage = "Nieprawid³owy adres Email.")]
+            [EmailAddress (ErrorMessage = "NieprawidÅ‚owy adres Email.")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
-            [StringLength(100, ErrorMessage = "{0} musi mieæ co najmniej {2} i maksymalnie {1} znaków.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "{0} musi mieÄ‡ co najmniej {2} i maksymalnie {1} znakÃ³w.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Has³o")]
+            [Display(Name = "HasÅ‚o")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Powtórz has³o")]
-            [Compare("Password", ErrorMessage = "Wpisane has³a s¹ niezgodne.")]
+            [Display(Name = "PowtÃ³rz hasÅ‚o")]
+            [Compare("Password", ErrorMessage = "Wpisane hasÅ‚a sÄ… niezgodne.")]
             public string ConfirmPassword { get; set; }
 
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
             [DataType(DataType.Text)]
-            [Display(Name = "Imiê")]
+            [Display(Name = "ImiÄ™")]
             public string Name { get; set; }
 
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
@@ -73,12 +73,12 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
             public string Surname { get; set; }
 
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
-            [RegularExpression(@"^[\d]{11}$", ErrorMessage = "{0} musi siê sk³adaæ z 11 cyfr.")]
+            [RegularExpression(@"^[\d]{11}$", ErrorMessage = "{0} musi siÄ™ skÅ‚adaÄ‡ z 11 cyfr.")]
             [DataType(DataType.Text)]
             [Display(Name = "PESEL")]
             public string PESEL { get; set; }
 
-            [Phone(ErrorMessage = "Nieprawid³owy numer telefonu.")]
+            [Phone(ErrorMessage = "NieprawidÅ‚owy numer telefonu.")]
             [Display(Name = "Numer telefonu")]
             public string PhoneNumber { get; set; }
         }
@@ -110,7 +110,7 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "eRecepta - zatwierdzenie adresu Email",
-                        $"Aby potwierdziæ swój adres email i aktywowaæ swoje konto w serwisie eRecepta, proszê kliknij <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>tutaj</a>.");
+                        $"Aby potwierdziÄ‡ swÃ³j adres email i aktywowaÄ‡ swoje konto w serwisie eRecepta, proszÄ™ kliknij <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>tutaj</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

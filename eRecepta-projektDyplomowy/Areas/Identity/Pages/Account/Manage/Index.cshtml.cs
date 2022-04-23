@@ -34,19 +34,19 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Phone(ErrorMessage = "Nieprawid³owy numer telefonu.")]
+            [Phone(ErrorMessage = "NieprawidÅ‚owy numer telefonu.")]
             [Display(Name = "Numer telefonu")]
             public string PhoneNumber { get; set; }
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
             [DataType(DataType.Text)]
-            [Display(Name = "Imiê")]
+            [Display(Name = "ImiÄ™")]
             public string Name { get; set; }
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
             [DataType(DataType.Text)]
             [Display(Name = "Nazwisko")]
             public string Surname { get; set; }
             [Required(ErrorMessage = "Pole {0} jest wymagane.")]
-            [RegularExpression(@"^[\d]{11}$", ErrorMessage = "{0} musi siê sk³adaæ z 11 cyfr.")]
+            [RegularExpression(@"^[\d]{11}$", ErrorMessage = "{0} musi siÄ™ skÅ‚adaÄ‡ z 11 cyfr.")]
             [DataType(DataType.Text)]
             [Display(Name = "PESEL")]
             public string PESEL { get; set; }
@@ -123,7 +123,7 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
             await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Twój profil zosta³ zaktualizowany.";
+            StatusMessage = "TwÃ³j profil zostaÅ‚ zaktualizowany.";
             return RedirectToPage();
         }
     }

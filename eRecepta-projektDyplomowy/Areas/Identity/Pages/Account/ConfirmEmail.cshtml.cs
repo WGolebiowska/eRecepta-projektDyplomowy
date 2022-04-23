@@ -40,7 +40,7 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Dziêkujemy za potwierdzenie adresu Email." : "Wyst¹pi³ b³¹d przy potwierdzeniu adresu Email.";
+            StatusMessage = result.Succeeded ? "Dziï¿½kujemy za potwierdzenie adresu Email." : "WystÄ…piÅ‚ bÅ‚Ä…d przy potwierdzeniu adresu Email.";
             return Page();
         }
     }
