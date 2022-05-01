@@ -57,7 +57,7 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account.Manage
             }
 
             _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
-            StatusMessage = "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
+            StatusMessage = "Dwuetapowa autentykacja zosta³a wy³¹czona. Mo¿esz w³¹czyæ j¹ ponownie kiedy skonfigurujesz aplikacjê do autentykacji.";
             return RedirectToPage("./TwoFactorAuthentication");
         }
     }

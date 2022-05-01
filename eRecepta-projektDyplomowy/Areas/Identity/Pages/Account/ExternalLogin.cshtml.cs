@@ -49,8 +49,8 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Pole {0} jest wymagane.")]
+            [EmailAddress(ErrorMessage = "Nieprawid³owy adres Email.")]
             public string Email { get; set; }
         }
 
