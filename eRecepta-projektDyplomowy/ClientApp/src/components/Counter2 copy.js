@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 // import { Recepta } from '../containers/recepta/Recepta';
 import { Recepta } from '../containers';
-// import { CustomForm } from './CustomForm'
-import CustomForm from './CustomForm'
 
 
 export class Counter2 extends Component {
@@ -24,8 +22,8 @@ export class Counter2 extends Component {
     return (
       <div>
         <h1>eKonsultacja</h1>
-        <CustomForm />
-        {/* <form>
+
+        <form>
   <div class="form-group row">
     <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
     <div class="col-sm-10">
@@ -79,13 +77,13 @@ export class Counter2 extends Component {
       <button type="submit" class="btn btn-primary">Sign in</button>
     </div>
   </div>
-        </form> */}
+</form>
 
-        {/* <div className="gpt3__header-content__input">
+        <div className="gpt3__header-content__input">
         <input type="email" placeholder="Your Email Address" />
         <button type="button">Get Started</button>
       </div>
- */}
+
 
         {/* <Recepta /> */}
 
