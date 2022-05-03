@@ -71,9 +71,20 @@ function CustomForm() {
           <div class="select">
             <select class="select">
               <option selected class="label-desc">
-                Wybierz lek
+                Wybierz godzinę eKonsultacji
               </option>
               <option value="Choice 1">8:00</option>
+              <option value="Choice 2">9:00</option>
+              <option value="Choice 3">10:00</option>
+              <option value="Choice 4">11:00</option>
+              <option value="Choice 5">12:00</option>
+              <option value="Choice 6">13:00</option>
+              <option value="Choice 7">14:00</option>
+              <option value="Choice 8">15:00</option>
+              <option value="Choice 9">16:00</option>
+              <option value="Choice 10">17:00</option>
+              <option value="Choice 11">18:00</option>
+              <option value="Choice 12">19:00</option>
               <option value="Choice 13">20:00</option>
             </select>
           </div>
@@ -81,29 +92,17 @@ function CustomForm() {
           <div class="select">
             <select class="select">
               <option selected class="label-desc">
-                Podaj aktualną temperaturę ciała w stopniach Celsjusza.
+                Wybierz płeć
               </option>
-              <option value="Choice 1">33,5</option>
-              <option value="Choice 2">37,4</option>
+              <option value="Choice 1">Kobieta</option>
+              <option value="Choice 2">Mężczyzna</option>
             </select>
           </div>
 
-          <div className="question-form">
-            <label>Podaj swój wzrost w cm.</label>
-            <div class="select">
-              <select class="select">
-                <option selected class="label-desc">
-                  Podaj swój wzrost w cm.
-                </option>
-                <option value="Choice 1">Tele porada</option>
-                <option value="Choice 2">Video konferencja</option>
-              </select>
-            </div>
-          </div>
           <div class="select">
             <select class="select">
               <option selected class="label-desc">
-                Podaj swoją aktualną wagę w kg.
+                Forma eKonsultacji
               </option>
               <option value="Choice 1">Tele porada</option>
               <option value="Choice 2">Video konferencja</option>

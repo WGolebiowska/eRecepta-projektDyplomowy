@@ -1,30 +1,71 @@
-.CustomForm {
-  display: flex;
+.Custom-form {
+}
+:root {
+  /*   --background-gradient: linear-gradient(30deg, #f39c12 30%, #f1c40f); */
+  /*   --gray: #34495e; */
+  --darkgray: #17a2b8;
+}
+
+.Custom-form-position {
+  display: grid;
   justify-content: center;
-  margin-top: 5rem;
 }
-input {
-  display: block;
-  width: 20rem;
-  height: 2rem;
-  padding: 0.5rem;
-  font-size: 1.1em;
-  font-weight: 500;
-  margin-bottom: 2rem;
+
+element {
 }
-button {
-  border: none;
-  padding: 1rem;
-  width: 21.2rem;
-  font-size: 1.2em;
-  border-radius: 0.2rem;
+select {
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  /* Reset Select */
+  appearance: none;
+  outline: 0;
+  border: 0;
+  box-shadow: none;
+  /* Personalize */
+  flex: 1;
+  padding: 0 1em;
+  color: #fff;
+  background-color: var(--darkgray);
+  background-image: none;
   cursor: pointer;
+  /* padding: 50px; */
+  /* margin: 20px; */
 }
-button:hover {
-  background-color: #c5c5c5;
+/* Remove IE arrow */
+select::-ms-expand {
+  display: none;
 }
-.message {
-  font-size: 1.2em;
-  text-align: center;
-  color: #36a936;
+/* Custom Select wrapper */
+.select {
+  position: relative;
+  display: flex;
+  width: 20em;
+  height: 3em;
+  border-radius: 0.25em;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+/* Arrow */
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1em;
+  background-color: #34495e;
+  transition: 0.25s all ease;
+  pointer-events: none;
+}
+/* Transition */
+.select:hover::after {
+  color: #f39c12;
+}
+h1 {
+  margin: 0 0 0.25em;
+}
+
+.question-form {
+  border: 2px solid red;
+  border-radius: 5px;
 }
