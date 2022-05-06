@@ -5,12 +5,11 @@ using eRecepta_projektDyplomowy.Controllers.Services;
 using eRecepta_projektDyplomowy.Controllers.Services.Interfaces;
 using eRecepta_projektDyplomowy.Data;
 using eRecepta_projektDyplomowy.Models;
+using eRecepta_projektDyplomowy.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace eRecepta_projektDyplomowy
 {
@@ -38,13 +38,29 @@ namespace eRecepta_projektDyplomowy
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
+                .AddProfileService<ProfileService>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsAdmin",
+                    policy =>
+                    {
+                        policy.RequireClaim(ClaimTypes.Role, "administrator");
+                    });
+                options.AddPolicy("IsDoctor",
+                    policy =>
+                    {
+                        policy.RequireClaim(ClaimTypes.Role, "doctor");
+                    });
+            });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -60,6 +76,8 @@ namespace eRecepta_projektDyplomowy
             services.AddTransient<IEmailSender, MailService>();
             services.AddTransient(typeof(ILogger), typeof(Logger<Startup>));
             services.AddAutoMapper(typeof(MainProfile));
+            services.AddScoped<IUserManagementService, UserManagementService>();
+            services.AddScoped<IHelperService, HelperService>();
             services.AddTransient<IAppointmentService, AppointmentService>();
             //services.AddTransient<IDoctorService, DoctorService>();
         }

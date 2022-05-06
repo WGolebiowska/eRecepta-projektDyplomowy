@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace eRecepta_projektDyplomowy.Configuration
+﻿namespace eRecepta_projektDyplomowy.Configuration
 {
     public class MailSettings
     {

@@ -1,5 +1,5 @@
 import { UserManager, WebStorageStateStore } from 'oidc-client';
-import { ApplicationPaths, ApplicationName } from './ApiAuthorizationConstants';
+import { ApplicationPaths, ApplicationName, UserRoles } from './ApiAuthorizationConstants';
 
 export class AuthorizeService {
     _callbacks = [];
@@ -31,6 +31,19 @@ export class AuthorizeService {
         const user = await this.userManager.getUser();
         return user && user.access_token;
     }
+    async hasRole(role) {
+        const user = await this.getUser();
+
+        if (user) {
+            if (user.role instanceof Array) // if it has many roles role is an array
+                return user.role.includes(UserRoles.Administrator); // beware that UserRoles apears as undefined when debugging, though it works fine
+            else // otherwise it is a string
+                return user.role == UserRoles.Administrator;
+        }
+        else
+            return false;
+    }
+
 
     // We try to authenticate the user in three different ways:
     // 1) We try to see if we can authenticate the user silently. This happens
