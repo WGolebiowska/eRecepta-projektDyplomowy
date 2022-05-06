@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using static eRecepta_projektDyplomowy.Models.Appointment;
 
 namespace eRecepta_projektDyplomowy.ViewModels
 {
@@ -8,13 +9,14 @@ namespace eRecepta_projektDyplomowy.ViewModels
         public int? AppointmentId { get; set; }
         [Required]
         public DateTime AppointmentDate { get; set; }
-        [Required]
+        //[Required]
         public string DoctorId { get; set; }
         [Required]
         public string PatientId { get; set; }
         public string AppointmentNotes { get; set; }
-        public enum _Type { PhoneCall, VideoConference }
         [Required]
         public _Type Type { get; set; }
+        //[Required]
+        public int? OrderId { get; set; } 
     }
 }
