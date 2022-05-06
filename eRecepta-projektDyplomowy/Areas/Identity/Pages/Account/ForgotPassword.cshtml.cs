@@ -1,16 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using eRecepta_projektDyplomowy.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
 {
@@ -60,7 +58,7 @@ namespace eRecepta_projektDyplomowy.Areas.Identity.Pages.Account
                 await _emailSender.SendEmailAsync(
                     Input.Email,
                     "eRecepta - resetowanie hasła",
-                    $"Aby zresetowac swoje hasło dostępu do konta w serwisie eRecepta, proszę kliknij <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>tutaj</a>.");
+                    $"Aby zresetować swoje hasło dostępu do konta w serwisie eRecepta, proszę kliknij <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>tutaj</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

@@ -26,9 +26,10 @@ export default class App extends Component {
         <Layout>
           <Route exact path="/" component={Home} />
           {/* <Route path='/counter' component={Counter} /> */}
-          <Route path="/erecepta" component={Counter} />
+          <AuthorizeRoute path="/erecepta" component={Counter} />
           <AuthorizeRoute path="/ekonsultacja" component={Counter2} />
           <AuthorizeRoute path="/fetch-data" component={FetchData} />
+            <AuthorizeRoute path='/users' component={UsersRouter} />
           <AuthorizeRoute path="/platnosc" component={Personel} />
           {/* <Route path='/fetch-data' component={FetchData} /> */}
           <Route

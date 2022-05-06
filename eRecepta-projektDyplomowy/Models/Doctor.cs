@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace eRecepta_projektDyplomowy.Models
 {
-    public class Doctor :ApplicationUser
+    public class Doctor : ApplicationUser
     {
         public string MedicalDegree { get; set; }
         public string Specialty { get; set; }

@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
 using eRecepta_projektDyplomowy.Controllers.Services.Interfaces;
-using eRecepta_projektDyplomowy.Data;
 using eRecepta_projektDyplomowy.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 
 namespace eRecepta_projektDyplomowy.Controllers
