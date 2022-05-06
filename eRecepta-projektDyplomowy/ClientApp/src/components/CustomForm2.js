@@ -18,6 +18,9 @@ function CustomForm() {
   const [email, setEmail] = useState('')
   const [mobileNumber, setMobileNumber] = useState('')
   const [dolegliwosc, setDolegliwosc] = useState('')
+  const [dataKonsultacji, setDataKonsultacji] = useState('')
+  const [plecPacienta, setPlecPacienta] = useState('')
+  const [formaKonsultacji, setFormaKonsultacji] = useState('')
   const [ciaza, setCiaza] = useState(false)
   const [message, setMessage] = useState('')
 
@@ -34,6 +37,9 @@ function CustomForm() {
           // mobileNumber: mobileNumber,
           // dolegliwosc: dolegliwosc,
           // ciaza: ciaza,
+          dataKonsultacji:dataKonsultacji,
+          plecPacienta:plecPacienta,
+          formaKonsultacji:formaKonsultacji,
           appointmentDate: '2022-12-12',
           DoctorId: '7ce17a1a-1aaa-48d6-9ed7-d90dff6c8475',
           PatientId: '7ce17a1a-1aaa-48d6-9ed7-d90dff6c8475',
@@ -57,59 +63,79 @@ function CustomForm() {
     <div className="Custom-form">
       <form onSubmit={handleSubmit}>
         <div className="Custom-form-position">
+          
+        <div className="question-form">
+            <label className="Custom-form-text">Wybierz dolegliwość</label>
+          
           <div class="select">
-            <select class="select">
-              <option selected class="label-desc">
-                Wybierz dolegliwość
-              </option>
-              <option value="Choice 1">Bol ucha</option>
-              <option value="Choice 2">Bol oka</option>
-              <option value="Choice 3">Bol nosa</option>
+            <select class="select"
+                value={dolegliwosc}
+                onChange={(e) => setDolegliwosc(e.target.value)}
+                aria-lebel="Default select example">
+              <option selected class="label-desc">...</option>
+              <option value="Bol ucha">Bol ucha</option>
+              <option value="Bol oka">Bol oka</option>
+              <option value="Bol nosa">Bol nosa</option>
             </select>
+            </div>
+          </div>
+          <div className="question-form">
+            <label className="Custom-form-text">Wybierz godzinę eKonsultacji</label>
+          
+          <div class="select">
+            <select class="select"
+                value={dataKonsultacji}
+                onChange={(e) => setDataKonsultacji(e.target.value)}
+                aria-lebel="Default select example">
+              <option selected class="label-desc">...</option>
+              <option value="8:00">8:00</option>
+              <option value="9:00">9:00</option>
+              <option value="10:00">10:00</option>
+              <option value="11:00">11:00</option>
+              <option value="12:00">12:00</option>
+              <option value="13:00">13:00</option>
+              <option value="14:00">14:00</option>
+              <option value="15:00">15:00</option>
+              <option value="16:00">16:00</option>
+              <option value="17:00">17:00</option>
+              <option value="18:00">18:00</option>
+              <option value="19:00">19:00</option>
+              <option value="20:00">20:00</option>
+            </select>
+            </div>
           </div>
 
           <div class="select">
-            <select class="select">
-              <option selected class="label-desc">
-                Wybierz godzinę eKonsultacji
-              </option>
-              <option value="Choice 1">8:00</option>
-              <option value="Choice 2">9:00</option>
-              <option value="Choice 3">10:00</option>
-              <option value="Choice 4">11:00</option>
-              <option value="Choice 5">12:00</option>
-              <option value="Choice 6">13:00</option>
-              <option value="Choice 7">14:00</option>
-              <option value="Choice 8">15:00</option>
-              <option value="Choice 9">16:00</option>
-              <option value="Choice 10">17:00</option>
-              <option value="Choice 11">18:00</option>
-              <option value="Choice 12">19:00</option>
-              <option value="Choice 13">20:00</option>
+          <div className="question-form">
+            <label className="Custom-form-text">Wybierz płeć</label>
+          
+            <select class="select"
+            value={plecPacienta}
+            onChange={(e) => setPlecPacienta(e.target.value)}
+            aria-lebel="Default select example">
+              <option selected class="label-desc">...</option>
+              <option value="Kobieta">Kobieta</option>
+              <option value="Mężczyzna">Mężczyzna</option>
             </select>
+            </div>
           </div>
 
+          <div className="question-form">
+            <label className="Custom-form-text">Forma eKonsultacji</label>
+          
           <div class="select">
-            <select class="select">
-              <option selected class="label-desc">
-                Wybierz płeć
-              </option>
-              <option value="Choice 1">Kobieta</option>
-              <option value="Choice 2">Mężczyzna</option>
+            <select class="select"
+                        value={formaKonsultacji}
+                        onChange={(e) => setFormaKonsultacji(e.target.value)}
+                        aria-lebel="Default select example">
+              <option selected class="label-desc">...</option>
+              <option value="Tele-porada">Tele-porada</option>
+              <option value="Video konferencja">Video konferencja</option>
             </select>
+            </div>
           </div>
 
-          <div class="select">
-            <select class="select">
-              <option selected class="label-desc">
-                Forma eKonsultacji
-              </option>
-              <option value="Choice 1">Tele porada</option>
-              <option value="Choice 2">Video konferencja</option>
-            </select>
-          </div>
-        </div>
-
+            </div>
         {/* <input
           type="text"
           value={name}
@@ -117,7 +143,7 @@ function CustomForm() {
           onChange={(e) => setName(e.target.value)}
         />
         <input
-          type="text"
+        type="text"
           value={email}
           placeholder="Masa ciała"
           onChange={(e) => setEmail(e.target.value)}
@@ -138,13 +164,13 @@ function CustomForm() {
           onChange={(e) => setCiaza(e.target.value)}
         />
         <label for="ciaza_check"> Czy jesteś w ciąży</label>
-
+        
         <select
           value={dolegliwosc}
           onChange={(e) => setDolegliwosc(e.target.value)}
           class="form-select"
           aria-label="Default select example"
-        >
+          >
           <option selected>Wybierz dolegliwość</option>
           <option value="Ból ucha">Ból ucha</option>
           <option value="Ból nosa">Ból nosa</option>
@@ -157,6 +183,7 @@ function CustomForm() {
     Default checkbox
   </label>
 </div> */}
+    <div class="form-group-button">
 
         <button type="submit">
           {/* <NavLink tag={Link} className="text-white" to="/platnosc"> */}
@@ -171,6 +198,8 @@ function CustomForm() {
           {/* Create */}
           {/* </NavLink> */}
         </button>
+    </div>
+
       </form>
     </div>
   )

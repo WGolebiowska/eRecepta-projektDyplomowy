@@ -18,6 +18,10 @@ function CustomForm() {
   const [email, setEmail] = useState('')
   const [mobileNumber, setMobileNumber] = useState('')
   const [dolegliwosc, setDolegliwosc] = useState('')
+  const [lek, setLek] = useState('')
+  const [wzrost, setWzrost] = useState('')
+  const [tempBody, setTempBody] = useState('')
+  const [waga, setWaga] = useState('')
   const [ciaza, setCiaza] = useState(false)
   const [message, setMessage] = useState('')
 
@@ -32,7 +36,11 @@ function CustomForm() {
           // name: name,
           // email: email,
           // mobileNumber: mobileNumber,
-          // dolegliwosc: dolegliwosc,
+          dolegliwosc: dolegliwosc,
+          lek: lek,
+          tempBody: tempBody,
+          wzrost: wzrost,
+          waga: waga,
           // ciaza: ciaza,
           appointmentDate: '2022-12-12',
           DoctorId: '7ce17a1a-1aaa-48d6-9ed7-d90dff6c8475',
@@ -44,7 +52,7 @@ function CustomForm() {
         setName('')
         setEmail('')
         setMobileNumber('')
-        setMessage('User created successfully')
+        setMessage('Twoje zlecenie jest przetwarzane, status możesz sprawdzić w eKartotece')
       } else {
         setMessage('Some error occured')
       }
@@ -57,57 +65,109 @@ function CustomForm() {
     <div className="Custom-form">
       <form onSubmit={handleSubmit}>
         <div className="Custom-form-position">
+
+        <div className="question-form">
+            <label className="Custom-form-text">Wybierz dolegliwość</label>
           <div class="select">
-            <select class="select">
-              <option selected class="label-desc">
-                Wybierz dolegliwość
-              </option>
-              <option value="Choice 1">Bol ucha</option>
-              <option value="Choice 2">Bol oka</option>
-              <option value="Choice 3">Bol nosa</option>
+            <select class="select"
+                         value={dolegliwosc}
+                         onChange={(e) => setDolegliwosc(e.target.value)}
+                         aria-lebel="Default select example"
+            >
+              <option selected value="Choice 1">...</option>
+              <option value="Bol ucha">Bol ucha</option>
+              <option value="Bol oka">Bol oka</option>
+              <option value="Bol nosa">Bol nosa</option>
             </select>
           </div>
-
+</div>
+<div className="question-form">
+            <label className="Custom-form-text">Wybierz lek</label>
           <div class="select">
-            <select class="select">
-              <option selected class="label-desc">
-                Wybierz lek
-              </option>
-              <option value="Choice 1">8:00</option>
-              <option value="Choice 13">20:00</option>
+            <select
+             class="select"
+             value={lek}
+             onChange={(e) => setLek(e.target.value)}
+             aria-lebel="Default select example"
+             >
+              <option selected class="label-desc">...</option>
+              <option value="Ketonal">Ketonal</option>
+              <option value="Apap">Apap</option>
+              <option value="Apap">Apap</option>
             </select>
           </div>
-
+          </div>
+          <div className="question-form">
+            <label className="Custom-form-text">Podaj aktualną temp. ciała w st. C.</label>
           <div class="select">
-            <select class="select">
+            <select class="select"
+            value={tempBody}
+            onChange={(e) => setTempBody(e.target.value)}
+            aria-lebel="Default select example"
+            >
               <option selected class="label-desc">
-                Podaj aktualną temperaturę ciała w stopniach Celsjusza.
+                ...
               </option>
-              <option value="Choice 1">33,5</option>
-              <option value="Choice 2">37,4</option>
+              <option value="33,0">33,0</option>
+              <option value="33,5">33,5</option>
+              <option value="34,0">34,0</option>
+              <option value="34,5">34,5</option>
+              <option value="35,0">35,0</option>
+              <option value="35,5">35,5</option>
+              <option value="36,0">36,0</option>
+              <option value="36,5">36,5</option>
+              <option value="37,0">37,0</option>
+              <option value="37,5">37,5</option>
+              <option value="38,0">38,0</option>
+              <option value="38,5">38,5</option>
+              <option value="39,0">39,0</option>
+              <option value="39,5">39,5</option>
+              <option value="40,0">40,0</option>
+              <option value="40,5">40,5</option>
             </select>
+          </div>
           </div>
 
           <div className="question-form">
-            <label>Podaj swój wzrost w cm.</label>
+            <label className="Custom-form-text">Podaj swój wzrost w cm</label>
             <div class="select">
-              <select class="select">
-                <option selected class="label-desc">
-                  Podaj swój wzrost w cm.
-                </option>
-                <option value="Choice 1">Tele porada</option>
-                <option value="Choice 2">Video konferencja</option>
+              <select class="select"
+                          value={wzrost}
+                          onChange={(e) => setWzrost(e.target.value)}
+                          aria-lebel="Default select example"
+              >
+                <option selected class="label-desc">...</option>
+                <option value="-150"> -150 </option>
+                <option value="151-160"> 151-160 </option>
+                <option value="161-170"> 161-170 </option>
+                <option value="171-180"> 171-180 </option>
+                <option value="181-190"> 181-190 </option>
+                <option value="191-200"> 191-200 </option>
+                <option value="200+"> 200+ </option>
               </select>
             </div>
           </div>
-          <div class="select">
+          <div className="question-form">
+            <label className="Custom-form-text">Podaj swoją aktualną wagę w kg</label>
+          <div class="select"
+                    value={waga}
+                    onChange={(e) => setWaga(e.target.value)}
+                    aria-lebel="Default select example"
+                    >
             <select class="select">
-              <option selected class="label-desc">
-                Podaj swoją aktualną wagę w kg.
-              </option>
-              <option value="Choice 1">Tele porada</option>
-              <option value="Choice 2">Video konferencja</option>
+              <option selected class="label-desc">...</option>
+              <option value="-50">-50</option>
+              <option value="51-60">51-60</option>
+              <option value="61-70">61-70</option>
+              <option value="71-80">71-80</option>
+              <option value="81-90">81-90</option>
+              <option value="91-100">91-100</option>
+              <option value="+100">+100</option>
             </select>
+          </div>
+          {/* <input type="date" id="birthday" name="birthday" /> */}
+          {/* <input type="time" id="appt" name="appt" min="09:00" max="18:00" required></input> */}
+
           </div>
         </div>
 
@@ -159,19 +219,22 @@ function CustomForm() {
   </label>
 </div> */}
 
-        <button type="submit">
-          {/* <NavLink tag={Link} className="text-white" to="/platnosc"> */}
-          {/* <NavItem> */}
-          {/* <NavLink tag={Link} className="text-white" to="/erecepta"> */}
-          eKartooooooteka
-          <div className="message">{message ? <p>{message}</p> : null}</div>
-          {/* Dalej */}
-          {/* </NavLink> */}
-          {/* </NavItem> */}
-          {/* <LoginMenu /> */}
-          {/* Create */}
-          {/* </NavLink> */}
-        </button>
+<div class="form-group-button">
+
+<button type="submit">
+  {/* <NavLink tag={Link} className="text-white" to="/platnosc"> */}
+  {/* <NavItem> */}
+  {/* <NavLink tag={Link} className="text-white" to="/erecepta"> */}
+  eKartooooooteka
+  <div className="message">{message ? <p>{message}</p> : null}</div>
+  {/* Dalej */}
+  {/* </NavLink> */}
+  {/* </NavItem> */}
+  {/* <LoginMenu /> */}
+  {/* Create */}
+  {/* </NavLink> */}
+</button>
+</div>
       </form>
     </div>
   )

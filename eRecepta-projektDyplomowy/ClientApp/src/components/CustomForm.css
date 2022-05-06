@@ -11,8 +11,6 @@
   justify-content: center;
 }
 
-element {
-}
 select {
   /* display: flex; */
   /* align-items: center; */
@@ -42,9 +40,9 @@ select::-ms-expand {
   display: flex;
   width: 20em;
   height: 3em;
-  border-radius: 0.25em;
+  /* border-radius: 0.25em; */
   overflow: hidden;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
 }
 /* Arrow */
 .select::after {
@@ -66,6 +64,39 @@ h1 {
 }
 
 .question-form {
-  border: 2px solid red;
+background-color: rgb(190, 182, 182);
+/* border-left-style: dotted; */
+border-left-style: groove;
+border-left-color: #17a2b8;
+border-left-width: 7px;
+  /* border-left: 5px solid #17a2b8; */
+  /* border-radius: 5px; */
+  margin-bottom: 15px;
+  justify-content: center;
+}
+
+.Custom-form-text{
+  padding-top: 5px;
+  padding-left: 15px;
+/* color:#fff; */
+  text-align: center;
+}
+
+button{
+  /* display: grid; */
+  /* justify-content: center; */
+
+  /* position: relative; */
+  /* display: flex; */
+  padding: 15px;
+  color: #fff;
+  background-color: #17a2b8;
   border-radius: 5px;
+}
+
+.form-group-button{
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
