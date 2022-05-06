@@ -33,7 +33,7 @@ export class Logout extends Component {
                 this.processLogoutCallback();
                 break;
             case LogoutActions.LoggedOut:
-                this.setState({ isReady: true, message: "Pomyúlnie wylogowano." });
+                this.setState({ isReady: true, message: "Pomy≈õlnie wylogowano z aplikacji." });
                 break;
             default:
                 throw new Error(`Invalid action '${action}'`);
@@ -53,9 +53,9 @@ export class Logout extends Component {
             const action = this.props.action;
             switch (action) {
                 case LogoutActions.Logout:
-                    return (<div>Processing logout</div>);
+                    return (<div>Trwa wylogowywanie...</div>);
                 case LogoutActions.LogoutCallback:
-                    return (<div>Processing logout callback</div>);
+                    return (<div>Trwa wylogowywanie...</div>);
                 case LogoutActions.LoggedOut:
                     return (<div>{message}</div>);
                 default:

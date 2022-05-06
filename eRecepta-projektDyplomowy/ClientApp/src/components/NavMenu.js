@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
 import logo from '../assets/ooo.png';
+import authService from './api-authorization/AuthorizeService'
+import { UserRoles } from './api-authorization/ApiAuthorizationConstants';
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -12,11 +14,22 @@ export class NavMenu extends Component {
     super(props);
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
-    this.state = {
+      this.state = {
+      hasAdminRole: false,
       collapsed: true
     };
   }
+    componentDidMount() {
+        this._subscription = authService.subscribe(() => this.populateState());
+        this.populateState();
+    }
 
+    async populateState() {
+        const hasAdminRole = await authService.hasRole(UserRoles.Administrator);
+        this.setState({
+            hasAdminRole
+        });
+    }
   toggleNavbar () {
     this.setState({
       collapsed: !this.state.collapsed
@@ -46,7 +59,13 @@ export class NavMenu extends Component {
                 </NavItem>
                 <NavItem>
                   <NavLink tag={Link} className="text-white" to="/fetch-data">eKartoteka</NavLink>
-                </NavItem>
+                  </NavItem>
+                  {
+                    this.state.hasAdminRole &&
+                    <NavItem>
+                        <NavLink tag={Link} className="text-white" to="/users">Panel administracyjny</NavLink>
+                    </NavItem>
+                  }
                 <LoginMenu>
                 </LoginMenu>
               </ul>

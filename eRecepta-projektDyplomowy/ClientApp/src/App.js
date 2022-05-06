@@ -5,6 +5,7 @@ import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { Counter2 } from './components/Counter2';
+import { UsersRouter } from './components/users/UsersRouter';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
@@ -31,7 +32,8 @@ export default class App extends Component {
                 <Route path='/erecepta' component={Counter} />
                 <Route path='/ekonsultacja' component={Counter2} />
                 {/* <AuthorizeRoute path='/fetch-data' component={FetchData} /> */}
-                <Route path='/fetch-data' component={FetchData} />
+                    <Route path='/fetch-data' component={FetchData} />
+                    <AuthorizeRoute path='/users' component={UsersRouter} />
                 <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
                 </Layout>
                 </Router>
