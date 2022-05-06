@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 // import { Recepta } from '../containers/recepta/Recepta';
-import { Recepta } from '../containers';
-
+import { Recepta } from '../containers'
+import CustomForm from './CustomForm'
 
 export class Counter extends Component {
-  static displayName = Counter.name;
+  static displayName = Counter.name
 
   constructor(props) {
-    super(props);
-    this.state = { currentCount: 0 };
-    this.incrementCounter = this.incrementCounter.bind(this);
+    super(props)
+    this.state = { currentCount: 0 }
+    this.incrementCounter = this.incrementCounter.bind(this)
   }
 
   incrementCounter() {
     this.setState({
-      currentCount: this.state.currentCount + 1
-    });
+      currentCount: this.state.currentCount + 1,
+    })
   }
 
   render() {
@@ -23,7 +23,10 @@ export class Counter extends Component {
       <div>
         <h1>eRecepta</h1>
 
-        <Recepta />
+        <p class="fw-bold"> Żeby umówić się z lekarzem wypełnij ankiete</p>
+        <CustomForm />
+
+        {/* <Recepta />
 
         <h1>Counter</h1>
 
@@ -31,8 +34,8 @@ export class Counter extends Component {
 
         <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
 
-        <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button>
+        <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button> */}
       </div>
-    );
+    )
   }
 }
