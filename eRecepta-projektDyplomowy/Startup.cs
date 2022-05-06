@@ -9,6 +9,7 @@ using eRecepta_projektDyplomowy.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -79,6 +80,8 @@ namespace eRecepta_projektDyplomowy
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IHelperService, HelperService>();
             services.AddTransient<IAppointmentService, AppointmentService>();
+            services.AddTransient<ClaimsPrincipal>(
+                s => s.GetService<IHttpContextAccessor>().HttpContext.User);
             //services.AddTransient<IDoctorService, DoctorService>();
         }
 
