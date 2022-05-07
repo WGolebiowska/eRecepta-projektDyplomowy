@@ -8,6 +8,7 @@ import {
   NavLink,
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
+import authService from './api-authorization/AuthorizeService'
 
 import './CustomForm.css'
 import { useState } from 'react'
@@ -18,9 +19,10 @@ function CustomForm() {
   const [email, setEmail] = useState('')
   const [mobileNumber, setMobileNumber] = useState('')
   const [dolegliwosc, setDolegliwosc] = useState('')
-  const [dataKonsultacji, setDataKonsultacji] = useState('')
-  const [plecPacienta, setPlecPacienta] = useState('')
-  const [formaKonsultacji, setFormaKonsultacji] = useState('')
+  const [lek, setLek] = useState('')
+  const [wzrost, setWzrost] = useState('')
+  const [tempBody, setTempBody] = useState('')
+  const [waga, setWaga] = useState('')
   const [ciaza, setCiaza] = useState(false)
   const [message, setMessage] = useState('')
 
@@ -36,12 +38,13 @@ function CustomForm() {
           // email: email,
           // mobileNumber: mobileNumber,
           // dolegliwosc: dolegliwosc,
+          // lek: lek,
+          // tempBody: tempBody,
+          // wzrost: wzrost,
+          // waga: waga,
           // ciaza: ciaza,
-          dataKonsultacji: dataKonsultacji,
-          plecPacienta: plecPacienta,
-          formaKonsultacji: formaKonsultacji,
           appointmentDate: '2022-12-12',
-          DoctorId: 'c2872281-dda2-4787-95e3-ade39d8a220c',
+          DoctorId: 'dc616b80-8a71-4e3b-9f9a-9654699ea388',
           PatientId: 'dc616b80-8a71-4e3b-9f9a-9654699ea388',
         }),
       })
@@ -74,7 +77,7 @@ function CustomForm() {
                 onChange={(e) => setDolegliwosc(e.target.value)}
                 aria-lebel="Default select example"
               >
-                <option selected class="label-desc">
+                <option selected value="Choice 1">
                   ...
                 </option>
                 <option value="Bol ucha">Bol ucha</option>
@@ -84,75 +87,107 @@ function CustomForm() {
             </div>
           </div>
           <div className="question-form">
+            <label className="Custom-form-text">Wybierz lek</label>
+            <div class="select">
+              <select
+                class="select"
+                value={lek}
+                onChange={(e) => setLek(e.target.value)}
+                aria-lebel="Default select example"
+              >
+                <option selected class="label-desc">
+                  ...
+                </option>
+                <option value="Ketonal">Ketonal</option>
+                <option value="Apap">Apap</option>
+                <option value="Apap">Apap</option>
+              </select>
+            </div>
+          </div>
+          <div className="question-form">
             <label className="Custom-form-text">
-              Wybierz godzinę eKonsultacji
+              Podaj aktualną temp. ciała w st. C.
             </label>
-
             <div class="select">
               <select
                 class="select"
-                value={dataKonsultacji}
-                onChange={(e) => setDataKonsultacji(e.target.value)}
+                value={tempBody}
+                onChange={(e) => setTempBody(e.target.value)}
                 aria-lebel="Default select example"
               >
                 <option selected class="label-desc">
                   ...
                 </option>
-                <option value="8:00">8:00</option>
-                <option value="9:00">9:00</option>
-                <option value="10:00">10:00</option>
-                <option value="11:00">11:00</option>
-                <option value="12:00">12:00</option>
-                <option value="13:00">13:00</option>
-                <option value="14:00">14:00</option>
-                <option value="15:00">15:00</option>
-                <option value="16:00">16:00</option>
-                <option value="17:00">17:00</option>
-                <option value="18:00">18:00</option>
-                <option value="19:00">19:00</option>
-                <option value="20:00">20:00</option>
+                <option value="33,0">33,0</option>
+                <option value="33,5">33,5</option>
+                <option value="34,0">34,0</option>
+                <option value="34,5">34,5</option>
+                <option value="35,0">35,0</option>
+                <option value="35,5">35,5</option>
+                <option value="36,0">36,0</option>
+                <option value="36,5">36,5</option>
+                <option value="37,0">37,0</option>
+                <option value="37,5">37,5</option>
+                <option value="38,0">38,0</option>
+                <option value="38,5">38,5</option>
+                <option value="39,0">39,0</option>
+                <option value="39,5">39,5</option>
+                <option value="40,0">40,0</option>
+                <option value="40,5">40,5</option>
               </select>
             </div>
           </div>
 
           <div className="question-form">
-            <label className="Custom-form-text">Wybierz płeć</label>
-
+            <label className="Custom-form-text">Podaj swój wzrost w cm</label>
             <div class="select">
               <select
                 class="select"
-                value={plecPacienta}
-                onChange={(e) => setPlecPacienta(e.target.value)}
+                value={wzrost}
+                onChange={(e) => setWzrost(e.target.value)}
                 aria-lebel="Default select example"
               >
                 <option selected class="label-desc">
                   ...
                 </option>
-                <option value="Kobieta">Kobieta</option>
-                <option value="Mężczyzna">Mężczyzna</option>
+                <option value="-150"> -150 </option>
+                <option value="151-160"> 151-160 </option>
+                <option value="161-170"> 161-170 </option>
+                <option value="171-180"> 171-180 </option>
+                <option value="181-190"> 181-190 </option>
+                <option value="191-200"> 191-200 </option>
+                <option value="200+"> 200+ </option>
               </select>
             </div>
           </div>
-
           <div className="question-form">
-            <label className="Custom-form-text">Forma eKonsultacji</label>
-
-            <div class="select">
-              <select
-                class="select"
-                value={formaKonsultacji}
-                onChange={(e) => setFormaKonsultacji(e.target.value)}
-                aria-lebel="Default select example"
-              >
+            <label className="Custom-form-text">
+              Podaj swoją aktualną wagę w kg
+            </label>
+            <div
+              class="select"
+              value={waga}
+              onChange={(e) => setWaga(e.target.value)}
+              aria-lebel="Default select example"
+            >
+              <select class="select">
                 <option selected class="label-desc">
                   ...
                 </option>
-                <option value="Tele-porada">Tele-porada</option>
-                <option value="Video konferencja">Video konferencja</option>
+                <option value="-50">-50</option>
+                <option value="51-60">51-60</option>
+                <option value="61-70">61-70</option>
+                <option value="71-80">71-80</option>
+                <option value="81-90">81-90</option>
+                <option value="91-100">91-100</option>
+                <option value="+100">+100</option>
               </select>
             </div>
+            {/* <input type="date" id="birthday" name="birthday" /> */}
+            {/* <input type="time" id="appt" name="appt" min="09:00" max="18:00" required></input> */}
           </div>
         </div>
+
         {/* <input
           type="text"
           value={name}
@@ -160,7 +195,7 @@ function CustomForm() {
           onChange={(e) => setName(e.target.value)}
         />
         <input
-        type="text"
+          type="text"
           value={email}
           placeholder="Masa ciała"
           onChange={(e) => setEmail(e.target.value)}
@@ -181,13 +216,13 @@ function CustomForm() {
           onChange={(e) => setCiaza(e.target.value)}
         />
         <label for="ciaza_check"> Czy jesteś w ciąży</label>
-        
+
         <select
           value={dolegliwosc}
           onChange={(e) => setDolegliwosc(e.target.value)}
           class="form-select"
           aria-label="Default select example"
-          >
+        >
           <option selected>Wybierz dolegliwość</option>
           <option value="Ból ucha">Ból ucha</option>
           <option value="Ból nosa">Ból nosa</option>
@@ -200,12 +235,13 @@ function CustomForm() {
     Default checkbox
   </label>
 </div> */}
+
         <div class="form-group-button">
           <button type="submit">
             {/* <NavLink tag={Link} className="text-white" to="/platnosc"> */}
             {/* <NavItem> */}
             {/* <NavLink tag={Link} className="text-white" to="/erecepta"> */}
-            umów konsultacje
+            umów wizytę
             {/* Dalej */}
             {/* </NavLink> */}
             {/* </NavItem> */}
