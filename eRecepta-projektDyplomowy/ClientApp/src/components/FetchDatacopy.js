@@ -16,7 +16,8 @@ export class FetchData extends Component {
 
   componentDidMount() {
     //this.populateWeatherData();
-    this.getAppointments()
+    // this.getAppointments()
+    this.getUser()
   }
 
   static renderForecastsTable(forecasts) {
@@ -88,17 +89,26 @@ export class FetchData extends Component {
     )
   }
 
-  async populateWeatherData() {
+  // async populateWeatherData() {
+  //   const token = await authService.getAccessToken()
+  //   const response = await fetch('weatherforecast', {
+  //     headers: !token ? {} : { Authorization: `Bearer ${token}` },
+  //   })
+  //   const data = await response.json()
+  //   this.setState({ forecasts: data, loading: false })
+  // }
+  // async getAppointments() {
+  //   const token = await authService.getAccessToken()
+  //   const response = await fetch('/api/Appointment', {
+  //     headers: !token ? {} : { Authorization: `Bearer ${token}` },
+  //   })
+  //   const data = await response.json()
+  //   this.setState({ appointments: data, loading: false })
+  // }
+
+  async getUser() {
     const token = await authService.getAccessToken()
-    const response = await fetch('weatherforecast', {
-      headers: !token ? {} : { Authorization: `Bearer ${token}` },
-    })
-    const data = await response.json()
-    this.setState({ forecasts: data, loading: false })
-  }
-  async getAppointments() {
-    const token = await authService.getAccessToken()
-    const response = await fetch('/api/Appointment', {
+    const response = await fetch('/api/currentuser', {
       headers: !token ? {} : { Authorization: `Bearer ${token}` },
     })
     const data = await response.json()

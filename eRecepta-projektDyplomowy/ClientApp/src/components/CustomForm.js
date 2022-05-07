@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom'
 import './CustomForm.css'
 import { useState } from 'react'
 import { React } from 'react'
+import authService from './api-authorization/AuthorizeService'
 
 function CustomForm() {
   const [name, setName] = useState('')
@@ -24,10 +25,23 @@ function CustomForm() {
   const [waga, setWaga] = useState('')
   const [ciaza, setCiaza] = useState(false)
   const [message, setMessage] = useState('')
+  const [pacjent, setPacjent] = useState('')
 
   let handleSubmit = async (e) => {
     e.preventDefault()
     try {
+      const token = await authService.getAccessToken()
+      let res2 = await fetch('/api/CurrentUser', {
+        method: 'GET',
+        headers: !token ? {} : { Authorization: `Bearer ${token}` },
+      })
+      let res2Json = await res2.json()
+      if (res2.status === 200) {
+        setPacjent(res2Json.id)
+      } else {
+        setPacjent('Some error occured')
+      }
+
       // let res = await fetch('https://httpbin.org/post', {
       let res = await fetch('/api/Appointment', {
         method: 'POST',
@@ -44,7 +58,7 @@ function CustomForm() {
           // ciaza: ciaza,
           appointmentDate: '2022-12-12',
           DoctorId: 'dc616b80-8a71-4e3b-9f9a-9654699ea388',
-          PatientId: 'dc616b80-8a71-4e3b-9f9a-9654699ea388',
+          PatientId: res2Json.id,
         }),
       })
       let resJson = await res.json()
