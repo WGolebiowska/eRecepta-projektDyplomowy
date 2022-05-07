@@ -9,6 +9,8 @@ namespace eRecepta_projektDyplomowy.ViewModels
         public string DoctorId { get; set; }
         public string DoctorName { get; set; }
         public string DoctorSurname { get; set; }
+        public string Specialty { get; set; }
+        public string MedicalDegree { get; set; }
         public string PatientId { get; set; }
         public string PatientName { get; set; }
         public string PatientSurname { get; set; }
