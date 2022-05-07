@@ -4,8 +4,7 @@ namespace eRecepta_projektDyplomowy.ViewModels
 {
     public class DoctorVm
     {
-        [MapTo("Id")]
-        public string DoctorId { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string MedicalDegree { get; set; }

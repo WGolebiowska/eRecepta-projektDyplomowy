@@ -41,7 +41,7 @@ function CustomForm() {
           plecPacienta: plecPacienta,
           formaKonsultacji: formaKonsultacji,
           appointmentDate: '2022-12-12',
-          DoctorId: 'dc616b80-8a71-4e3b-9f9a-9654699ea388',
+          DoctorId: 'c2872281-dda2-4787-95e3-ade39d8a220c',
           PatientId: 'dc616b80-8a71-4e3b-9f9a-9654699ea388',
         }),
       })

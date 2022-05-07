@@ -80,9 +80,9 @@ namespace eRecepta_projektDyplomowy
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IHelperService, HelperService>();
             services.AddTransient<IAppointmentService, AppointmentService>();
+            services.AddTransient<IDoctorService, DoctorService>();
             services.AddTransient<ClaimsPrincipal>(
                 s => s.GetService<IHttpContextAccessor>().HttpContext.User);
-            //services.AddTransient<IDoctorService, DoctorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

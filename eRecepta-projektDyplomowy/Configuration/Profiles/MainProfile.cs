@@ -14,7 +14,7 @@ namespace eRecepta_projektDyplomowy.Configuration.Profiles
             //CreateMap<Patient, PatientVm>().ReverseMap();
             //CreateMap<AddOrUpdatePatientVm, Patient>().ReverseMap();
             CreateMap<Doctor, DoctorVm>().ReverseMap();
-            CreateMap<AddOrUpdateDoctorVm, Doctor>().ReverseMap();
+            //CreateMap<AddOrUpdateDoctorVm, Doctor>().ReverseMap();
 
             CreateMap<ApplicationUser, UserModel>()
                     .ForMember(dest => dest.Password, opt => opt.Ignore())
