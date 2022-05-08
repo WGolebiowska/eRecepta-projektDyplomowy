@@ -43,7 +43,7 @@ function CustomForm() {
         } else {
             setPacjent('Some error occured')
         }
-
+        let appointmentDateTime = (moment().format("YYYY-MM-DD") + "T" + dataKonsultacji + ":00")
       let res = await fetch('/api/Appointment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json, charset=UTF-8' },
@@ -55,8 +55,8 @@ function CustomForm() {
           // ciaza: ciaza,
           dataKonsultacji: dataKonsultacji,
           plecPacienta: plecPacienta,
-          formaKonsultacji: formaKonsultacji,
-          appointmentDate: moment().format("YYYY-MM-DD"),
+            formaKonsultacji: formaKonsultacji,
+            appointmentDate: appointmentDateTime,
           DoctorId: 'c2872281-dda2-4787-95e3-ade39d8a220c',
             PatientId: res2Json.id,
             PatientName: res2Json.patientName,
@@ -111,13 +111,13 @@ function CustomForm() {
                 class="select"
                 value={dataKonsultacji}
                 onChange={(e) => setDataKonsultacji(e.target.value)}
-                aria-lebel="Default select example"
+                aria-label="Default select example"
               >
                 <option selected class="label-desc">
                   ...
                 </option>
-                <option value="8:00">8:00</option>
-                <option value="9:00">9:00</option>
+                <option value="08:00">08:00</option>
+                <option value="09:00">09:00</option>
                 <option value="10:00">10:00</option>
                 <option value="11:00">11:00</option>
                 <option value="12:00">12:00</option>

@@ -13,6 +13,7 @@ import './CustomForm.css'
 import { useState } from 'react'
 import { React } from 'react'
 import authService from './api-authorization/AuthorizeService'
+import moment from "moment";
 
 function CustomForm() {
   const [name, setName] = useState('')
@@ -43,6 +44,7 @@ function CustomForm() {
       }
 
       // let res = await fetch('https://httpbin.org/post', {
+
       let res = await fetch('/api/Appointment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json, charset=UTF-8' },
@@ -56,7 +58,7 @@ function CustomForm() {
           // wzrost: wzrost,
           // waga: waga,
           // ciaza: ciaza,
-          appointmentDate: '2022-12-12',
+          appointmentDate: moment().format("YYYY-MM-DD"),
           DoctorId: 'dc616b80-8a71-4e3b-9f9a-9654699ea388',
           PatientId: res2Json.id,
         }),

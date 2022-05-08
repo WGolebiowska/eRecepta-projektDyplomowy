@@ -6,6 +6,7 @@ namespace eRecepta_projektDyplomowy.ViewModels
     {
         public int AppointmentId { get; set; }
         public DateTime AppointmentDate { get; set; }
+        public string FullTitle { get; set; }
         public string DoctorId { get; set; }
         public string DoctorName { get; set; }
         public string DoctorSurname { get; set; }

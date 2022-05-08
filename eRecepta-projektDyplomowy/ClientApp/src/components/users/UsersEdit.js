@@ -45,22 +45,22 @@ class UsersEditPlain extends Component {
 	renderUserForm(user) {
 		return (
 			<AvForm onValidSubmit={this.handleValidSubmit}>
-				<AvField name="name" label='Imię' required errorMessage='FieldInvalid' validate={{
+				<AvField value={this.state.user.name} name="name" label='Imię' required errorMessage='FieldInvalid' validate={{
 					required: { value: true, errorMessage: 'Pole jest wymagane' },
 					minLength: { value: 6 }
 				}} />
-				<AvField name="surname" label="Nazwisko" required />
-				<AvField name="email" type="email" label="Email" required />
-				<AvField name="pesel" label="PESEL" required />
-				<AvField name="phoneNumber" label="Nr telefonu" required />
-				<AvField name="role" type="select" label="Rola" required>
+				<AvField value={ this.state.user.surname } name="surname" label="Nazwisko" required />
+				<AvField value={this.state.user.email} name="email" type="email" label="Email" required />
+				<AvField value={this.state.user.pesel} name="pesel" label="PESEL" required />
+				<AvField value={this.state.user.phoneNumber} name="phoneNumber" label="Nr telefonu" required />
+				<AvField value={this.state.user.role} name="role" type="select" label="Rola" required>
 					<option value="">---Wybierz wartość---</option>
 					<option value="administrator">Administrator</option>
 					<option value="doctor">Lekarz</option>
 					<option value="patient">Pacjent</option>
 				</AvField>
-				<AvField name="password" type="password" label="Hasło" required />
-				<AvField name="confirmPassword" type="password" label="Powtórz hasło" required
+				<AvField value={this.state.user.surname} name="password" type="password" label="Hasło" required />
+				<AvField value={this.state.user.surname} name="confirmPassword" type="password" label="Powtórz hasło" required
 					validate={{ match: { value: 'password' } }}
 				/>
 				<FormGroup>
