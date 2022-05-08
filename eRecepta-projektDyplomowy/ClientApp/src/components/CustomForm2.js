@@ -12,6 +12,8 @@ import { Link } from 'react-router-dom'
 import './CustomForm.css'
 import { useState } from 'react'
 import { React } from 'react'
+import authService from './api-authorization/AuthorizeService'
+import moment from "moment";
 
 function CustomForm() {
   const [name, setName] = useState('')
@@ -23,11 +25,25 @@ function CustomForm() {
   const [formaKonsultacji, setFormaKonsultacji] = useState('')
   const [ciaza, setCiaza] = useState(false)
   const [message, setMessage] = useState('')
+    const [pacjent, setPacjent] = useState('')
 
   let handleSubmit = async (e) => {
     e.preventDefault()
     try {
       // let res = await fetch('https://httpbin.org/post', {
+
+        const token = await authService.getAccessToken()
+        let res2 = await fetch('/api/CurrentUser', {
+            method: 'GET',
+            headers: !token ? {} : { Authorization: `Bearer ${token}` },
+        })
+        let res2Json = await res2.json()
+        if (res2.status === 200) {
+            setPacjent(res2Json.id)
+        } else {
+            setPacjent('Some error occured')
+        }
+        let appointmentDateTime = (moment().format("YYYY-MM-DD") + "T" + dataKonsultacji + ":00")
       let res = await fetch('/api/Appointment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json, charset=UTF-8' },
@@ -39,10 +55,12 @@ function CustomForm() {
           // ciaza: ciaza,
           dataKonsultacji: dataKonsultacji,
           plecPacienta: plecPacienta,
-          formaKonsultacji: formaKonsultacji,
-          appointmentDate: '2022-12-12',
+            formaKonsultacji: formaKonsultacji,
+            appointmentDate: appointmentDateTime,
           DoctorId: 'c2872281-dda2-4787-95e3-ade39d8a220c',
-          PatientId: 'dc616b80-8a71-4e3b-9f9a-9654699ea388',
+            PatientId: res2Json.id,
+            PatientName: res2Json.patientName,
+            PatientSurname: res2Json.patientSurname,
         }),
       })
       let resJson = await res.json()
@@ -93,13 +111,13 @@ function CustomForm() {
                 class="select"
                 value={dataKonsultacji}
                 onChange={(e) => setDataKonsultacji(e.target.value)}
-                aria-lebel="Default select example"
+                aria-label="Default select example"
               >
                 <option selected class="label-desc">
                   ...
                 </option>
-                <option value="8:00">8:00</option>
-                <option value="9:00">9:00</option>
+                <option value="08:00">08:00</option>
+                <option value="09:00">09:00</option>
                 <option value="10:00">10:00</option>
                 <option value="11:00">11:00</option>
                 <option value="12:00">12:00</option>

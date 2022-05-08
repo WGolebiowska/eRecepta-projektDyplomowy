@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
 using static eRecepta_projektDyplomowy.Services.Helpers.RoleHelpers;
 
 namespace eRecepta_projektDyplomowy
@@ -64,28 +65,66 @@ namespace eRecepta_projektDyplomowy
                     Email = "admin@erecepta.com",
                     Name = "AdminImie",
                     Surname = "AdminNazwisko",
-                    PESEL = "12345678900",
+                    PESEL = "97090978900",
                     EmailConfirmed = true,
                     Approved = true
                 };
 
-                umService.AddUserAsync(adminUser, "ZAQ!2wsx", "administrator").Wait(); // username = "admin", password = "admin"
+                umService.AddUserAsync(adminUser, "ZAQ!2wsx", "administrator").Wait();
 
                 UserManager<ApplicationUser> userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 userManager.AddToRoleAsync(adminUser, "user").Wait();
 
-                ApplicationUser doctorUser = new ApplicationUser
+                List<Doctor> doctorUsers = null;
+                
+                var doc1 = new Doctor 
                 {
-                    UserName = "doctor@erecepta.com",
-                    Email = "doctor@erecepta.com",
+                    UserName = "doctor1@erecepta.com",
+                    Email = "doctor1@erecepta.com",
                     Name = "Gregory",
                     Surname = "House",
-                    PESEL = "12345678900",
+                    PESEL = "80020299999",
+                    PhoneNumber = "662111991",
+                    MedicalDegree = "lekarz",
+                    Specialty = "pediatra",
                     EmailConfirmed = true,
                     Approved = true
                 };
+                doctorUsers.Add(doc1);
+                var doc2 = new Doctor
+                {
+                    UserName = "doctor2@erecepta.com",
+                    Email = "doctor2@erecepta.com",
+                    Name = "George",
+                    Surname = "Clooooney",
+                    PESEL = "70030399999",
+                    PhoneNumber = "662222991",
+                    MedicalDegree = "lekarz",
+                    Specialty = "internista",
+                    EmailConfirmed = true,
+                    Approved = true
+                };
+                doctorUsers.Add(doc2);
 
-                umService.AddUserAsync(doctorUser, "ZAQ!2wsx", "doctor").Wait();
+                var doc3 = new Doctor
+                {
+                    UserName = "doctor3@erecepta.com",
+                    Email = "doctor3@erecepta.com",
+                    Name = "Artur",
+                    Surname = "Zmijewski",
+                    PESEL = "60040499999",
+                    PhoneNumber = "662333991",
+                    MedicalDegree = "lekarz",
+                    Specialty = "psychiatra",
+                    EmailConfirmed = true,
+                    Approved = true
+                };
+                doctorUsers.Add(doc3);
+
+                foreach(Doctor doctor in doctorUsers)
+                {
+                    umService.AddUserAsync(doctor, "ZAQ!2wsx", "doctor").Wait();
+                }
 
                 ApplicationUser patientUser = new ApplicationUser();
                 for (int i = 1; i < 125; i++)
@@ -96,7 +135,8 @@ namespace eRecepta_projektDyplomowy
                         Email = "user" + i + "@erecepta.com",
                         Name = "USER" + i + "IMIE",
                         Surname = "USER" + i + "NAZWISKO",
-                        PESEL = "12345678900",
+                        PESEL = "900101" + i ,
+                        PhoneNumber = "662555991",
                         EmailConfirmed = true,
                         Approved = true
                     };

@@ -64,6 +64,8 @@ namespace eRecepta_projektDyplomowy
             });
 
             services.AddControllersWithViews();
+            services.AddControllers().AddNewtonsoftJson(x =>
+ x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddRazorPages();
 
             // In production, the React files will be served from this directory

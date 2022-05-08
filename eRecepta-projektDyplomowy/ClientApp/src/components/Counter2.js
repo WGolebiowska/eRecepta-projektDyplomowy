@@ -24,7 +24,7 @@ export class Counter2 extends Component {
       <div class="text-center">
         <h1>eKonsultacja</h1>
 
-        <p class="fw-bold"> Żeby umówić się z lekarzem wypełnij ankiete</p>
+        <p class="fw-bold"> Żeby umówić się z lekarzem wypełnij ankietę</p>
         <CustomForm />
         {/* 
         <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>

@@ -9,7 +9,7 @@ namespace eRecepta_projektDyplomowy.ViewModels
         public int? AppointmentId { get; set; }
         [Required]
         public DateTime AppointmentDate { get; set; }
-        //[Required]
+        [Required]
         public string DoctorId { get; set; }
         [Required]
         public string PatientId { get; set; }

@@ -13,8 +13,10 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
 {
     public class AppointmentService : BaseService, IAppointmentService
     {
-        public AppointmentService(ApplicationDbContext dbContext, IMapper mapper, ILogger logger) : base(dbContext, mapper, logger)
+        private readonly IDoctorService _doctorService;
+        public AppointmentService(ApplicationDbContext dbContext, IMapper mapper, ILogger logger, IDoctorService doctorService) : base(dbContext, mapper, logger)
         {
+            _doctorService = doctorService;
         }
 
         public AppointmentVm AddOrUpdateAppointment(AddOrUpdateAppointmentVm addOrUpdateAppointmentVm)
@@ -47,6 +49,12 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
                     throw new ArgumentNullException("Filter expression parameter is null");
                 var appointmentEntity = DbContext.Appointments.FirstOrDefault(filterExpression);
                 var appointmentVm = Mapper.Map<AppointmentVm>(appointmentEntity);
+                var doctorEntity = _doctorService.GetDoctor(d => d.Id == appointmentVm.DoctorId);
+                appointmentVm.DoctorName = doctorEntity.Name;
+                appointmentVm.DoctorSurname = doctorEntity.Surname;
+                appointmentVm.Specialty = doctorEntity.Specialty;
+                appointmentVm.MedicalDegree = doctorEntity.MedicalDegree;
+                appointmentVm.FullTitle = doctorEntity.FullTitle;
                 return appointmentVm;
             }
             catch (Exception ex)
@@ -64,6 +72,16 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
                 if (filterExpression != null)
                     appointmentsQuery = appointmentsQuery.Where(filterExpression);
                 var appointmentsVms = Mapper.Map<IEnumerable<AppointmentVm>>(appointmentsQuery);
+                foreach(AppointmentVm appointmentVm in appointmentsVms)
+                {
+                    var doctorEntity = _doctorService.GetDoctor(d => d.Id == appointmentVm.DoctorId);
+                    appointmentVm.DoctorName = doctorEntity.Name;
+                    appointmentVm.DoctorSurname = doctorEntity.Surname;
+                    appointmentVm.Specialty = doctorEntity.Specialty;
+                    appointmentVm.MedicalDegree = doctorEntity.MedicalDegree;
+                    appointmentVm.FullTitle = doctorEntity.FullTitle;
+
+                }
                 return appointmentsVms;
             }
             catch (Exception ex)

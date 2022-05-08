@@ -50,21 +50,35 @@ export class FetchData extends Component {
         <thead>
           <tr>
             {/* <th>AppointmentId</th> */}
-            <th>AppointmenthDate</th>
-            <th>DoctorId</th>
-            <th>AppointmentNotes</th>
+            <th>Data</th>
+                   
+                    <th>DoctorName</th>
+                    <th>DoctorSurname</th>
+                    <th>Specialty</th>
+                    <th>Medical degree</th>
+
+
+
+            <th>Notatki</th>
             <th>Status</th>
-            <th>Type</th>
-            <th>VideoConferenceURL</th>
+            <th>Typ</th>
+            <th>URL</th>
           </tr>
         </thead>
         <tbody>
           {appointments.map((appointment) => (
             <tr key={appointment.appointmentId}>
               <td>{appointment.appointmentDate}</td>
-              <td>{appointment.doctorId}</td>
+
+                  <td>{appointment.doctorName}</td>
+                  <td>{appointment.doctorSurname}</td>
+                  <td>{appointment.specialty}</td>
+                  <td>{appointment.medicalDegree}</td>
+
+
+
               <td>{appointment.appointmentNotes}</td>
-              <td>{appointment.status}</td>
+              <td>NIEZATWIERDZONA</td>
               <td>{appointment.type}</td>
               <td>{appointment.videoConferenceURL}</td>
             </tr>
