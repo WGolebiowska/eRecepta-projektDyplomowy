@@ -31,8 +31,7 @@ class UsersAddPlain extends Component {
 		return (
 			<AvForm onValidSubmit={this.handleValidSubmit}>
 				<AvField name="name" label='Imię' required errorMessage='FieldInvalid' validate={{
-					required: { value: true, errorMessage: 'Pole jest wymagane' },
-					minLength: { value: 6 }
+					required: { value: true, errorMessage: 'Pole jest wymagane' }
 				}} />
 				<AvField name="surname" label="Nazwisko" required />
 				<AvField name="email" type="email" label="Email" required />
@@ -44,10 +43,12 @@ class UsersAddPlain extends Component {
 					<option value="doctor">Lekarz</option>
 					<option value="patient">Pacjent</option>
 				</AvField>
+				<AvField name="specialty" label="Specjalizacja (dotyczy lekarzy)" />
 				<AvField name="password" type="password" label="Hasło" required />
 				<AvField name="confirmPassword" type="password" label="Powtórz hasło" required
 					validate={{ match: { value: 'password' } }}
 				/>
+				
 				<FormGroup>
 					<Button>Zapisz</Button>&nbsp;
 					<Button onClick={this.handleClickCancel}>Anuluj</Button>

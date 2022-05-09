@@ -1,10 +1,14 @@
-﻿using eRecepta_projektDyplomowy.Controllers.Services.Interfaces;
+﻿using AutoMapper;
+using eRecepta_projektDyplomowy.Controllers.Services.Interfaces;
 using eRecepta_projektDyplomowy.Data;
 using eRecepta_projektDyplomowy.Models;
 using eRecepta_projektDyplomowy.Services.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,23 +16,22 @@ using static eRecepta_projektDyplomowy.Services.Helpers.RoleHelpers;
 
 namespace eRecepta_projektDyplomowy.Controllers.Services
 {
-    public class UserManagementService : IUserManagementService
+    public class UserManagementService : BaseService, IUserManagementService
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserManagementService(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+
+        public UserManagementService(ApplicationDbContext dbContext, IMapper mapper, ILogger logger, UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager) : base(dbContext, mapper, logger)
         {
-            _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
         }
 
         public async Task<IdentityRole> GetRoleByNameAsync(string name)
         {
-            return await _context.Roles.AsNoTracking().Where(role => role.Name == name)
+            return await DbContext.Roles.AsNoTracking().Where(role => role.Name == name)
                 .FirstOrDefaultAsync();
         }
 
@@ -88,8 +91,8 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
                 "PESEL_desc" => pageUsers.OrderByDescending(u => u.PESEL),
                 "PhoneNumber" => pageUsers.OrderBy(u => u.PhoneNumber),
                 "PhoneNumber_desc" => pageUsers.OrderByDescending(u => u.PhoneNumber),
-                "Role" => pageUsers.OrderBy(u => u.UserRoles.ToString()),
-                "Role_desc" => pageUsers.OrderByDescending(u => u.UserRoles),
+                "Role" => pageUsers.OrderBy(u => u.UserType),
+                "Role_desc" => pageUsers.OrderByDescending(u => u.UserType),
                 _ => pageUsers.OrderBy(u => u.Surname),
             };
             pageUsers = pageUsers.Skip(offset).Take(limit);
@@ -98,12 +101,12 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
         }
         public async Task<string> GetUserRoleAsync(string userId, bool returnName)
         {
-            ApplicationUser user = await _context.Users.AsNoTracking().Where(u => u.Id == userId).FirstOrDefaultAsync();
+            ApplicationUser user = await DbContext.Users.AsNoTracking().Where(u => u.Id == userId).FirstOrDefaultAsync();
             var roles = await _userManager.GetRolesAsync(user);
 
             foreach (RolePair rolePair in RoleHelpers.Roles)
             {
-                IdentityRole identityRole = await _context.Roles.AsNoTracking().Where(role => role.Name == rolePair.Name)
+                IdentityRole identityRole = await DbContext.Roles.AsNoTracking().Where(role => role.Name == rolePair.Name)
                     .FirstOrDefaultAsync();
                 if (identityRole != null && roles.Contains(identityRole.Name))
                     return returnName ? rolePair.Name : rolePair.Description;
@@ -112,12 +115,12 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
         }
         public async Task<string> GetUserRoleAsync(string email)
         {
-            ApplicationUser user = await _context.Users.AsNoTracking().Where(u => u.Email == email).FirstOrDefaultAsync();
+            ApplicationUser user = await DbContext.Users.AsNoTracking().Where(u => u.Email == email).FirstOrDefaultAsync();
             var roles = await _userManager.GetRolesAsync(user);
 
             foreach (RolePair rolePair in RoleHelpers.Roles)
             {
-                IdentityRole identityRole = await _context.Roles.AsNoTracking().Where(role => role.Name == rolePair.Name).FirstOrDefaultAsync();
+                IdentityRole identityRole = await DbContext.Roles.AsNoTracking().Where(role => role.Name == rolePair.Name).FirstOrDefaultAsync();
                 if (roles.Contains(identityRole.Name))
                     return rolePair.Name;
             }
@@ -132,8 +135,42 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
         public async Task<IdentityResult> AddUserAsync(ApplicationUser user, string password, string role)
         {
             if (await _userManager.FindByEmailAsync(user.Email) != null)
-                return IdentityResult.Failed(new IdentityError() { Description = "Ten adres Email instnieje już w systemie!" });
+                return IdentityResult.Failed(new IdentityError() { Description = "Ten adres Email istnieje już w systemie!" });
+            if (role == "administrator")
+            {
+                user.UserType = 0;
+            }
+            else if (role == "doctor")
+            {
+                user.UserType = 1;
+            }
+            else
+            {
+                user.UserType = 2;
+            }
+            var result = await _userManager.CreateAsync(user, password);
 
+            if (result.Succeeded)
+                await _userManager.AddToRoleAsync(user, role);
+
+            return result;
+        }
+        public async Task<IdentityResult> AddUserAsync(Doctor user, string password, string role)
+        {
+            if (await _userManager.FindByEmailAsync(user.Email) != null)
+                return IdentityResult.Failed(new IdentityError() { Description = "Ten adres Email istnieje już w systemie!" });
+            if (role == "administrator")
+            {
+                user.UserType = 0;
+            }
+            else if (role == "doctor")
+            {
+                user.UserType = 1;
+            }
+            else
+            {
+                user.UserType = 2;
+            }
             var result = await _userManager.CreateAsync(user, password);
 
             if (result.Succeeded)
@@ -143,13 +180,25 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
         }
         public async Task<IdentityResult> UpdateUserAsync(ApplicationUser user, string newUserRole)
         {
+            if (newUserRole == "administrator")
+            {
+                user.UserType = 0;
+            }
+            else if (newUserRole == "doctor")
+            {
+                user.UserType = 1;
+            }
+            else
+            {
+                user.UserType = 2;
+            }
             var existingUser = await _userManager.FindByEmailAsync(user.Email);
             if (existingUser != null && existingUser.Id != user.Id)
                 return IdentityResult.Failed(new IdentityError() { Description = "Ten adres Email istnieje już w systemie!" });
 
-            _context.Entry(user).State = EntityState.Modified;
+            DbContext.Entry(user).State = EntityState.Modified;
 
-            await _context.SaveChangesAsync();
+            await DbContext.SaveChangesAsync();
 
             string[] existingRoles = (await _userManager.GetRolesAsync(user)).ToArray();
             var result = await _userManager.RemoveFromRolesAsync(user, existingRoles);
