@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eRecepta_projektDyplomowy.Controllers.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace eRecepta_projektDyplomowy.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DoctorController : BaseController

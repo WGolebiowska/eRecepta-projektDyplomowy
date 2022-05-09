@@ -53,7 +53,6 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
                 appointmentVm.DoctorName = doctorEntity.Name;
                 appointmentVm.DoctorSurname = doctorEntity.Surname;
                 appointmentVm.Specialty = doctorEntity.Specialty;
-                appointmentVm.MedicalDegree = doctorEntity.MedicalDegree;
                 appointmentVm.FullTitle = doctorEntity.FullTitle;
                 return appointmentVm;
             }
@@ -78,7 +77,6 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
                     appointmentVm.DoctorName = doctorEntity.Name;
                     appointmentVm.DoctorSurname = doctorEntity.Surname;
                     appointmentVm.Specialty = doctorEntity.Specialty;
-                    appointmentVm.MedicalDegree = doctorEntity.MedicalDegree;
                     appointmentVm.FullTitle = doctorEntity.FullTitle;
 
                 }

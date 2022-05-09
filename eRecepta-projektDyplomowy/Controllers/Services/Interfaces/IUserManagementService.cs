@@ -16,6 +16,7 @@ namespace eRecepta_projektDyplomowy.Controllers.Services.Interfaces
         Task<string> GetUserRoleAsync(string email);
         Task<ApplicationUser> FindUserAsync(string userId);
         Task<IdentityResult> AddUserAsync(ApplicationUser user, string password, string role);
+        Task<IdentityResult> AddUserAsync(Doctor user, string password, string role);
         Task<IdentityResult> UpdateUserAsync(ApplicationUser user, string newUserRole);
         Task<IdentityResult> DeleteUserAsync(string userId);
         Task<IdentityResult> ChangePasswordAsync(ApplicationUser user, string password);

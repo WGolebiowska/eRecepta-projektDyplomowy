@@ -73,7 +73,6 @@ export class FetchData extends Component {
                   <td>{appointment.doctorName}</td>
                   <td>{appointment.doctorSurname}</td>
                   <td>{appointment.specialty}</td>
-                  <td>{appointment.medicalDegree}</td>
 
 
 

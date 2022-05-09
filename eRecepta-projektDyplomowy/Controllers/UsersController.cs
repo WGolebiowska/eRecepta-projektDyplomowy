@@ -92,13 +92,24 @@ namespace eRecepta_projektDyplomowy.Controllers
                 ModelState.AddModelError("Email", "Ten adres Email istnieje już w systemie.");
                 return BadRequest(ModelState);
             }
+                if(userModel.Role == "doctor")
+            {
+                Doctor user = _mapper.Map<Doctor>(userModel);
+                user.EmailConfirmed = true;
+                user.UserName = userModel.Email;
+                IdentityResult result = await _umService.AddUserAsync(user, userModel.Password, userModel.Role);
+                return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+            }
+                else
+            {
 
-            ApplicationUser user = _mapper.Map<ApplicationUser>(userModel);
-            user.EmailConfirmed = true;
-            user.UserName = userModel.Email;
-            IdentityResult result = await _umService.AddUserAsync(user, userModel.Password, userModel.Role);
-
-            return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+                ApplicationUser user = _mapper.Map<ApplicationUser>(userModel);
+                user.EmailConfirmed = true;
+                user.UserName = userModel.Email;
+                IdentityResult result = await _umService.AddUserAsync(user, userModel.Password, userModel.Role);
+                return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+            }
+                
         }
 
         // PUT: api/users/5
@@ -108,7 +119,7 @@ namespace eRecepta_projektDyplomowy.Controllers
             if (id != userModel.Id || !ModelState.IsValid)
                 return BadRequest();
 
-            ApplicationUser user = await _umService.FindUserAsync(userModel.Id);
+            var user = await _umService.FindUserAsync(userModel.Id);
 
             if (user == null)
                 return NotFound();

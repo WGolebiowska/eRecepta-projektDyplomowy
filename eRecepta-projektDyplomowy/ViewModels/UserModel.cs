@@ -16,6 +16,10 @@ namespace eRecepta_projektDyplomowy.ViewModels
         [Display(Name = "Nazwisko")]
         public string Surname { get; set; }
 
+        [StringLength(50)]
+        [Display(Name = "Specjalizacja")]
+        public string Specialty { get; set; }
+
         [Required(ErrorMessage = "Pole {0} jest wymagane.")]
         [RegularExpression(@"^[\d]{11}$", ErrorMessage = "{0} musi się składać z 11 cyfr.")]
         [DataType(DataType.Text)]
@@ -64,6 +68,10 @@ namespace eRecepta_projektDyplomowy.ViewModels
         [Required(ErrorMessage = "Pole {0} jest wymagane.")]
         [Display(Name = "Nazwisko")]
         public string Surname { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Specjalizacja")]
+        public string Specialty { get; set; }
 
         [Required(ErrorMessage = "Pole {0} jest wymagane.")]
         [RegularExpression(@"^[\d]{11}$", ErrorMessage = "{0} musi się składać z 11 cyfr.")]

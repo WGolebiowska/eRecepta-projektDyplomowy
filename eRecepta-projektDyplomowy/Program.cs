@@ -73,9 +73,8 @@ namespace eRecepta_projektDyplomowy
                 umService.AddUserAsync(adminUser, "ZAQ!2wsx", "administrator").Wait();
 
                 UserManager<ApplicationUser> userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                userManager.AddToRoleAsync(adminUser, "user").Wait();
 
-                List<Doctor> doctorUsers = null;
+                List<Doctor> doctorUsers = new List<Doctor>();
                 
                 var doc1 = new Doctor 
                 {
@@ -85,7 +84,6 @@ namespace eRecepta_projektDyplomowy
                     Surname = "House",
                     PESEL = "80020299999",
                     PhoneNumber = "662111991",
-                    MedicalDegree = "lekarz",
                     Specialty = "pediatra",
                     EmailConfirmed = true,
                     Approved = true
@@ -99,7 +97,6 @@ namespace eRecepta_projektDyplomowy
                     Surname = "Clooooney",
                     PESEL = "70030399999",
                     PhoneNumber = "662222991",
-                    MedicalDegree = "lekarz",
                     Specialty = "internista",
                     EmailConfirmed = true,
                     Approved = true
@@ -114,7 +111,6 @@ namespace eRecepta_projektDyplomowy
                     Surname = "Zmijewski",
                     PESEL = "60040499999",
                     PhoneNumber = "662333991",
-                    MedicalDegree = "lekarz",
                     Specialty = "psychiatra",
                     EmailConfirmed = true,
                     Approved = true
@@ -126,16 +122,16 @@ namespace eRecepta_projektDyplomowy
                     umService.AddUserAsync(doctor, "ZAQ!2wsx", "doctor").Wait();
                 }
 
-                ApplicationUser patientUser = new ApplicationUser();
+                ApplicationUser patientUser = new Patient();
                 for (int i = 1; i < 125; i++)
                 {
-                    patientUser = new ApplicationUser
+                    patientUser = new Patient
                     {
                         UserName = "user" + i + "@erecepta.com",
                         Email = "user" + i + "@erecepta.com",
                         Name = "USER" + i + "IMIE",
                         Surname = "USER" + i + "NAZWISKO",
-                        PESEL = "900101" + i ,
+                        PESEL = "90010155533" ,
                         PhoneNumber = "662555991",
                         EmailConfirmed = true,
                         Approved = true
