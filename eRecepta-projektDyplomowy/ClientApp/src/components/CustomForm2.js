@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom'
 
 import './CustomForm.css'
 import { useState } from 'react'
-import { React } from 'react'
+import { React, useEffect } from 'react'
 import authService from './api-authorization/AuthorizeService'
 import moment from "moment";
 
@@ -25,7 +25,31 @@ function CustomForm() {
   const [formaKonsultacji, setFormaKonsultacji] = useState('')
   const [ciaza, setCiaza] = useState(false)
   const [message, setMessage] = useState('')
-    const [pacjent, setPacjent] = useState('')
+  const [pacjent, setPacjent] = useState('')
+  const [doctor, setDoctor] = useState('')
+  const [doctors, setDoctors] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      var doctors = [];
+
+      const token = await authService.getAccessToken();
+      
+      let res = await fetch('/api/Doctor', {
+        method: 'GET',
+        headers: !token ? {} : { Authorization: `Bearer ${token}` },
+      })
+      let resJson = await res.json()
+      if (res.status === 200) {
+        doctors = resJson.map((d) => d.id + ":" + d.fullTitle)
+        doctors = doctors.map(pair => pair.split(":"));
+        setDoctors(doctors);
+      } else {
+        setDoctors([":some error occured"])
+      }
+    }
+    getData();
+  }, []);
 
   let handleSubmit = async (e) => {
     e.preventDefault()
@@ -43,37 +67,38 @@ function CustomForm() {
         } else {
             setPacjent('Some error occured')
         }
+
         let appointmentDateTime = (moment().format("YYYY-MM-DD") + "T" + dataKonsultacji + ":00")
-      let res = await fetch('/api/Appointment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json, charset=UTF-8' },
-        body: JSON.stringify({
-          // name: name,
-          // email: email,
-          // mobileNumber: mobileNumber,
-          // dolegliwosc: dolegliwosc,
-          // ciaza: ciaza,
-          dataKonsultacji: dataKonsultacji,
-          plecPacienta: plecPacienta,
-            formaKonsultacji: formaKonsultacji,
+        let res = await fetch('/api/Appointment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json, charset=UTF-8' },
+          body: JSON.stringify({
+            // name: name,
+            // email: email,
+            // mobileNumber: mobileNumber,
+            // dolegliwosc: dolegliwosc,
+            // ciaza: ciaza,
+            dataKonsultacji: dataKonsultacji,
+            plecPacienta: plecPacienta,
+            type: formaKonsultacji,
             appointmentDate: appointmentDateTime,
-          DoctorId: 'c2872281-dda2-4787-95e3-ade39d8a220c',
-            PatientId: res2Json.id,
+            doctorId: doctor,
+            patientId: res2Json.id,
             PatientName: res2Json.patientName,
             PatientSurname: res2Json.patientSurname,
-        }),
-      })
-      let resJson = await res.json()
-      if (res.status === 200) {
-        setName('')
-        setEmail('')
-        setMobileNumber('')
-        setMessage(
-          'Twoje zlecenie jest przetwarzane, status możesz sprawdzić w eKartotece',
-        )
-      } else {
-        setMessage('Some error occured')
-      }
+          }),
+        })
+        let resJson = await res.json()
+        if (res.status === 200) {
+          setName('')
+          setEmail('')
+          setMobileNumber('')
+          setMessage(
+            'Twoje zlecenie jest przetwarzane, status możesz sprawdzić w eKartotece',
+          )
+        } else {
+          setMessage('Some error occured')
+        }
     } catch (err) {
       console.log(err)
     }
@@ -116,8 +141,8 @@ function CustomForm() {
                 <option selected class="label-desc">
                   ...
                 </option>
-                <option value="08:00">08:00</option>
-                <option value="09:00">09:00</option>
+                <option value="08:00">8:00</option>
+                <option value="09:00">9:00</option>
                 <option value="10:00">10:00</option>
                 <option value="11:00">11:00</option>
                 <option value="12:00">12:00</option>
@@ -165,12 +190,29 @@ function CustomForm() {
                 <option selected class="label-desc">
                   ...
                 </option>
-                <option value="Tele-porada">Tele-porada</option>
-                <option value="Video konferencja">Video konferencja</option>
+                <option value="0">Tele-porada</option>
+                <option value="1">Video konferencja</option>
               </select>
             </div>
           </div>
+          <div className="question-form">
+            <label className="Custom-form-text">Wybierz lekarza</label>
+            <div class="select">
+              <select
+                class="select"
+                value={doctor}
+                onChange={(e) => setDoctor(e.target.value)}
+                aria-lebel="Default select example"
+              >
+                <option selected class="label-desc">
+                  ...
+                </option>
+                {doctors.map((doctor) => <option value={doctor[0]}>{doctor[1]}</option>)}
+              </select>
+            </div>
         </div>
+          </div>
+
         {/* <input
           type="text"
           value={name}
@@ -223,7 +265,7 @@ function CustomForm() {
             {/* <NavLink tag={Link} className="text-white" to="/platnosc"> */}
             {/* <NavItem> */}
             {/* <NavLink tag={Link} className="text-white" to="/erecepta"> */}
-            umów konsultacje
+            Umów konsultację
             {/* Dalej */}
             {/* </NavLink> */}
             {/* </NavItem> */}
