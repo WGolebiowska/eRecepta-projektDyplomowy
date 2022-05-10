@@ -23,7 +23,7 @@ export class Counter extends Component {
       <div>
         <h1>eRecepta</h1>
 
-        <p class="fw-bold"> Żeby umówić się z lekarzem wypełnij ankiete</p>
+        <p class="fw-bold"> Aby umówić się z lekarzem, wypełnij ankietę</p>
         <CustomForm />
 
         {/* <Recepta />
