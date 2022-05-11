@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ServiceStack.Host;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace eRecepta_projektDyplomowy.Controllers
 {
@@ -15,9 +18,11 @@ namespace eRecepta_projektDyplomowy.Controllers
     public class AppointmentController : BaseController
     {
         private readonly IAppointmentService _appointmentService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public AppointmentController(IMapper mapper, ILogger logger, IAppointmentService appointmentService) : base(mapper, logger)
+        public AppointmentController(IMapper mapper, ILogger logger, IAppointmentService appointmentService, IAuthorizationService authorizationService) : base(mapper, logger)
         {
+            _authorizationService = authorizationService;
             _appointmentService = appointmentService;
         }
         // GET: api/<AppointmentController>
@@ -39,7 +44,6 @@ namespace eRecepta_projektDyplomowy.Controllers
 
         // GET api/<AppointmentController>/5
         [HttpGet("{id:int:min(1)}")]
-        [Authorize(Policy = "isAdmin")]
         public IActionResult Get(int id)
         {
             try
@@ -56,28 +60,42 @@ namespace eRecepta_projektDyplomowy.Controllers
 
         [HttpGet]
         [Route("/api/Appointment/Get")]
-        public IActionResult Get([FromQuery(Name = "patientId")] string patientId = null, [FromQuery(Name = "doctorId")] string doctorId = null)
+        public async Task<IActionResult> GetAsync([FromQuery(Name = "patientId")] string patientId = null, [FromQuery(Name = "doctorId")] string doctorId = null)
         {
             try
             {
+                var appointments = new List<AppointmentVm>();
                 if(doctorId != null && patientId != null)
                 {
-                    var appointments = _appointmentService.GetAppointments(a => a.DoctorId == doctorId && a.PatientId == patientId);
-                    return Ok(appointments);
+                    appointments = (List<AppointmentVm>)_appointmentService.GetAppointments(a => a.DoctorId == doctorId && a.PatientId == patientId);
                 } 
                 else if(doctorId != null)
                 {
-                    var appointments = _appointmentService.GetAppointments(a => a.DoctorId == doctorId);
-                    return Ok(appointments);
+                    appointments = (List<AppointmentVm>)_appointmentService.GetAppointments(a => a.DoctorId == doctorId);
                 }
                 else if (patientId != null)
                 {
-                    var appointments = _appointmentService.GetAppointments(a => a.PatientId == patientId);
-                    return Ok(appointments);
+                    appointments = (List<AppointmentVm>)_appointmentService.GetAppointments(a => a.PatientId == patientId);
                 }
                 else
                 {
                     throw new HttpException(404, "Nie znaleziono danych o podanych parametrach");
+                }
+                string[] ids = new string[2];
+                ids[0] = patientId;
+                ids[1] = doctorId;
+                var authorizationResult = await _authorizationService.AuthorizeAsync(User, ids, "GetAppointmentsPolicy");
+                if (authorizationResult.Succeeded)
+                {
+                    return Ok(appointments);
+                }
+                else if (User.Identity.IsAuthenticated)
+                {
+                    return new ForbidResult();
+                }
+                else
+                {
+                    return new ChallengeResult();
                 }
             }
             catch (Exception ex)
