@@ -91,7 +91,10 @@ function CustomForm() {
         let appointmentDateTime = (moment().format("YYYY-MM-DD") + "T" + dataKonsultacji + ":00")
         let res = await fetch('/api/Appointment', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json, charset=UTF-8' },
+            headers: !token ? { 'Content-Type' : 'application/json, charset=UTF-8'} : {
+            'Content-Type': 'application/json, charset=UTF-8',
+            Authorization: `Bearer ${token}`
+          },
           body: JSON.stringify({
             // name: name,
             // email: email,

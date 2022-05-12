@@ -113,6 +113,7 @@ namespace eRecepta_projektDyplomowy.Controllers
         }
 
         // PUT api/<AppointmentController>/5
+        [Authorize(Policy = "isAdmin,isDoctor")]
         [HttpPut]
         public IActionResult Put([FromBody] AddOrUpdateAppointmentVm addOrUpdateAppointmentVm)
         {
