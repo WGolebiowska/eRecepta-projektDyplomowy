@@ -14,6 +14,24 @@ import { useState } from 'react'
 import { React, useEffect } from 'react'
 import authService from './api-authorization/AuthorizeService'
 import moment from "moment";
+// import DatePickerRange from "./DataPicker"
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import styled from "styled-components";
+
+
+const Styles = styled.div`
+ .react-datepicker-wrapper,
+ .react-datepicker__input-container,
+ .react-datepicker__input-container input {
+   width: 175px;
+ }
+
+ .react-datepicker__close-icon::before,
+ .react-datepicker__close-icon::after {
+   background-color: grey;
+ }
+`;
 
 function CustomForm() {
   const [name, setName] = useState('')
@@ -28,6 +46,8 @@ function CustomForm() {
   const [pacjent, setPacjent] = useState('')
   const [doctor, setDoctor] = useState('')
   const [doctors, setDoctors] = useState([]);
+  const [startDate, setStartDate] = useState(null);
+
 
   useEffect(() => {
     const getData = async () => {
@@ -71,7 +91,10 @@ function CustomForm() {
         let appointmentDateTime = (moment().format("YYYY-MM-DD") + "T" + dataKonsultacji + ":00")
         let res = await fetch('/api/Appointment', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json, charset=UTF-8' },
+            headers: !token ? { 'Content-Type' : 'application/json, charset=UTF-8'} : {
+            'Content-Type': 'application/json, charset=UTF-8',
+            Authorization: `Bearer ${token}`
+          },
           body: JSON.stringify({
             // name: name,
             // email: email,
@@ -81,7 +104,7 @@ function CustomForm() {
             dataKonsultacji: dataKonsultacji,
             plecPacienta: plecPacienta,
             type: formaKonsultacji,
-            appointmentDate: appointmentDateTime,
+            appointmentDate: startDate,
             doctorId: doctor,
             patientId: res2Json.id,
             PatientName: res2Json.patientName,
@@ -211,6 +234,26 @@ function CustomForm() {
               </select>
             </div>
         </div>
+        <div style={{ display: "flex" }}>
+     <DatePicker
+       isClearable
+       filterDate={d => {
+         return new Date() <= d;
+       }}
+       placeholderText="Select Start Date"
+       showTimeSelect
+       dateFormat="yyyy-MM-dd,hh:mm"
+      //  dateFormat="MMMM d, yyyy h:mmaa"
+      // let appointmentDateTime = (moment().format("YYYY-MM-DD") + "T" + dataKonsultacji + ":00")
+
+       selected={startDate}
+       selectsStart
+       startDate={startDate}
+       onChange={date => setStartDate(date)}
+     />
+
+   </div>
+            {/* <DatePickerRange /> */}
           </div>
 
         {/* <input
