@@ -11,11 +11,14 @@ export class FetchData extends Component {
       // loading: true,
       appointments: [],
       loading: true,
+      userId: '',
+      userRole: ''
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     //this.populateWeatherData();
+    await this.getUser()
     this.getAppointments()
   }
 
@@ -113,12 +116,39 @@ export class FetchData extends Component {
   //   this.setState({ forecasts: data, loading: false })
   // }
   async getAppointments() {
+    console.log("userId:" + this.state.userId);
+    console.log("userRole: " + this.state.userRole)
+
     const token = await authService.getAccessToken()
-    const response = await fetch('/api/Appointment', {
+    const endpoint = this.state.userRole == "administrator" ? "/api/Appointment" : "/api/Appointment/get?" + this.state.userRole + "id=" + this.state.userId
+    const response = await fetch(endpoint, {
       headers: !token ? {} : { Authorization: `Bearer ${token}` },
     })
     const data = await response.json()
     this.setState({ appointments: data, loading: false })
+  }
+
+  async getUser() {
+    const token = await authService.getAccessToken()
+      let res = await fetch('/api/CurrentUser', {
+        method: 'GET',
+        headers: !token ? {} : { Authorization: `Bearer ${token}` },
+      })
+      let resJson = await res.json()
+      if (res.status === 200) {
+        this.setState({userId: resJson.id})
+        if(resJson.userRoles[0].roleId == "263df9c4-f06b-458c-8bd8-8d732c1142c7"){
+          this.setState({ userRole: "patient"})
+        } else if(resJson.userRoles[0].roleId == "1e5efbb1-3f20-4d4d-834d-f05c94b54c13"){
+          this.setState({ userRole: "doctor"})
+        } else if(resJson.userRoles[0].roleId == "1bad2ab9-102b-4253-a7c8-400568e87112"){
+          this.setState({ userRole: "administrator"})
+        } else {
+          this.setState({ userRole: "Some error occured."})
+        }
+      } else {
+        this.setState({userId: 'Some error occured'})
+      }
   }
 }
 
