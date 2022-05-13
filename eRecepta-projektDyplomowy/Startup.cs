@@ -64,6 +64,9 @@ namespace eRecepta_projektDyplomowy
                     });
                 options.AddPolicy("GetAppointmentsPolicy", policy =>
                     policy.Requirements.Add(new SameUserRequirement()));
+
+                options.AddPolicy("isAdminOrDoctor", policy =>
+                    policy.Requirements.Add(new DoctorOrAdminRequirement()));
             });
 
             services.AddControllersWithViews();
@@ -86,9 +89,12 @@ namespace eRecepta_projektDyplomowy
             services.AddScoped<IHelperService, HelperService>();
             services.AddTransient<IAppointmentService, AppointmentService>();
             services.AddTransient<IDoctorService, DoctorService>();
+            services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<ClaimsPrincipal>(
                 s => s.GetService<IHttpContextAccessor>().HttpContext.User);
             services.AddTransient<IAuthorizationHandler, AppointmentAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, DoctorOrAdminAuthorizationHandler>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
