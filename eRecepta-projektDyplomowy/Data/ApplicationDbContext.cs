@@ -17,6 +17,7 @@ namespace eRecepta_projektDyplomowy.Data
         public virtual DbSet<PrescriptionEntry> PrescriptionEntries { get; set; }
         public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
+        public virtual DbSet<Patient> Patients { get; set; }
 
         public ApplicationDbContext(
             DbContextOptions options,
