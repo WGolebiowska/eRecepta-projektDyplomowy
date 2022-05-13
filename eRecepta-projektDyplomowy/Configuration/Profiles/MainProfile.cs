@@ -11,10 +11,10 @@ namespace eRecepta_projektDyplomowy.Configuration.Profiles
             //AutoMapper maps
             CreateMap<Appointment, AppointmentVm>().ReverseMap();
             CreateMap<AddOrUpdateAppointmentVm, Appointment>().ReverseMap();
+            CreateMap<Prescription, PrescriptionVm>().ReverseMap();
+            CreateMap<AddOrUpdatePrescriptionVm, Prescription>().ReverseMap();
             CreateMap<Patient, PatientVm>().ReverseMap();
-            //CreateMap<AddOrUpdatePatientVm, Patient>().ReverseMap();
             CreateMap<Doctor, DoctorVm>().ReverseMap();
-            //CreateMap<AddOrUpdateDoctorVm, Doctor>().ReverseMap();
 
             CreateMap<Doctor, UserModel>().ReverseMap();
             CreateMap<Patient, UserModel>().ReverseMap();

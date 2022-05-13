@@ -17,6 +17,6 @@ namespace eRecepta_projektDyplomowy.ViewModels
         [Required]
         public _Type Type { get; set; }
         //[Required]
-        public int? OrderId { get; set; } 
+        //public int? OrderId { get; set; } 
     }
 }

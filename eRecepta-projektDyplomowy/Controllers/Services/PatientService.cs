@@ -25,7 +25,7 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
             {
                 if (filterExpression == null)
                     throw new ArgumentNullException("Filter expression parameter is null");
-                var patientEntity = DbContext.Patients.FirstOrDefault(filterExpression);
+                var patientEntity = DbContext.Patients.AsNoTracking().FirstOrDefault(filterExpression);
                 var patientVm = Mapper.Map<PatientVm>(patientEntity);
                 return patientVm;
             }
@@ -42,7 +42,7 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
             {
                 var patientsQuery = DbContext.Patients.AsQueryable();
                 if (filterExpression != null)
-                    patientsQuery = patientsQuery.Where(filterExpression);
+                    patientsQuery = patientsQuery.AsNoTracking().Where(filterExpression);
                 var patientsVms = Mapper.Map<IEnumerable<PatientVm>>(patientsQuery);
                 return patientsVms;
             }

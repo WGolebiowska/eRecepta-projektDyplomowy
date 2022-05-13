@@ -11,8 +11,8 @@ namespace eRecepta_projektDyplomowy.Data
         public virtual DbSet<Appointment> Appointments { get; set; }
         public virtual DbSet<Illness> Illnesses { get; set; }
         public virtual DbSet<Medicine> Medicines { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<Payment> Payments { get; set; }
+        //public virtual DbSet<Order> Orders { get; set; }
+        //public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<PrescriptionEntry> PrescriptionEntries { get; set; }
         public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
@@ -28,6 +28,7 @@ namespace eRecepta_projektDyplomowy.Data
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseLazyLoadingProxies();
+            optionsBuilder.EnableSensitiveDataLogging();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,29 +45,29 @@ namespace eRecepta_projektDyplomowy.Data
                     .HasValue<Doctor>(1)
                     .HasValue<Patient>(2);
 
-            modelBuilder.Entity<Order>()
-                    .HasMany(ord => ord.Payment)
-                    .WithOne(pay => pay.Order)
-                    .HasForeignKey(pay => pay.OrderId)
-                    .IsRequired();
+            //modelBuilder.Entity<Order>()
+            //        .HasMany(ord => ord.Payment)
+            //        .WithOne(pay => pay.Order)
+            //        .HasForeignKey(pay => pay.OrderId)
+            //        .IsRequired();
 
-            modelBuilder.Entity<Order>()
-                    .HasMany(ord => ord.Prescriptions)
-                    .WithOne(pre => pre.Order)
-                    .HasForeignKey(pre => pre.OrderId)
-                    .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Order>()
+            //        .HasMany(ord => ord.Prescriptions)
+            //        .WithOne(pre => pre.Order)
+            //        .HasForeignKey(pre => pre.OrderId)
+            //        .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Order>()
-                    .HasMany(ord => ord.Appointments)
-                    .WithOne(app => app.Order)
-                    .HasForeignKey(app => app.OrderId)
-                    .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Order>()
+            //        .HasMany(ord => ord.Appointments)
+            //        .WithOne(app => app.Order)
+            //        .HasForeignKey(app => app.OrderId)
+            //        .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Patient>()
-                    .HasMany(pat => pat.Orders)
-                    .WithOne(ord => ord.Patient)
-                    .HasForeignKey(ord => ord.PatientId)
-                    .IsRequired();
+            //modelBuilder.Entity<Patient>()
+            //        .HasMany(pat => pat.Orders)
+            //        .WithOne(ord => ord.Patient)
+            //        .HasForeignKey(ord => ord.PatientId)
+            //        .IsRequired();
 
             modelBuilder.Entity<Patient>()
                     .HasMany(pat => pat.Appointments)

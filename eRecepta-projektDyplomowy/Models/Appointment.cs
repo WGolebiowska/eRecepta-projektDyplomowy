@@ -15,8 +15,8 @@ namespace eRecepta_projektDyplomowy.Models
         public enum _Type { PhoneCall, VideoConference }
         public _Type Type { get; set; }
         public string VideoConferenceURL { get; set; }
-        public virtual Order Order { get; set; }
-        public int? OrderId { get; set; }
+        //public virtual Order Order { get; set; }
+        //public int? OrderId { get; set; }
 
     }
 }

@@ -64,7 +64,8 @@ namespace eRecepta_projektDyplomowy
                     });
                 options.AddPolicy("GetAppointmentsPolicy", policy =>
                     policy.Requirements.Add(new SameUserRequirement()));
-
+                options.AddPolicy("GetPrescriptionsPolicy", policy =>
+                    policy.Requirements.Add(new PrescriptionRequirement()));
                 options.AddPolicy("isAdminOrDoctor", policy =>
                     policy.Requirements.Add(new DoctorOrAdminRequirement()));
             });
@@ -90,10 +91,12 @@ namespace eRecepta_projektDyplomowy
             services.AddTransient<IAppointmentService, AppointmentService>();
             services.AddTransient<IDoctorService, DoctorService>();
             services.AddTransient<IPatientService, PatientService>();
+            services.AddTransient<IPrescriptionService, PrescriptionService>();
             services.AddTransient<ClaimsPrincipal>(
                 s => s.GetService<IHttpContextAccessor>().HttpContext.User);
             services.AddTransient<IAuthorizationHandler, AppointmentAuthorizationHandler>();
             services.AddScoped<IAuthorizationHandler, DoctorOrAdminAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, PrescriptionAuthorizationHandler>();
 
         }
 

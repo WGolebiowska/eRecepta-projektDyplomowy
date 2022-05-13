@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eRecepta_projektDyplomowy.Data;
 
 namespace eRecepta_projektDyplomowy.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220513204340_PrescriptionUpdate")]
+    partial class PrescriptionUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -338,6 +340,9 @@ namespace eRecepta_projektDyplomowy.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PatientId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -354,6 +359,8 @@ namespace eRecepta_projektDyplomowy.Data.Migrations
                     b.HasKey("AppointmentId");
 
                     b.HasIndex("DoctorId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("PatientId");
 
@@ -410,6 +417,59 @@ namespace eRecepta_projektDyplomowy.Data.Migrations
                     b.ToTable("MedicineIllness");
                 });
 
+            modelBuilder.Entity("eRecepta_projektDyplomowy.Models.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("OrderTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PatientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("eRecepta_projektDyplomowy.Models.Payment", b =>
+                {
+                    b.Property<int>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PaymentId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Payments");
+                });
+
             modelBuilder.Entity("eRecepta_projektDyplomowy.Models.Prescription", b =>
                 {
                     b.Property<int>("PrescriptionId")
@@ -424,6 +484,9 @@ namespace eRecepta_projektDyplomowy.Data.Migrations
                     b.Property<DateTime>("IssueDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PatientId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -437,6 +500,8 @@ namespace eRecepta_projektDyplomowy.Data.Migrations
                     b.HasKey("PrescriptionId");
 
                     b.HasIndex("DoctorId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("PatientId");
 
@@ -537,6 +602,11 @@ namespace eRecepta_projektDyplomowy.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("eRecepta_projektDyplomowy.Models.Order", "Order")
+                        .WithMany("Appointments")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("eRecepta_projektDyplomowy.Models.Patient", "Patient")
                         .WithMany("Appointments")
                         .HasForeignKey("PatientId")
@@ -566,12 +636,36 @@ namespace eRecepta_projektDyplomowy.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("eRecepta_projektDyplomowy.Models.Order", b =>
+                {
+                    b.HasOne("eRecepta_projektDyplomowy.Models.Patient", "Patient")
+                        .WithMany("Orders")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eRecepta_projektDyplomowy.Models.Payment", b =>
+                {
+                    b.HasOne("eRecepta_projektDyplomowy.Models.Order", "Order")
+                        .WithMany("Payment")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("eRecepta_projektDyplomowy.Models.Prescription", b =>
                 {
                     b.HasOne("eRecepta_projektDyplomowy.Models.Doctor", "Doctor")
                         .WithMany("Prescriptions")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eRecepta_projektDyplomowy.Models.Order", "Order")
+                        .WithMany("Prescriptions")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("eRecepta_projektDyplomowy.Models.Patient", "Patient")
