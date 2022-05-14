@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import authService from './api-authorization/AuthorizeService'
-
+import Moment from 'react-moment'
+import { format } from 'date-fns'
 export class FetchData extends Component {
   static displayName = FetchData.name
 
@@ -12,7 +13,7 @@ export class FetchData extends Component {
       appointments: [],
       loading: true,
       userId: '',
-      userRole: ''
+      userRole: '',
     }
   }
 
@@ -54,14 +55,10 @@ export class FetchData extends Component {
           <tr>
             {/* <th>AppointmentId</th> */}
             <th>Data</th>
-                   
-                    <th>DoctorName</th>
-                    <th>DoctorSurname</th>
-                    <th>Specialty</th>
-                    <th>Medical degree</th>
 
-
-
+            <th>DoctorName</th>
+            <th>DoctorSurname</th>
+            <th>Specialty</th>
             <th>Notatki</th>
             <th>Status</th>
             <th>Typ</th>
@@ -71,17 +68,23 @@ export class FetchData extends Component {
         <tbody>
           {appointments.map((appointment) => (
             <tr key={appointment.appointmentId}>
-              <td>{appointment.appointmentDate}</td>
+              {/* <td>{format(appointment.appointmentDate, 'yyyy-MM-dd')}</td> */}
+              <td>
+                {format(
+                  Date.parse(appointment.appointmentDate),
+                  'yyyy MMM dd HH:mm',
+                )}
+              </td>
 
-                  <td>{appointment.doctorName}</td>
-                  <td>{appointment.doctorSurname}</td>
-                  <td>{appointment.specialty}</td>
-
-
+              <td>{appointment.doctorName}</td>
+              <td>{appointment.doctorSurname}</td>
+              <td>{appointment.specialty}</td>
 
               <td>{appointment.appointmentNotes}</td>
               <td>NIEZATWIERDZONA</td>
-              <td>{appointment.type}</td>
+              <td>
+                {appointment.type == 1 ? 'Video konferencja' : 'Tele-porada'}
+              </td>
               <td>{appointment.videoConferenceURL}</td>
             </tr>
           ))}
@@ -116,11 +119,17 @@ export class FetchData extends Component {
   //   this.setState({ forecasts: data, loading: false })
   // }
   async getAppointments() {
-    console.log("userId:" + this.state.userId);
-    console.log("userRole: " + this.state.userRole)
+    console.log('userId:' + this.state.userId)
+    console.log('userRole: ' + this.state.userRole)
 
     const token = await authService.getAccessToken()
-    const endpoint = this.state.userRole == "administrator" ? "/api/Appointment" : "/api/Appointment/get?" + this.state.userRole + "id=" + this.state.userId
+    const endpoint =
+      this.state.userRole == 'administrator'
+        ? '/api/Appointment'
+        : '/api/Appointment/get?' +
+          this.state.userRole +
+          'id=' +
+          this.state.userId
     const response = await fetch(endpoint, {
       headers: !token ? {} : { Authorization: `Bearer ${token}` },
     })
@@ -130,25 +139,31 @@ export class FetchData extends Component {
 
   async getUser() {
     const token = await authService.getAccessToken()
-      let res = await fetch('/api/CurrentUser', {
-        method: 'GET',
-        headers: !token ? {} : { Authorization: `Bearer ${token}` },
-      })
-      let resJson = await res.json()
-      if (res.status === 200) {
-        this.setState({userId: resJson.id})
-        if(resJson.userRoles[0].roleId == "263df9c4-f06b-458c-8bd8-8d732c1142c7"){
-          this.setState({ userRole: "patient"})
-        } else if(resJson.userRoles[0].roleId == "1e5efbb1-3f20-4d4d-834d-f05c94b54c13"){
-          this.setState({ userRole: "doctor"})
-        } else if(resJson.userRoles[0].roleId == "1bad2ab9-102b-4253-a7c8-400568e87112"){
-          this.setState({ userRole: "administrator"})
-        } else {
-          this.setState({ userRole: "Some error occured."})
-        }
+    let res = await fetch('/api/CurrentUser', {
+      method: 'GET',
+      headers: !token ? {} : { Authorization: `Bearer ${token}` },
+    })
+    let resJson = await res.json()
+    if (res.status === 200) {
+      this.setState({ userId: resJson.id })
+      if (
+        resJson.userRoles[0].roleId == 'a301c98d-8c71-428a-84df-11445f76a2e6'
+      ) {
+        this.setState({ userRole: 'patient' })
+      } else if (
+        resJson.userRoles[0].roleId == '1e5efbb1-3f20-4d4d-834d-f05c94b54c13'
+      ) {
+        this.setState({ userRole: 'doctor' })
+      } else if (
+        resJson.userRoles[0].roleId == '1bad2ab9-102b-4253-a7c8-400568e87112'
+      ) {
+        this.setState({ userRole: 'administrator' })
       } else {
-        this.setState({userId: 'Some error occured'})
+        this.setState({ userRole: 'Some error occured.' })
       }
+    } else {
+      this.setState({ userId: 'Some error occured' })
+    }
   }
 }
 

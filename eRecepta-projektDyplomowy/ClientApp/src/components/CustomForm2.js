@@ -13,25 +13,24 @@ import './CustomForm.css'
 import { useState } from 'react'
 import { React, useEffect } from 'react'
 import authService from './api-authorization/AuthorizeService'
-import moment from "moment";
+import moment from 'moment'
 // import DatePickerRange from "./DataPicker"
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import styled from "styled-components";
-
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import styled from 'styled-components'
 
 const Styles = styled.div`
- .react-datepicker-wrapper,
- .react-datepicker__input-container,
- .react-datepicker__input-container input {
-   width: 175px;
- }
+  .react-datepicker-wrapper,
+  .react-datepicker__input-container,
+  .react-datepicker__input-container input {
+    width: 175px;
+  }
 
- .react-datepicker__close-icon::before,
- .react-datepicker__close-icon::after {
-   background-color: grey;
- }
-`;
+  .react-datepicker__close-icon::before,
+  .react-datepicker__close-icon::after {
+    background-color: grey;
+  }
+`
 
 function CustomForm() {
   const [name, setName] = useState('')
@@ -45,83 +44,87 @@ function CustomForm() {
   const [message, setMessage] = useState('')
   const [pacjent, setPacjent] = useState('')
   const [doctor, setDoctor] = useState('')
-  const [doctors, setDoctors] = useState([]);
-  const [startDate, setStartDate] = useState(null);
-
+  const [doctors, setDoctors] = useState([])
+  const [startDate, setStartDate] = useState(null)
+  const [appointmentNotes, setAppointmentNotes] = useState('')
 
   useEffect(() => {
     const getData = async () => {
-      var doctors = [];
+      var doctors = []
 
-      const token = await authService.getAccessToken();
-      
+      const token = await authService.getAccessToken()
+
       let res = await fetch('/api/Doctor', {
         method: 'GET',
         headers: !token ? {} : { Authorization: `Bearer ${token}` },
       })
       let resJson = await res.json()
       if (res.status === 200) {
-        doctors = resJson.map((d) => d.id + ":" + d.fullTitle)
-        doctors = doctors.map(pair => pair.split(":"));
-        setDoctors(doctors);
+        doctors = resJson.map((d) => d.id + ':' + d.fullTitle)
+        doctors = doctors.map((pair) => pair.split(':'))
+        setDoctors(doctors)
       } else {
-        setDoctors([":some error occured"])
+        setDoctors([':some error occured'])
       }
     }
-    getData();
-  }, []);
+    getData()
+  }, [])
 
   let handleSubmit = async (e) => {
     e.preventDefault()
     try {
       // let res = await fetch('https://httpbin.org/post', {
 
-        const token = await authService.getAccessToken()
-        let res2 = await fetch('/api/CurrentUser', {
-            method: 'GET',
-            headers: !token ? {} : { Authorization: `Bearer ${token}` },
-        })
-        let res2Json = await res2.json()
-        if (res2.status === 200) {
-            setPacjent(res2Json.id)
-        } else {
-            setPacjent('Some error occured')
-        }
+      const token = await authService.getAccessToken()
+      let res2 = await fetch('/api/CurrentUser', {
+        method: 'GET',
+        headers: !token ? {} : { Authorization: `Bearer ${token}` },
+      })
+      let res2Json = await res2.json()
+      if (res2.status === 200) {
+        setPacjent(res2Json.id)
+      } else {
+        setPacjent('Some error occured')
+      }
 
-        let appointmentDateTime = (moment().format("YYYY-MM-DD") + "T" + dataKonsultacji + ":00")
-        let res = await fetch('/api/Appointment', {
-          method: 'POST',
-            headers: !token ? { 'Content-Type' : 'application/json, charset=UTF-8'} : {
-            'Content-Type': 'application/json, charset=UTF-8',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            // name: name,
-            // email: email,
-            // mobileNumber: mobileNumber,
-            // dolegliwosc: dolegliwosc,
-            // ciaza: ciaza,
-            dataKonsultacji: dataKonsultacji,
-            plecPacienta: plecPacienta,
-            type: formaKonsultacji,
-            appointmentDate: startDate,
-            doctorId: doctor,
-            patientId: res2Json.id,
-            PatientName: res2Json.patientName,
-            PatientSurname: res2Json.patientSurname,
-          }),
-        })
-        let resJson = await res.json()
-        if (res.status === 200) {
-          setName('')
-          setEmail('')
-          setMobileNumber('')
-          setMessage(
-            'Twoje zlecenie jest przetwarzane, status możesz sprawdzić w eKartotece',
-          )
-        } else {
-          setMessage('Some error occured')
-        }
+      let appointmentDateTime =
+        moment().format('YYYY-MM-DD') + 'T' + dataKonsultacji + ':00'
+      let res = await fetch('/api/Appointment', {
+        method: 'POST',
+        headers: !token
+          ? { 'Content-Type': 'application/json, charset=UTF-8' }
+          : {
+              'Content-Type': 'application/json, charset=UTF-8',
+              Authorization: `Bearer ${token}`,
+            },
+        body: JSON.stringify({
+          // name: name,
+          // email: email,
+          // mobileNumber: mobileNumber,
+          // dolegliwosc: dolegliwosc,
+          // ciaza: ciaza,
+          dataKonsultacji: dataKonsultacji,
+          plecPacienta: plecPacienta,
+          type: formaKonsultacji,
+          appointmentDate: startDate,
+          doctorId: doctor,
+          patientId: res2Json.id,
+          PatientName: res2Json.patientName,
+          PatientSurname: res2Json.patientSurname,
+          appointmentNotes: appointmentNotes,
+        }),
+      })
+      let resJson = await res.json()
+      if (res.status === 200) {
+        setName('')
+        setEmail('')
+        setMobileNumber('')
+        setMessage(
+          'Twoje zlecenie jest przetwarzane, status możesz sprawdzić w eKartotece',
+        )
+      } else {
+        setMessage('Some error occured')
+      }
     } catch (err) {
       console.log(err)
     }
@@ -149,7 +152,7 @@ function CustomForm() {
               </select>
             </div>
           </div>
-          <div className="question-form">
+          {/* <div className="question-form">
             <label className="Custom-form-text">
               Wybierz godzinę eKonsultacji
             </label>
@@ -179,9 +182,9 @@ function CustomForm() {
                 <option value="20:00">20:00</option>
               </select>
             </div>
-          </div>
+          </div> */}
 
-          <div className="question-form">
+          {/* <div className="question-form">
             <label className="Custom-form-text">Wybierz płeć</label>
 
             <div class="select">
@@ -198,7 +201,7 @@ function CustomForm() {
                 <option value="Mężczyzna">Mężczyzna</option>
               </select>
             </div>
-          </div>
+          </div> */}
 
           <div className="question-form">
             <label className="Custom-form-text">Forma eKonsultacji</label>
@@ -230,32 +233,48 @@ function CustomForm() {
                 <option selected class="label-desc">
                   ...
                 </option>
-                {doctors.map((doctor) => <option value={doctor[0]}>{doctor[1]}</option>)}
+                {doctors.map((doctor) => (
+                  <option value={doctor[0]}>{doctor[1]}</option>
+                ))}
               </select>
             </div>
-        </div>
-        <div style={{ display: "flex" }}>
-     <DatePicker
-       isClearable
-       filterDate={d => {
-         return new Date() <= d;
-       }}
-       placeholderText="Select Start Date"
-       showTimeSelect
-       dateFormat="yyyy-MM-dd,hh:mm"
-      //  dateFormat="MMMM d, yyyy h:mmaa"
-      // let appointmentDateTime = (moment().format("YYYY-MM-DD") + "T" + dataKonsultacji + ":00")
-
-       selected={startDate}
-       selectsStart
-       startDate={startDate}
-       onChange={date => setStartDate(date)}
-     />
-
-   </div>
-            {/* <DatePickerRange /> */}
           </div>
+          <div style={{ display: 'flex' }}>
+            <DatePicker
+              isClearable
+              filterDate={(d) => {
+                return new Date() <= d
+              }}
+              placeholderText="Select Start Date"
+              showTimeSelect
+              dateFormat="yyyy-MM-dd,hh:mm"
+              //  dateFormat="MMMM d, yyyy h:mmaa"
+              // let appointmentDateTime = (moment().format("YYYY-MM-DD") + "T" + dataKonsultacji + ":00")
 
+              selected={startDate}
+              selectsStart
+              startDate={startDate}
+              onChange={(date) => setStartDate(date)}
+            />
+          </div>
+          {/* <DatePickerRange /> */}
+
+          <div className="question-form">
+            <label className="Custom-form-text">
+              Dodatkowe informacje o dolegliwościach
+            </label>
+            <div>
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                value={appointmentNotes}
+                onChange={(e) => setAppointmentNotes(e.target.value)}
+                aria-lebel="Default select example"
+              ></textarea>
+            </div>
+          </div>
+        </div>
         {/* <input
           type="text"
           value={name}
