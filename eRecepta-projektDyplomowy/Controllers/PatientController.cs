@@ -26,7 +26,7 @@ namespace eRecepta_projektDyplomowy.Controllers
             _authorizationService = authorizationService;
         }
         // GET: api/<PatientController>
-        [Authorize(Policy = "isAdmin")]
+        //[Authorize(Policy = "isAdmin")]
         [HttpGet]
         public IActionResult Get()
         {

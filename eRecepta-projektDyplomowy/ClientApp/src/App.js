@@ -6,6 +6,7 @@ import { Personel } from './containers/'
 import { FetchData } from './components/FetchData'
 import { Counter } from './components/Counter'
 import { Counter2 } from './components/Counter2'
+import { DoctorPrescription } from './components/PrescriptionDoctor'
 import { Route } from 'react-router'
 import { Layout } from './components/Layout'
 import { UsersRouter } from './components/users/UsersRouter'
@@ -31,6 +32,7 @@ export default class App extends Component {
           <AuthorizeRoute path="/ekonsultacja" component={Counter2} />
           <AuthorizeRoute path="/fetch-data" component={FetchData} />
           <AuthorizeRoute path="/users" component={UsersRouter} />
+          <AuthorizeRoute path="/prescription" component={DoctorPrescription} />
           <AuthorizeRoute path="/platnosc" component={Personel} />
           {/* <Route path='/fetch-data' component={FetchData} /> */}
           <Route

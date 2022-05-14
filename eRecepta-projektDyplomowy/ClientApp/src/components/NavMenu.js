@@ -16,6 +16,7 @@ export class NavMenu extends Component {
     this.toggleNavbar = this.toggleNavbar.bind(this);
       this.state = {
       hasAdminRole: false,
+      hasDoctorRole: false,
       collapsed: true
     };
   }
@@ -26,8 +27,10 @@ export class NavMenu extends Component {
 
     async populateState() {
         const hasAdminRole = await authService.hasRole(UserRoles.Administrator);
+        const hasDoctorRole = await authService.hasRole(UserRoles.Doctor);
         this.setState({
-            hasAdminRole
+            hasAdminRole,
+            hasDoctorRole
         });
     }
   toggleNavbar () {
@@ -54,9 +57,11 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-white" to="/ekonsultacja">eKonsultacja</NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-white" to="/erecepta">eRecepta</NavLink>
-                </NavItem>
+                {
+                    this.state.hasDoctorRole
+                    ?(<NavItem><NavLink tag={Link} className="text-white" to="/prescription">eRecepta</NavLink></NavItem>)
+                    :(<NavItem><NavLink tag={Link} className="text-white" to="/erecepta">eRecepta</NavLink></NavItem>)
+                }
                 <NavItem>
                   <NavLink tag={Link} className="text-white" to="/fetch-data">eKartoteka</NavLink>
                   </NavItem>
