@@ -40,7 +40,7 @@ function CustomForm() {
       if (res2.status === 200) {
         setPacjent(res2Json.id)
       } else {
-        setPacjent('Some error occured')
+        setPacjent('Wystąpił błąd')
       }
 
       // let res = await fetch('https://httpbin.org/post', {
@@ -72,7 +72,7 @@ function CustomForm() {
           'Twoje zlecenie jest przetwarzane, status możesz sprawdzić w eKartotece',
         )
       } else {
-        setMessage('Some error occured')
+        setMessage('Wystąpił błąd')
       }
     } catch (err) {
       console.log(err)

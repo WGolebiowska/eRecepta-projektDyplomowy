@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eRecepta_projektDyplomowy.Controllers.Services.Interfaces;
 using eRecepta_projektDyplomowy.Data;
 using eRecepta_projektDyplomowy.Models;
 using eRecepta_projektDyplomowy.ViewModels;
@@ -20,22 +21,30 @@ namespace eRecepta_projektDyplomowy.Controllers
     [Authorize]
     public class CurrentUserController : BaseController
     {
+        private readonly IMapper _mapper;
         private readonly ClaimsPrincipal _caller;
+        private readonly IUserManagementService _umService;
         private readonly ApplicationDbContext _dbContext;
 
-        public CurrentUserController(IMapper mapper, ILogger logger, ClaimsPrincipal caller, ApplicationDbContext dbContext) : base(mapper, logger)
+        public CurrentUserController(IMapper mapper, ILogger logger, ClaimsPrincipal caller, ApplicationDbContext dbContext, IUserManagementService umService) : base(mapper, logger)
         {
+            _mapper = mapper;
             _caller = caller;
             _dbContext = dbContext;
+            _umService = umService;
         }
         [HttpGet]
-        public ActionResult Get()
+        public async Task<ActionResult> GetAsync()
         {
             var identity = User.Identity as ClaimsIdentity;
             Claim identityClaim = identity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
 
-            var result = _dbContext.Users.FirstOrDefault(u => u.Id == identityClaim.Value);
-            return Ok(result);
+            var user = _dbContext.Users.FirstOrDefault(u => u.Id == identityClaim.Value);
+            var userModel = Mapper.Map<UserModel>(user);
+            string userRole = await _umService.GetUserRoleAsync(user.Id, false);
+            userModel.Role = userRole;
+
+            return Ok(userModel);
 
         }
     }

@@ -84,7 +84,7 @@ function CustomForm() {
       if (res2.status === 200) {
         setPacjent(res2Json.id)
       } else {
-        setPacjent('Some error occured')
+        setPacjent('Wystąpił błąd')
       }
 
       let appointmentDateTime =
@@ -141,7 +141,7 @@ function CustomForm() {
                 class="select"
                 value={dolegliwosc}
                 onChange={(e) => setDolegliwosc(e.target.value)}
-                aria-lebel="Default select example"
+                aria-label="Default select example"
               >
                 <option selected class="label-desc">
                   ...
@@ -192,7 +192,7 @@ function CustomForm() {
                 class="select"
                 value={plecPacienta}
                 onChange={(e) => setPlecPacienta(e.target.value)}
-                aria-lebel="Default select example"
+                aria-label="Default select example"
               >
                 <option selected class="label-desc">
                   ...
@@ -211,7 +211,7 @@ function CustomForm() {
                 class="select"
                 value={formaKonsultacji}
                 onChange={(e) => setFormaKonsultacji(e.target.value)}
-                aria-lebel="Default select example"
+                aria-label="Default select example"
               >
                 <option selected class="label-desc">
                   ...
@@ -228,7 +228,7 @@ function CustomForm() {
                 class="select"
                 value={doctor}
                 onChange={(e) => setDoctor(e.target.value)}
-                aria-lebel="Default select example"
+                aria-label="Default select example"
               >
                 <option selected class="label-desc">
                   ...
@@ -270,7 +270,7 @@ function CustomForm() {
                 rows="3"
                 value={appointmentNotes}
                 onChange={(e) => setAppointmentNotes(e.target.value)}
-                aria-lebel="Default select example"
+                aria-label="Default select example"
               ></textarea>
             </div>
           </div>

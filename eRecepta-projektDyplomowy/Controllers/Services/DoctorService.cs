@@ -43,7 +43,7 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
                 var doctorsQuery = DbContext.Doctors.AsQueryable();
                 if (filterExpression != null)
                     doctorsQuery = doctorsQuery.AsNoTracking().Where(filterExpression);
-                var doctorsVms = Mapper.Map<IEnumerable<DoctorVm>>(doctorsQuery);
+                var doctorsVms = Mapper.Map<IEnumerable<DoctorVm>>(doctorsQuery).OrderBy(p => p.Surname);
                 return doctorsVms;
             }
             catch (Exception ex)

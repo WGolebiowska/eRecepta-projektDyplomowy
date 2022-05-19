@@ -95,7 +95,7 @@ export class FetchData extends Component {
   render() {
     let contents = this.state.loading ? (
       <p>
-        <em>Loading...</em>
+        <em>Wczytywanie danych...</em>
       </p>
     ) : (
       FetchData.renderAppointmentsTable(this.state.appointments)
@@ -145,24 +145,10 @@ export class FetchData extends Component {
     })
     let resJson = await res.json()
     if (res.status === 200) {
-      this.setState({ userId: resJson.id })
-      if (
-        resJson.userRoles[0].roleId == 'a301c98d-8c71-428a-84df-11445f76a2e6'
-      ) {
-        this.setState({ userRole: 'patient' })
-      } else if (
-        resJson.userRoles[0].roleId == '1e5efbb1-3f20-4d4d-834d-f05c94b54c13'
-      ) {
-        this.setState({ userRole: 'doctor' })
-      } else if (
-        resJson.userRoles[0].roleId == '1bad2ab9-102b-4253-a7c8-400568e87112'
-      ) {
-        this.setState({ userRole: 'administrator' })
-      } else {
-        this.setState({ userRole: 'Some error occured.' })
-      }
+        this.setState({ userId: resJson.id, userRole: resJson.role })
     } else {
-      this.setState({ userId: 'Some error occured' })
+        this.setState({ userId: 'Wystąpił błąd' })
+        this.setState({ userRole: 'Wystąpił błąd.' })
     }
   }
 }

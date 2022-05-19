@@ -14,6 +14,7 @@ namespace eRecepta_projektDyplomowy.ViewModels
         public string PatientId { get; set; }
         public string PatientName { get; set; }
         public string PatientSurname { get; set; }
+        public string PatientFullName { get; set; }
         public string AppointmentNotes { get; set; }
         public string Status { get; set; }
         public enum _Type { PhoneCall, VideoConference }
