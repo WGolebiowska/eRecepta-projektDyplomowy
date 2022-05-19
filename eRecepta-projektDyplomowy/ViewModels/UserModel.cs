@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace eRecepta_projektDyplomowy.ViewModels
 {
@@ -25,7 +26,19 @@ namespace eRecepta_projektDyplomowy.ViewModels
         [DataType(DataType.Text)]
         [Display(Name = "PESEL")]
         public string PESEL { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public int Age
+        {
+            get
+            {
+                var today = DateTime.Today;
 
+                var a = (today.Year * 100 + today.Month) * 100 + today.Day;
+                var b = (DateOfBirth.Year * 100 + DateOfBirth.Month) * 100 + DateOfBirth.Day;
+
+                return (a - b) / 10000;
+            }
+        }
         [Required(ErrorMessage = "Pole {0} jest wymagane.")]
         [EmailAddress()]
         [Display(Name = "Adres Email")]

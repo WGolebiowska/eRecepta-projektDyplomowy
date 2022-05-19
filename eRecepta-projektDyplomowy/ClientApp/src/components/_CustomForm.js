@@ -57,7 +57,7 @@ function CustomForm() {
           'Twoje zlecenie jest przetwarzane, status możesz sprawdzić w eKartotece',
         )
       } else {
-        setMessage('Some error occured')
+        setMessage('Wystąpił błąd')
       }
     } catch (err) {
       console.log(err)
@@ -75,7 +75,7 @@ function CustomForm() {
                 class="select"
                 value={dolegliwosc}
                 onChange={(e) => setDolegliwosc(e.target.value)}
-                aria-lebel="Default select example"
+                aria-label="Default select example"
               >
                 <option selected value="Choice 1">
                   ...
@@ -93,7 +93,7 @@ function CustomForm() {
                 class="select"
                 value={lek}
                 onChange={(e) => setLek(e.target.value)}
-                aria-lebel="Default select example"
+                aria-label="Default select example"
               >
                 <option selected class="label-desc">
                   ...
@@ -113,7 +113,7 @@ function CustomForm() {
                 class="select"
                 value={tempBody}
                 onChange={(e) => setTempBody(e.target.value)}
-                aria-lebel="Default select example"
+                aria-label="Default select example"
               >
                 <option selected class="label-desc">
                   ...
@@ -145,7 +145,7 @@ function CustomForm() {
                 class="select"
                 value={wzrost}
                 onChange={(e) => setWzrost(e.target.value)}
-                aria-lebel="Default select example"
+                aria-label="Default select example"
               >
                 <option selected class="label-desc">
                   ...
@@ -168,7 +168,7 @@ function CustomForm() {
               class="select"
               value={waga}
               onChange={(e) => setWaga(e.target.value)}
-              aria-lebel="Default select example"
+              aria-label="Default select example"
             >
               <select class="select">
                 <option selected class="label-desc">

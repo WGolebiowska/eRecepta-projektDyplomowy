@@ -14,9 +14,12 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
     public class AppointmentService : BaseService, IAppointmentService
     {
         private readonly IDoctorService _doctorService;
-        public AppointmentService(ApplicationDbContext dbContext, IMapper mapper, ILogger logger, IDoctorService doctorService) : base(dbContext, mapper, logger)
+        private readonly IPatientService _patientService;
+
+        public AppointmentService(ApplicationDbContext dbContext, IMapper mapper, ILogger logger, IDoctorService doctorService, IPatientService patientService) : base(dbContext, mapper, logger)
         {
             _doctorService = doctorService;
+            _patientService = patientService;
         }
 
         public AppointmentVm AddOrUpdateAppointment(AddOrUpdateAppointmentVm addOrUpdateAppointmentVm)
@@ -32,6 +35,19 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
                     DbContext.Appointments.Update(appointmentEntity);
                 DbContext.SaveChanges();
                 var appointmentVm = Mapper.Map<AppointmentVm>(appointmentEntity);
+
+                var doctorEntity = _doctorService.GetDoctor(d => d.Id == appointmentVm.DoctorId);
+                var patientEntity = _patientService.GetPatient(p => p.Id == appointmentVm.PatientId);
+
+                appointmentVm.DoctorName = doctorEntity.Name;
+                appointmentVm.DoctorSurname = doctorEntity.Surname;
+                appointmentVm.Specialty = doctorEntity.Specialty;
+                appointmentVm.FullTitle = doctorEntity.FullTitle;
+
+                appointmentVm.PatientName = patientEntity.Name;
+                appointmentVm.PatientSurname = patientEntity.Surname;
+                appointmentVm.PatientFullName = patientEntity.FullName;
+
                 return appointmentVm;
             }
             catch (Exception ex)
@@ -50,10 +66,18 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
                 var appointmentEntity = DbContext.Appointments.FirstOrDefault(filterExpression);
                 var appointmentVm = Mapper.Map<AppointmentVm>(appointmentEntity);
                 var doctorEntity = _doctorService.GetDoctor(d => d.Id == appointmentVm.DoctorId);
+                var patientEntity = _patientService.GetPatient(p => p.Id == appointmentVm.PatientId);
+
                 appointmentVm.DoctorName = doctorEntity.Name;
                 appointmentVm.DoctorSurname = doctorEntity.Surname;
                 appointmentVm.Specialty = doctorEntity.Specialty;
                 appointmentVm.FullTitle = doctorEntity.FullTitle;
+
+                appointmentVm.PatientName = patientEntity.Name;
+                appointmentVm.PatientSurname = patientEntity.Surname;
+                appointmentVm.PatientFullName = patientEntity.FullName;
+
+
                 return appointmentVm;
             }
             catch (Exception ex)
@@ -74,10 +98,16 @@ namespace eRecepta_projektDyplomowy.Controllers.Services
                 foreach(AppointmentVm appointmentVm in appointmentsVms)
                 {
                     var doctorEntity = _doctorService.GetDoctor(d => d.Id == appointmentVm.DoctorId);
+                    var patientEntity = _patientService.GetPatient(p => p.Id == appointmentVm.PatientId);
+
                     appointmentVm.DoctorName = doctorEntity.Name;
                     appointmentVm.DoctorSurname = doctorEntity.Surname;
                     appointmentVm.Specialty = doctorEntity.Specialty;
                     appointmentVm.FullTitle = doctorEntity.FullTitle;
+
+                    appointmentVm.PatientName = patientEntity.Name;
+                    appointmentVm.PatientSurname = patientEntity.Surname;
+                    appointmentVm.PatientFullName = patientEntity.FullName;
 
                 }
                 return appointmentsVms;
