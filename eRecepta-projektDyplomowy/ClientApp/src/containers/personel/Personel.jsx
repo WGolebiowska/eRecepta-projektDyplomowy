@@ -12,9 +12,9 @@ const WhatGPT3 = () => (
     </div>
     <div className="gpt3__whatgpt3-container">
       {/* <Feature title="Chatbots" text="We so opinion friends me message as delight. Whole front do of plate heard oh ought." /> */}
-      <Feature text="Dr. George" title={<img src={dr1}/>} />
-      <Feature text="Dr. Artur" title={<img src={dr2}/>} />
-      <Feature text="Dr. Freddie" title={<img src={dr3}/>} />
+      <Feature text="Dr George" title={<img src={dr1}/>} />
+      <Feature text="Dr Artur" title={<img src={dr2}/>} />
+      <Feature text="Dr Freddie" title={<img src={dr3}/>} />
     </div>
   </div>
 );

@@ -20,21 +20,11 @@ export class Counter extends Component {
 
   render() {
     return (
-      <div>
+      <div class="text-center">
         <h1>eRecepta</h1>
 
-        <p class="fw-bold"> Aby umówić się z lekarzem, wypełnij ankietę</p>
+        <p class="fw-bold">Aby zamówić eReceptę, wypełnij ankietę na temat stanu zdrowia</p>
         <CustomForm />
-
-        {/* <Recepta />
-
-        <h1>Counter</h1>
-
-        <p>This is a simple example of a React component.</p>
-
-        <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
-
-        <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button> */}
       </div>
     )
   }

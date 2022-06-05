@@ -17,6 +17,7 @@ export class NavMenu extends Component {
       this.state = {
       hasAdminRole: false,
       hasDoctorRole: false,
+      hasPatientRole: false,
       collapsed: true
     };
   }
@@ -28,9 +29,12 @@ export class NavMenu extends Component {
     async populateState() {
         const hasAdminRole = await authService.hasRole(UserRoles.Administrator);
         const hasDoctorRole = await authService.hasRole(UserRoles.Doctor);
+        const hasPatientRole = await authService.hasRole(UserRoles.Patient);
+
         this.setState({
             hasAdminRole,
-            hasDoctorRole
+            hasDoctorRole,
+            hasPatientRole
         });
     }
   toggleNavbar () {
@@ -44,27 +48,29 @@ export class NavMenu extends Component {
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3 bg-info text-white" light>
           <Container>
-          {/* <NavbarBrand tag={Link} to="/">eRecepta_projektDyplomowy</NavbarBrand> */}
             <NavbarBrand tag={Link} to="/" >
             <img src={logo} />
             </NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
-                {/* <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                </NavItem> */}
-                <NavItem>
-                  <NavLink tag={Link} className="text-white" to="/ekonsultacja">eKonsultacja</NavLink>
-                </NavItem>
+                {
+                  this.state.hasPatientRole &&
+                  <NavItem>
+                    <NavLink tag={Link} className="text-white" to="/ekonsultacja">eKonsultacja</NavLink>
+                  </NavItem>
+                }
                 {
                     this.state.hasDoctorRole
                     ?(<NavItem><NavLink tag={Link} className="text-white" to="/prescription">eRecepta</NavLink></NavItem>)
-                    :(<NavItem><NavLink tag={Link} className="text-white" to="/erecepta">eRecepta</NavLink></NavItem>)
+                    : this.state.hasPatientRole ? (<NavItem><NavLink tag={Link} className="text-white" to="/erecepta">eRecepta</NavLink></NavItem>) : ('')
                 }
-                <NavItem>
-                  <NavLink tag={Link} className="text-white" to="/fetch-data">eKartoteka</NavLink>
+                {
+                  (this.state.hasDoctorRole || this.state.hasPatientRole) &&
+                  <NavItem>
+                    <NavLink tag={Link} className="text-white" to="/fetch-data">eKartoteka</NavLink>
                   </NavItem>
+                }
                   {
                     this.state.hasAdminRole &&
                     <NavItem>
