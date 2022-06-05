@@ -12,9 +12,9 @@ namespace eRecepta_projektDyplomowy.Models
         public string PatientId { get; set; }
         public string AppointmentNotes { get; set; }
         public string Status { get; set; }
-        public enum _Type { PhoneCall, VideoConference }
+        public enum _Type { Teleporada, Wideokonferencja }
         public _Type Type { get; set; }
-        public string VideoConferenceURL { get; set; }
+        //public string VideoConferenceURL { get; set; }
         //public virtual Order Order { get; set; }
         //public int? OrderId { get; set; }
 

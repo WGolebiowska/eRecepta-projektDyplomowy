@@ -6,6 +6,7 @@ namespace eRecepta_projektDyplomowy.Models
     {
         public virtual List<Appointment> Appointments { get; set; }
         public virtual List<Prescription> Prescriptions { get; set; }
+        public virtual List<PrescriptionForm> PrescriptionForms { get; set; }
         //public virtual List<Order> Orders { get; set; }
     }
 }

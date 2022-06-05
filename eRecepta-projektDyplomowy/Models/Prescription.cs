@@ -13,9 +13,9 @@ namespace eRecepta_projektDyplomowy.Models
         { 
             get
             {
-                if(this.Medicines != null && this.Medicines.Exists(m => m.Name.Contains("antybiotyk")))
+                if(this.Medicine != null)
                 {
-                    return 7;
+                    return this.Medicine.ReceiptValidPeriod;
                 }
                 else
                 {
@@ -38,8 +38,9 @@ namespace eRecepta_projektDyplomowy.Models
         public string DoctorId { get; set; }
         public virtual Patient Patient { get; set; }
         public string PatientId { get; set; }
-        public virtual List<PrescriptionEntry> PrescriptionEntries { get; set; }
-        public virtual List<Medicine> Medicines { get; set; }
+        public int MedicineId { get; set; }
+        public virtual Medicine Medicine { get; set; }
+        public string PrescribedDosage { get; set; }
         public string PinCode { get; set; }
         //public virtual Order Order { get; set; }
         //public int OrderId { get; set; }
