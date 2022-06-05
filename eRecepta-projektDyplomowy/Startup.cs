@@ -92,6 +92,9 @@ namespace eRecepta_projektDyplomowy
             services.AddTransient<IDoctorService, DoctorService>();
             services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<IPrescriptionService, PrescriptionService>();
+            services.AddTransient<IPrescriptionFormService, PrescriptionFormService>();
+            services.AddTransient<IIllnessService, IllnessService>();
+            services.AddTransient<IMedicineService, MedicineService>();
             services.AddTransient<ClaimsPrincipal>(
                 s => s.GetService<IHttpContextAccessor>().HttpContext.User);
             services.AddTransient<IAuthorizationHandler, AppointmentAuthorizationHandler>();

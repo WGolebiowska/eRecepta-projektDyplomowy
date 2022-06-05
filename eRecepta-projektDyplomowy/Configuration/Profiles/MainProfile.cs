@@ -13,6 +13,12 @@ namespace eRecepta_projektDyplomowy.Configuration.Profiles
             CreateMap<AddOrUpdateAppointmentVm, Appointment>().ReverseMap();
             CreateMap<Prescription, PrescriptionVm>().ReverseMap();
             CreateMap<AddOrUpdatePrescriptionVm, Prescription>().ReverseMap();
+            CreateMap<PrescriptionForm, PrescriptionFormVm>().ReverseMap();
+            CreateMap<AddOrUpdatePrescriptionFormVm, PrescriptionForm>().ReverseMap();
+            CreateMap<Medicine, MedicineVm>().ReverseMap();
+            CreateMap<AddOrUpdateMedicineVm, Medicine>().ReverseMap();
+            CreateMap<Illness, IllnessVm>().ReverseMap();
+            CreateMap<AddOrUpdateIllnessVm, Illness>().ReverseMap();
             CreateMap<Patient, PatientVm>().ReverseMap();
             CreateMap<Doctor, DoctorVm>().ReverseMap();
 
