@@ -1,35 +1,61 @@
-import {
-  Collapse,
-  Container,
-  Navbar,
-  NavbarBrand,
-  NavbarToggler,
-  NavItem,
-  NavLink,
-} from 'reactstrap'
-import { Link } from 'react-router-dom'
-
 import './CustomForm.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { React } from 'react'
 import authService from './api-authorization/AuthorizeService'
-import moment from "moment";
+import moment from "moment-timezone";
 
 function CustomForm() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [mobileNumber, setMobileNumber] = useState('')
-  const [dolegliwosc, setDolegliwosc] = useState('')
-  const [lek, setLek] = useState('')
-  const [wzrost, setWzrost] = useState('')
+  const [illness, setIllness] = useState('')
+  const [illnessId, setIllnessId] = useState('')
+  const [illnessName, setIllnessName] = useState('')
+  const [illnesses, setIllnesses] = useState([])
+  const [medicine, setMedicine] = useState('')
+  const [medicineIll, setMedicineIll] = useState([])
+  const [medicines, setMedicines] = useState([[]])
+  const [height, setHeight] = useState('')
+  const [weight, setWeight] = useState('')
   const [tempBody, setTempBody] = useState('')
-  const [waga, setWaga] = useState('')
-  const [ciaza, setCiaza] = useState(false)
+  const [addicted, setAddicted] = useState(false)
+  const [addictions, setAddictions] = useState('')
+  const [hasAllergy, setHasAllergy] = useState(false)
+  const [allergies, setAllergies] = useState('')
+  const [takesMedicines, setTakesMedicines] = useState(false)
+  const [permMedicines, setPermMedicines] = useState('')
+  const [isChronicIll, setIsChronicIll] = useState(false)
+  const [chronicIllness, setChronicIllness] = useState('')
+  const [gender, setGender] = useState('')
+  const [pregnancy, setPregnancy] = useState(false)
+  const [additionalInfo, setAdditionalInfo] = useState('')
   const [message, setMessage] = useState('')
-  const [pacjent, setPacjent] = useState('')
+  const [patient, setPatient] = useState('')
+  const [orderDate, setOrderDate] = useState('')
+
+  useEffect(() => {
+    const getData = async () => {
+      var illnesses = []
+
+      const token = await authService.getAccessToken()
+
+      let res = await fetch('/api/Illness', {
+        method: 'GET',
+        headers: !token ? {} : { Authorization: `Bearer ${token}` },
+      })
+      let resJson = await res.json()
+      if (res.status === 200) {
+        var _illnesses = resJson.map((i) => i.illnessId + ':' + i.name).map((pair) => pair.split(':'))
+        setIllnesses(_illnesses)
+        var _medicines = resJson.map((i) => i.illnessId + ';' + i.medicines.map((m) => m.medicineId + ':' + m.name + ':' + m.form + ':' + m.dosage)).map((pair) => pair.split(';'))
+        setMedicines(_medicines)
+      } else {
+        setIllnesses([':wystąpił błąd'])
+      }
+    }
+    getData()
+  }, [])
 
   let handleSubmit = async (e) => {
     e.preventDefault()
+    setOrderDate(moment().tz("Europe/Warsaw").toDate())
     try {
       const token = await authService.getAccessToken()
       let res2 = await fetch('/api/CurrentUser', {
@@ -38,39 +64,48 @@ function CustomForm() {
       })
       let res2Json = await res2.json()
       if (res2.status === 200) {
-        setPacjent(res2Json.id)
+        setPatient(res2Json.id)
       } else {
-        setPacjent('Wystąpił błąd')
+        setPatient('Wystąpił błąd')
       }
 
-      // let res = await fetch('https://httpbin.org/post', {
-
-      let res = await fetch('/api/Appointment', {
+      //new Date(diff);
+      let res = await fetch('/api/PrescriptionForm', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json, charset=UTF-8' },
+        headers: !token ? { 'Content-Type': 'application/json, charset=UTF-8' } : {
+          'Content-Type': 'application/json, charset=UTF-8',
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify({
-          // name: name,
-          // email: email,
-          // mobileNumber: mobileNumber,
-          // dolegliwosc: dolegliwosc,
-          // lek: lek,
-          // tempBody: tempBody,
-          // wzrost: wzrost,
-          // waga: waga,
-          // ciaza: ciaza,
-          appointmentDate: moment().format("YYYY-MM-DD"),
-          DoctorId: 'dc616b80-8a71-4e3b-9f9a-9654699ea388',
           PatientId: res2Json.id,
+          IllnessId: illnessId,
+          MedicineId: medicine,
+          Height: height,
+          Weight: weight,
+          BodyTemp: tempBody,
+          IsAddicted: addicted,
+          Addictions: addictions,
+          HasAllergy: hasAllergy,
+          Allergies: allergies,
+          TakesPermMedicines: takesMedicines,
+          PermMedicines: permMedicines,
+          IsChronicallyIll: isChronicIll,
+          ChronicIllnesses: chronicIllness,
+          Gender: gender,
+          IsPregnant: pregnancy,
+          AdditionalInfo: additionalInfo,
+          OrderDate: new Date().toLocaleString()
         }),
       })
       let resJson = await res.json()
       if (res.status === 200) {
-        setName('')
-        setEmail('')
-        setMobileNumber('')
-        setMessage(
-          'Twoje zlecenie jest przetwarzane, status możesz sprawdzić w eKartotece',
-        )
+        setIllness('')
+        setIllnessId('')
+        setIllnessName('')
+        setMedicine('')
+        setAdditionalInfo('')
+        setOrderDate('')
+        setMessage('Twoje zlecenie zostało przekazane do lekarza. Otrzymasz wiadomość Email z informacjami o eRecepcie gdy zostanie wystawiona. Wystawione eRecepty możesz sprawdzić w eKartotece.')
       } else {
         setMessage('Wystąpił błąd')
       }
@@ -88,16 +123,26 @@ function CustomForm() {
             <div class="select">
               <select
                 class="select"
-                value={dolegliwosc}
-                onChange={(e) => setDolegliwosc(e.target.value)}
-                aria-lebel="Default select example"
+                value={illness}
+                onChange={
+                  (e) => {
+                    var _ill = (e.target.value).split(':');
+                    setIllness(e.target.value);
+                    setIllnessId(_ill[0]);
+                    setIllnessName(_ill[1]);
+                    medicines.filter(m => m[0] == _ill[0]).map((m) => {
+                        setMedicineIll(m[1].split(/,(?=\d)/))
+                    });
+                  }
+                }
+                aria-label="Default select example"
               >
-                <option selected value="Choice 1">
+                <option selected class="label-desc">
                   ...
                 </option>
-                <option value="Bol ucha">Bol ucha</option>
-                <option value="Bol oka">Bol oka</option>
-                <option value="Bol nosa">Bol nosa</option>
+                {illnesses.map((illness) => (
+                  <option value={illness[0] + ":" + illness[1]}>{illness[1]}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -106,49 +151,83 @@ function CustomForm() {
             <div class="select">
               <select
                 class="select"
-                value={lek}
-                onChange={(e) => setLek(e.target.value)}
-                aria-lebel="Default select example"
+                value={medicine}
+                onChange={(e) => setMedicine(e.target.value)}
+                aria-label="Default select example"
               >
-                <option selected class="label-desc">
-                  ...
+                <option value="" selected class="label-desc">
+                  Niech lekarz wybierze za mnie odpowiedni lek
                 </option>
-                <option value="Ketonal">Ketonal</option>
-                <option value="Apap">Apap</option>
-                <option value="Apap">Apap</option>
+                
+                {Object.values(medicineIll).map((m) => m.split(':')).map((medicine) =>
+                  <option value={medicine[0]}>{medicine[1] + " - " + medicine[2]}</option>
+                )}
               </select>
             </div>
           </div>
           <div className="question-form">
             <label className="Custom-form-text">
-              Podaj aktualną temp. ciała w st. C.
+              Podaj swoją płeć
+            </label>
+            <div class="select">
+              <select
+                class="select"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                aria-label="Default select example"
+              >
+                <option selected class="label-desc">
+                  ...
+                </option>
+                <option value="Mężczyzna">Mężczyzna</option>
+                <option value="Kobieta">Kobieta</option>
+              </select>
+            </div>
+          </div>
+          {
+            gender == "Kobieta" &&
+            (
+              <div class="custom-control custom-checkbox">
+              <label for="ciaza_check"> Czy jesteś w ciąży?</label>
+              <input
+              type="checkbox"
+              value={false}
+              name="pregnancy"
+              onChange={(e) => setPregnancy(e.target.checked)}
+              checked={pregnancy}
+              />
+            </div>)
+          }
+          <div className="question-form">
+            <label className="Custom-form-text">
+              Podaj aktualną temperaturę ciała w {'\u00B0'} C.
             </label>
             <div class="select">
               <select
                 class="select"
                 value={tempBody}
                 onChange={(e) => setTempBody(e.target.value)}
-                aria-lebel="Default select example"
+                aria-label="Default select example"
               >
                 <option selected class="label-desc">
                   ...
                 </option>
-                <option value="33,0">33,0</option>
-                <option value="33,5">33,5</option>
-                <option value="34,0">34,0</option>
-                <option value="34,5">34,5</option>
-                <option value="35,0">35,0</option>
-                <option value="35,5">35,5</option>
-                <option value="36,0">36,0</option>
-                <option value="36,5">36,5</option>
-                <option value="37,0">37,0</option>
-                <option value="37,5">37,5</option>
-                <option value="38,0">38,0</option>
-                <option value="38,5">38,5</option>
-                <option value="39,0">39,0</option>
-                <option value="39,5">39,5</option>
-                <option value="40,0">40,0</option>
-                <option value="40,5">40,5</option>
+                <option value="33.0">33.0</option>
+                <option value="33.5">33.5</option>
+                <option value="34.0">34.0</option>
+                <option value="34.5">34.5</option>
+                <option value="35.0">35.0</option>
+                <option value="35.5">35.5</option>
+                <option value="36.0">36.0</option>
+                <option value="36.5">36.5</option>
+                <option value="37.0">37.0</option>
+                <option value="37.5">37.5</option>
+                <option value="38.0">38.0</option>
+                <option value="38.5">38.5</option>
+                <option value="39.0">39.0</option>
+                <option value="39.5">39.5</option>
+                <option value="40.0">40.0</option>
+                <option value="40.5">40.5</option>
               </select>
             </div>
           </div>
@@ -158,14 +237,14 @@ function CustomForm() {
             <div class="select">
               <select
                 class="select"
-                value={wzrost}
-                onChange={(e) => setWzrost(e.target.value)}
-                aria-lebel="Default select example"
+                value={height}
+                onChange={(e) => setHeight(e.target.value)}
+                aria-label="Default select example"
               >
                 <option selected class="label-desc">
                   ...
                 </option>
-                <option value="-150"> -150 </option>
+                <option value="<150"> {'<150'} </option>
                 <option value="151-160"> 151-160 </option>
                 <option value="161-170"> 161-170 </option>
                 <option value="171-180"> 171-180 </option>
@@ -181,15 +260,15 @@ function CustomForm() {
             </label>
             <div
               class="select"
-              value={waga}
-              onChange={(e) => setWaga(e.target.value)}
-              aria-lebel="Default select example"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              aria-label="Default select example"
             >
               <select class="select">
                 <option selected class="label-desc">
                   ...
                 </option>
-                <option value="-50">-50</option>
+                <option value="<50">{'<50'}</option>
                 <option value="51-60">51-60</option>
                 <option value="61-70">61-70</option>
                 <option value="71-80">71-80</option>
@@ -198,71 +277,135 @@ function CustomForm() {
                 <option value="+100">+100</option>
               </select>
             </div>
-            {/* <input type="date" id="birthday" name="birthday" /> */}
-            {/* <input type="time" id="appt" name="appt" min="09:00" max="18:00" required></input> */}
+          </div>
+          <div class="custom-control custom-checkbox">
+              <label for="addictions_check"> Czy palisz obecnie papierosy, nadużywasz alkoholu, bądź przyjmujesz używki psychoaktywne?</label>
+              <input
+              type="checkbox"
+              value={false}
+              name="isAddicted"
+              onChange={(e) => setAddicted(e.target.checked)}
+              checked={addicted}
+              />
+          </div>
+          {
+            addicted &&
+            (
+              <div className="question-form">
+                <label className="Custom-form-text">Wymień i opisz swoje używki, ile papierosów dziennie palisz, jakie substancje psychoaktywne przyjmujesz?</label>
+                <div class="form-group">
+                  <textarea
+                    class="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="3"
+                    className="Custom-form-text"
+                    value={addictions}
+                    onChange={(e) => setAddictions(e.target.value)}>
+                  </textarea>
+                </div>
+              </div>
+            )
+          }
+          <div class="custom-control custom-checkbox">
+              <label for="addictions_check"> Czy masz uczulenia (alergię) lub nietolerancję na jakiekolwiek leki bądź substancje, w tym żywność, barwniki spożywcze, jady owadów?</label>
+              <input
+              type="checkbox"
+              value={false}
+              name="hasAllergy"
+              onChange={(e) => setHasAllergy(e.target.checked)}
+              checked={hasAllergy}
+              />
+          </div>
+          {
+            hasAllergy &&
+            (
+              <div className="question-form">
+                <label className="Custom-form-text">Podaj jakich substancji dotyczy uczulenie/nietolerancja i jak się objawia (np. wysypka, duszności, obrzęki).</label>
+                <div class="form-group">
+                  <textarea
+                    class="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="3"
+                    className="Custom-form-text"
+                    value={allergies}
+                    onChange={(e) => setAllergies(e.target.value)}>
+                  </textarea>
+                </div>
+              </div>
+            )
+          }
+          <div class="custom-control custom-checkbox">
+              <label for="addictions_check"> Czy przyjmujesz leki na stałe?</label>
+              <input
+              type="checkbox"
+              value={false}
+              name="takesMedicines"
+              onChange={(e) => setTakesMedicines(e.target.checked)}
+              checked={takesMedicines}
+              />
+          </div>
+          {
+            takesMedicines &&
+            (
+              <div className="question-form">
+                <label className="Custom-form-text">Podaj nazwy przyjmowanych leków wraz z dawkowaniem.</label>
+                <div class="form-group">
+                  <textarea
+                    class="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="3"
+                    className="Custom-form-text"
+                    value={permMedicines}
+                    onChange={(e) => setPermMedicines(e.target.value)}>
+                  </textarea>
+                </div>
+              </div>
+            )
+          }
+          <div class="custom-control custom-checkbox">
+              <label for="addictions_check"> Czy chorujesz na choroby przewlekłe?</label>
+              <input
+              type="checkbox"
+              value={false}
+              name="isChronicIll"
+              onChange={(e) => setIsChronicIll(e.target.checked)}
+              checked={isChronicIll}
+              />
+          </div>
+          {
+            isChronicIll &&
+            (
+              <div className="question-form">
+                <label className="Custom-form-text">Podaj swoje choroby przewlekłe.</label>
+                <div class="form-group">
+                  <textarea
+                    class="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="3"
+                    className="Custom-form-text"
+                    value={chronicIllness}
+                    onChange={(e) => setChronicIllness(e.target.value)}>
+                  </textarea>
+                </div>
+              </div>
+            )
+          }
+          <div className="question-form">
+            <label className="Custom-form-text">Dodatkowe informacje dla lekarza</label>
+            <div class="form-group">
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="4"
+                className="Custom-form-text"
+                value={additionalInfo}
+                onChange={(e) => setAdditionalInfo(e.target.value)}>
+              </textarea>
+            </div>
           </div>
         </div>
-
-        {/* <input
-          type="text"
-          value={name}
-          placeholder="Podaj wiek"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="text"
-          value={email}
-          placeholder="Masa ciała"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="text"
-          value={mobileNumber}
-          placeholder="Aktualna temperatura ciała"
-          onChange={(e) => setMobileNumber(e.target.value)}
-        />
-
-        <input
-          type="checkbox"
-          value="true"
-          name="ciaza_check"
-          checked={ciaza}
-          // placeholder="Aktualna temperatura ciała"
-          onChange={(e) => setCiaza(e.target.value)}
-        />
-        <label for="ciaza_check"> Czy jesteś w ciąży</label>
-
-        <select
-          value={dolegliwosc}
-          onChange={(e) => setDolegliwosc(e.target.value)}
-          class="form-select"
-          aria-label="Default select example"
-        >
-          <option selected>Wybierz dolegliwość</option>
-          <option value="Ból ucha">Ból ucha</option>
-          <option value="Ból nosa">Ból nosa</option>
-          <option value="Ból gardła">Ból gardła</option>
-        </select> */}
-
-        {/* <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-  <label class="form-check-label" for="flexCheckDefault">
-    Default checkbox
-  </label>
-</div> */}
-
         <div class="form-group-button">
           <button type="submit">
-            {/* <NavLink tag={Link} className="text-white" to="/platnosc"> */}
-            {/* <NavItem> */}
-            {/* <NavLink tag={Link} className="text-white" to="/erecepta"> */}
-            umów wizytę
-            {/* Dalej */}
-            {/* </NavLink> */}
-            {/* </NavItem> */}
-            {/* <LoginMenu /> */}
-            {/* Create */}
-            {/* </NavLink> */}
           </button>
         </div>
         <div className="message">{message ? <p>{message}</p> : null}</div>
