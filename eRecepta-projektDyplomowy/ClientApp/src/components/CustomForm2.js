@@ -1,22 +1,14 @@
-import {
-  Collapse,
-  Container,
-  Navbar,
-  NavbarBrand,
-  NavbarToggler,
-  NavItem,
-  NavLink,
-} from 'reactstrap'
-import { Link } from 'react-router-dom'
-
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
 import './CustomForm.css'
 import { useState } from 'react'
 import { React, useEffect } from 'react'
 import authService from './api-authorization/AuthorizeService'
-import moment from 'moment'
-// import DatePickerRange from "./DataPicker"
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import pl from 'date-fns/locale/pl';
+registerLocale('pl', pl)
 import styled from 'styled-components'
 
 const Styles = styled.div`
@@ -33,14 +25,9 @@ const Styles = styled.div`
 `
 
 function CustomForm() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [mobileNumber, setMobileNumber] = useState('')
-  const [dolegliwosc, setDolegliwosc] = useState('')
-  const [dataKonsultacji, setDataKonsultacji] = useState('')
-  const [plecPacienta, setPlecPacienta] = useState('')
+  const [illness, setIllness] = useState('')
+  const [illnesses, setIllnesses] = useState([])
   const [formaKonsultacji, setFormaKonsultacji] = useState('')
-  const [ciaza, setCiaza] = useState(false)
   const [message, setMessage] = useState('')
   const [pacjent, setPacjent] = useState('')
   const [doctor, setDoctor] = useState('')
@@ -68,13 +55,28 @@ function CustomForm() {
       }
     }
     getData()
+
+    const getIllnesses = async () => {
+      const token = await authService.getAccessToken()
+
+      let res = await fetch('/api/Illness', {
+        method: 'GET',
+        headers: !token ? {} : { Authorization: `Bearer ${token}` },
+      })
+      let resJson = await res.json()
+      if (res.status === 200) {
+        var _illnesses = resJson.map((i) => i.illnessId + ':' + i.name).map((pair) => pair.split(':'))
+        setIllnesses(_illnesses)
+      } else {
+        setIllnesses([':wystąpił błąd'])
+      }
+    }
+    getIllnesses()
   }, [])
 
   let handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      // let res = await fetch('https://httpbin.org/post', {
-
       const token = await authService.getAccessToken()
       let res2 = await fetch('/api/CurrentUser', {
         method: 'GET',
@@ -87,8 +89,6 @@ function CustomForm() {
         setPacjent('Wystąpił błąd')
       }
 
-      let appointmentDateTime =
-        moment().format('YYYY-MM-DD') + 'T' + dataKonsultacji + ':00'
       let res = await fetch('/api/Appointment', {
         method: 'POST',
         headers: !token
@@ -98,32 +98,29 @@ function CustomForm() {
               Authorization: `Bearer ${token}`,
             },
         body: JSON.stringify({
-          // name: name,
-          // email: email,
-          // mobileNumber: mobileNumber,
-          // dolegliwosc: dolegliwosc,
-          // ciaza: ciaza,
-          dataKonsultacji: dataKonsultacji,
-          plecPacienta: plecPacienta,
+
           type: formaKonsultacji,
-          appointmentDate: startDate,
+          appointmentDate: startDate.toLocaleString(),
           doctorId: doctor,
           patientId: res2Json.id,
-          PatientName: res2Json.patientName,
-          PatientSurname: res2Json.patientSurname,
+          patientName: res2Json.patientName,
+          patientSurname: res2Json.patientSurname,
           appointmentNotes: appointmentNotes,
+          illness: illness
         }),
       })
       let resJson = await res.json()
       if (res.status === 200) {
-        setName('')
-        setEmail('')
-        setMobileNumber('')
+        setIllness('')
+        setFormaKonsultacji('')
+        setDoctor('')
+        setStartDate(null)
+        setAppointmentNotes('')
         setMessage(
           'Twoje zlecenie jest przetwarzane, status możesz sprawdzić w eKartotece',
         )
       } else {
-        setMessage('Some error occured')
+        setMessage('Wystąpił błąd')
       }
     } catch (err) {
       console.log(err)
@@ -138,70 +135,24 @@ function CustomForm() {
             <label className="Custom-form-text">Wybierz dolegliwość</label>
             <div class="select">
               <select
-                class="select"
-                value={dolegliwosc}
-                onChange={(e) => setDolegliwosc(e.target.value)}
-                aria-label="Default select example"
-              >
-                <option selected class="label-desc">
-                  ...
-                </option>
-                <option value="Bol ucha">Bol ucha</option>
-                <option value="Bol oka">Bol oka</option>
-                <option value="Bol nosa">Bol nosa</option>
+                  class="select"
+                  value={illness}
+                  onChange={
+                    (e) => {
+                      setIllness(e.target.value);
+                    }
+                  }
+                  aria-label="Default select example"
+                >
+                  <option selected class="label-desc">
+                    ...
+                  </option>
+                  {illnesses.map((illness) => (
+                    <option value={illness[1]}>{illness[1]}</option>
+                  ))}
               </select>
             </div>
           </div>
-          {/* <div className="question-form">
-            <label className="Custom-form-text">
-              Wybierz godzinę eKonsultacji
-            </label>
-
-            <div class="select">
-              <select
-                class="select"
-                value={dataKonsultacji}
-                onChange={(e) => setDataKonsultacji(e.target.value)}
-                aria-label="Default select example"
-              >
-                <option selected class="label-desc">
-                  ...
-                </option>
-                <option value="08:00">8:00</option>
-                <option value="09:00">9:00</option>
-                <option value="10:00">10:00</option>
-                <option value="11:00">11:00</option>
-                <option value="12:00">12:00</option>
-                <option value="13:00">13:00</option>
-                <option value="14:00">14:00</option>
-                <option value="15:00">15:00</option>
-                <option value="16:00">16:00</option>
-                <option value="17:00">17:00</option>
-                <option value="18:00">18:00</option>
-                <option value="19:00">19:00</option>
-                <option value="20:00">20:00</option>
-              </select>
-            </div>
-          </div> */}
-
-          {/* <div className="question-form">
-            <label className="Custom-form-text">Wybierz płeć</label>
-
-            <div class="select">
-              <select
-                class="select"
-                value={plecPacienta}
-                onChange={(e) => setPlecPacienta(e.target.value)}
-                aria-label="Default select example"
-              >
-                <option selected class="label-desc">
-                  ...
-                </option>
-                <option value="Kobieta">Kobieta</option>
-                <option value="Mężczyzna">Mężczyzna</option>
-              </select>
-            </div>
-          </div> */}
 
           <div className="question-form">
             <label className="Custom-form-text">Forma eKonsultacji</label>
@@ -239,29 +190,30 @@ function CustomForm() {
               </select>
             </div>
           </div>
-          <div style={{ display: 'flex' }}>
-            <DatePicker
-              isClearable
-              filterDate={(d) => {
-                return new Date() <= d
-              }}
-              placeholderText="Select Start Date"
-              showTimeSelect
-              dateFormat="yyyy-MM-dd,hh:mm"
-              //  dateFormat="MMMM d, yyyy h:mmaa"
-              // let appointmentDateTime = (moment().format("YYYY-MM-DD") + "T" + dataKonsultacji + ":00")
-
-              selected={startDate}
-              selectsStart
-              startDate={startDate}
-              onChange={(date) => setStartDate(date)}
-            />
+          <div className="question-form">
+            <label className="Custom-form-text">Data konsultacji</label>
+              <div style={{ display: 'flex' }}>
+              <DatePicker
+                locale="pl"
+                isClearable
+                minTime={setHours(setMinutes(new Date(), 0), 8)}
+                maxTime={setHours(setMinutes(new Date(), 30), 19.30)}
+                filterDate={(d) => {
+                  return new Date() <= d
+                }}
+                placeholderText="Wybierz datę konsultacji"
+                showTimeSelect
+                dateFormat="yyyy-MM-dd,hh:mm"
+                selected={startDate}
+                selectsStart
+                startDate={startDate}
+                onChange={(date) => setStartDate(date)}
+              />
+            </div>
           </div>
-          {/* <DatePickerRange /> */}
-
           <div className="question-form">
             <label className="Custom-form-text">
-              Dodatkowe informacje o dolegliwościach
+              Dodatkowe informacje dla lekarza
             </label>
             <div>
               <textarea
@@ -275,65 +227,9 @@ function CustomForm() {
             </div>
           </div>
         </div>
-        {/* <input
-          type="text"
-          value={name}
-          placeholder="Podaj wiek"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-        type="text"
-          value={email}
-          placeholder="Masa ciała"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="text"
-          value={mobileNumber}
-          placeholder="Aktualna temperatura ciała"
-          onChange={(e) => setMobileNumber(e.target.value)}
-        />
-
-        <input
-          type="checkbox"
-          value="true"
-          name="ciaza_check"
-          checked={ciaza}
-          // placeholder="Aktualna temperatura ciała"
-          onChange={(e) => setCiaza(e.target.value)}
-        />
-        <label for="ciaza_check"> Czy jesteś w ciąży</label>
-        
-        <select
-          value={dolegliwosc}
-          onChange={(e) => setDolegliwosc(e.target.value)}
-          class="form-select"
-          aria-label="Default select example"
-          >
-          <option selected>Wybierz dolegliwość</option>
-          <option value="Ból ucha">Ból ucha</option>
-          <option value="Ból nosa">Ból nosa</option>
-          <option value="Ból gardła">Ból gardła</option>
-        </select> */}
-
-        {/* <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-  <label class="form-check-label" for="flexCheckDefault">
-    Default checkbox
-  </label>
-</div> */}
         <div class="form-group-button">
           <button type="submit">
-            {/* <NavLink tag={Link} className="text-white" to="/platnosc"> */}
-            {/* <NavItem> */}
-            {/* <NavLink tag={Link} className="text-white" to="/erecepta"> */}
             Umów konsultację
-            {/* Dalej */}
-            {/* </NavLink> */}
-            {/* </NavItem> */}
-            {/* <LoginMenu /> */}
-            {/* Create */}
-            {/* </NavLink> */}
           </button>
         </div>
         <div className="message">{message ? <p>{message}</p> : null}</div>
