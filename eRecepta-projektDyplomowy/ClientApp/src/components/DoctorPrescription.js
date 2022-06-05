@@ -6,6 +6,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 import moment from "moment";
+import { add } from 'date-fns'
+import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import pl from 'date-fns/locale/pl';
+registerLocale('pl', pl)
 
 const Styles = styled.div`
  .react-datepicker-wrapper,
@@ -30,6 +34,8 @@ function DoctorPrescriptionForm() {
 
   const [patients, setPatients] = useState([]);
   const [medicine, setMedicine] = useState('')
+  const [dosage, setDosage] = useState('')
+  const [medicines, setMedicines] = useState([])
   const [prescriptionNotes, setPrescriptionNotes] = useState('')
   const [message, setMessage] = useState('')
 
@@ -53,7 +59,26 @@ function DoctorPrescriptionForm() {
         setPatients([":wystąpił błąd"])
       }
     }
+    const getMedicines = async () => {
+      var medicines = [];
+
+      const token = await authService.getAccessToken();
+
+      let res = await fetch('/api/Medicine', {
+        method: 'GET',
+        headers: !token ? {} : { Authorization: `Bearer ${token}` },
+      })
+      let resJson = await res.json()
+      if (res.status === 200) {
+        medicines = resJson.map((m) => m.medicineId + ":" + m.name + ":" + m.form + ":" + m.dosage + ":" + m.receiptValidPeriod)
+        medicines = medicines.map(m => m.split(":"));
+        setMedicines(medicines);
+      } else {
+        setMedicines([":wystąpił błąd"])
+      }
+    }
     getData();
+    getMedicines();
   }, []);
 
   let handleSubmit = async (e) => {
@@ -80,23 +105,25 @@ function DoctorPrescriptionForm() {
         body: JSON.stringify({
           doctorId: resJson.id,
           patientId: patientId,
-          issueDate: issueDate,
+          medicineId: medicine,
+          prescribedDosage: dosage,
+          issueDate: issueDate.toLocaleString(),
           prescriptionNotes: prescriptionNotes
         }),
       })
       let res2Json = await res2.json()
       console.log(res2Json);
       if (res2.status === 200) {
-        //setIssueDate(new Date().toISOString().slice(0, 10))
         setPatientId('')
         setPatientName('')
         setPatientSurname('')
         setPatientPesel('')
         setIssueDate(moment().toDate())
         setMedicine('')
+        setDosage('')
         setPrescriptionNotes('')
         setMessage(
-          'eRecepta została wystawiona',
+          'eRecepta została wystawiona. Wysłaliśmy wiadomość Email do pacjenta.',
         )
       } else {
         setMessage('Wystąpił błąd')
@@ -113,6 +140,8 @@ function DoctorPrescriptionForm() {
           <div className="question-form">
             <label className="Custom-form-text">Wybierz datę wystawienia eRecepty</label>
             <DatePicker
+            
+              locale="pl"
               isClearable
               minDate={moment().toDate()}
               placeholderText="Data wystawienia"
@@ -154,7 +183,43 @@ function DoctorPrescriptionForm() {
               <input type="text" class="form-control" placeholder="PESEL" aria-label="PESEL" aria-describedby="basic-addon2" defaultValue={patientPesel} />
             </div>
           </div>
+
           <div className="question-form">
+            <label className="Custom-form-text">Wybierz lek</label>
+            <div class="select">
+              <select
+                class="select"
+                value={medicine}
+                onChange={
+                  (e) => {
+                    setMedicine(e.target.value);
+                    medicines.filter(m => m[0] == e.target.value).map((medicine) => {
+                        setDosage(medicine[3])
+                    });
+                  }
+                }
+                aria-label="Default select example"
+              >
+                <option selected class="label-desc">
+                  ...
+                </option>
+                {medicines.map((medicine) =>
+                  <option value={medicine[0]}>{medicine[1] + " - " + medicine[2]}</option>
+                )}
+              </select>
+            </div>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Dawka" aria-label="Dawka" aria-describedby="basic-addon2" value={dosage} 
+                onChange={
+                  (e) => {
+                    setDosage(e.target.value);
+                  }
+                }
+              />
+            </div>
+          </div>
+
+        <div className="question-form">
             <label className="Custom-form-text">Dodatkowe informacje dla pacjenta</label>
             <div class="form-group">
               <textarea
@@ -165,25 +230,6 @@ function DoctorPrescriptionForm() {
                 value={prescriptionNotes}
                 onChange={(e) => setPrescriptionNotes(e.target.value)}>
               </textarea>
-            </div>
-          </div>
-
-          <div className="question-form">
-            <label className="Custom-form-text">Wybierz lek</label>
-            <div class="select">
-              <select
-                class="select"
-                value={medicine}
-                onChange={(e) => setMedicine(e.target.value)}
-                aria-label="Default select example"
-              >
-                <option selected class="label-desc">
-                  ...
-                </option>
-                <option value="Ketonal">Ketonal</option>
-                <option value="Apap">Apap</option>
-                <option value="Apap">Apap</option>
-              </select>
             </div>
           </div>
         </div>
