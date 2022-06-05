@@ -64,28 +64,31 @@ namespace eRecepta_projektDyplomowy.Controllers
         {
             try
             {
-                var prescriptions = new List<PrescriptionVm>();
-                if(doctorId != null && patientId != null)
-                {
-                    prescriptions = (List<PrescriptionVm>)_prescriptionService.GetPrescriptions(a => a.DoctorId == doctorId && a.PatientId == patientId);
-                } 
-                else if(doctorId != null)
-                {
-                    prescriptions = (List<PrescriptionVm>)_prescriptionService.GetPrescriptions(a => a.DoctorId == doctorId);
-                }
-                else if (patientId != null)
-                {
-                    prescriptions = (List<PrescriptionVm>)_prescriptionService.GetPrescriptions(a => a.PatientId == patientId);
-                }
-                else
-                {
-                    throw new HttpException(404, "Nie znaleziono danych o podanych parametrach");
-                }
-
-                var authorizationResult = await _authorizationService.AuthorizeAsync(User, patientId, "GetPrescriptionsPolicy");
+                string[] ids = new string[2];
+                ids[0] = patientId;
+                ids[1] = doctorId;
+                var authorizationResult = await _authorizationService.AuthorizeAsync(User, ids, "GetAppointmentsPolicy");
                 if (authorizationResult.Succeeded)
                 {
-                    return Ok(prescriptions);
+                    if (doctorId != null && patientId != null)
+                    {
+                        var prescriptions = _prescriptionService.GetPrescriptions(a => a.DoctorId == doctorId && a.PatientId == patientId);
+                        return Ok(prescriptions);
+                    }
+                    else if (doctorId != null)
+                    {
+                        var prescriptions = _prescriptionService.GetPrescriptions(a => a.DoctorId == doctorId);
+                        return Ok(prescriptions);
+                    }
+                    else if (patientId != null)
+                    {
+                        var prescriptions  = _prescriptionService.GetPrescriptions(a => a.PatientId == patientId);
+                        return Ok(prescriptions);
+                    }
+                    else
+                    {
+                        throw new HttpException(404, "Nie znaleziono danych o podanych parametrach");
+                    }
                 }
                 else if (User.Identity.IsAuthenticated)
                 {

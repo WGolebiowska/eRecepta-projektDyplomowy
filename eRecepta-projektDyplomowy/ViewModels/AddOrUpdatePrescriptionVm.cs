@@ -13,6 +13,11 @@ namespace eRecepta_projektDyplomowy.ViewModels
         public string DoctorId { get; set; }
         [Required]
         public string PatientId { get; set; }
+        [Required]
+        public int MedicineId { get; set; }
+        [Required]
+        public string PrescribedDosage { get; set; }
+
         //public virtual List<PrescriptionEntry> PrescriptionEntries { get; set; }
         //public virtual List<Medicine> Medicines { get; set; }
         //public virtual Order Order { get; set; }
