@@ -25,14 +25,16 @@ export class LoginMenu extends Component {
 
     async populateState() {
         const [isAuthenticated, user] = await Promise.all([authService.isAuthenticated(), authService.getUser()])
+        let role = user.role == "doctor" ? "lekarzu" : user.role == "patient" ? "pacjencie" : "administratorze"
         this.setState({
             isAuthenticated,
-            userName: user && user.email
+            userName: user && user.email,
+            userRole: role
         });
     }
 
     render() {
-        const { isAuthenticated, userName } = this.state;
+        const { isAuthenticated, userName, userRole } = this.state;
         if (!isAuthenticated) {
             const registerPath = `${ApplicationPaths.Register}`;
             const loginPath = `${ApplicationPaths.Login}`;
@@ -40,14 +42,14 @@ export class LoginMenu extends Component {
         } else {
             const profilePath = `${ApplicationPaths.Profile}`;
             const logoutPath = { pathname: `${ApplicationPaths.LogOut}`, state: { local: true } };
-            return this.authenticatedView(userName, profilePath, logoutPath);
+            return this.authenticatedView(userRole, userName, profilePath, logoutPath);
         }
     }
 
-    authenticatedView(userName, profilePath, logoutPath) {
+    authenticatedView(userRole, userName, profilePath, logoutPath) {
         return (<Fragment>
             <NavItem>
-                <NavLink tag={Link} className="text-white" to={profilePath}>Witaj {userName}</NavLink>
+                <NavLink tag={Link} className="text-white" to={profilePath}><b>Witaj {userRole}</b>: {userName}</NavLink>
             </NavItem>
             <NavItem>
                 <NavLink tag={Link} className="text-white" to={logoutPath}>Wyloguj</NavLink>
