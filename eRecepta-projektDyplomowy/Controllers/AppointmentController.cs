@@ -113,10 +113,22 @@ namespace eRecepta_projektDyplomowy.Controllers
         }
 
         // PUT api/<AppointmentController>/5
-        [HttpPut]
-        public IActionResult Put([FromBody] AddOrUpdateAppointmentVm addOrUpdateAppointmentVm)
+        [HttpPut("{id:int:min(1)}")]
+        public async Task<IActionResult> PutAsync([FromBody] AddOrUpdateAppointmentVm addOrUpdateAppointmentVm)
         {
-            return PostOrPutHelper(addOrUpdateAppointmentVm);
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, "isAdminOrDoctor");
+            if (authorizationResult.Succeeded)
+            {
+                return PostOrPutHelper(addOrUpdateAppointmentVm);
+            }
+            else if (User.Identity.IsAuthenticated)
+            {
+                return new ForbidResult();
+            }
+            else
+            {
+                return new ChallengeResult();
+            }
         }
 
         // DELETE api/<AppointmentController>/5

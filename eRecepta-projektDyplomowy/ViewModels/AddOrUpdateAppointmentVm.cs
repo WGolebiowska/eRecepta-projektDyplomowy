@@ -13,7 +13,9 @@ namespace eRecepta_projektDyplomowy.ViewModels
         public string DoctorId { get; set; }
         [Required]
         public string PatientId { get; set; }
+        public string Illness { get; set; }
         public string AppointmentNotes { get; set; }
+        public string Status { get; set; }
         [Required]
         public _Type Type { get; set; }
         //[Required]
