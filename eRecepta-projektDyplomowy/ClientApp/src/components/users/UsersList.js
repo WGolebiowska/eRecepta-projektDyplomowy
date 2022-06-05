@@ -141,9 +141,7 @@ export class UsersList extends Component {
 								<td>{user.pesel}</td>
 								<td>{user.phoneNumber}</td>
 
-								<td><Link to={'/users/delete/' + user.id}>Usuń</Link></td>
-								<td><Link to={'/users/edit/' + user.id}>Edytuj</Link></td>
-								<td><Link to={'/users/password-change/' + user.id}>Zmień hasło</Link></td>
+								<td><Link to={'/users/delete/' + user.id}>Usuń</Link><br /><Link to={'/users/edit/' + user.id}>Edytuj</Link><br /><Link to={'/users/password-change/' + user.id}>Zmień hasło</Link></td>
 							</tr>
 						)}
 					</tbody>
