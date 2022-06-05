@@ -2,6 +2,7 @@
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
 
 namespace eRecepta_projektDyplomowy.Data
@@ -14,7 +15,8 @@ namespace eRecepta_projektDyplomowy.Data
         //public virtual DbSet<Order> Orders { get; set; }
         //public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
-        public virtual DbSet<PrescriptionEntry> PrescriptionEntries { get; set; }
+        //public virtual DbSet<PrescriptionEntry> PrescriptionEntries { get; set; }
+        public virtual DbSet<PrescriptionForm> PrescriptionForms { get; set; }
         public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
@@ -29,6 +31,8 @@ namespace eRecepta_projektDyplomowy.Data
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseLazyLoadingProxies();
             optionsBuilder.EnableSensitiveDataLogging();
+            optionsBuilder.ConfigureWarnings(warn => warn.Ignore(CoreEventId.LazyLoadOnDisposedContextWarning));
+            optionsBuilder.ConfigureWarnings(warn => warn.Ignore(CoreEventId.DetachedLazyLoadingWarning));
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -83,6 +87,34 @@ namespace eRecepta_projektDyplomowy.Data
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Patient>()
+            .HasMany(pat => pat.PrescriptionForms)
+            .WithOne(pre => pre.Patient)
+            .HasForeignKey(pre => pre.PatientId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Medicine>()
+                .HasMany(m => m.PrescriptionForms)
+                .WithOne(p => p.Medicine)
+                .HasForeignKey(p => p.MedicineId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Medicine>()
+                .HasMany(m => m.Prescriptions)
+                .WithOne(p => p.Medicine)
+                .HasForeignKey(p => p.MedicineId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Illness>()
+                .HasMany(i => i.PrescriptionForms)
+                .WithOne(p => p.Illness)
+                .HasForeignKey(p => p.IllnessId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Doctor>()
                     .HasMany(doc => doc.Appointments)
                     .WithOne(app => app.Doctor)
@@ -95,35 +127,26 @@ namespace eRecepta_projektDyplomowy.Data
                     .HasForeignKey(pre => pre.DoctorId)
                     .IsRequired();
 
-            modelBuilder.Entity<PrescriptionEntry>()
-                .HasKey(pe => new { pe.PrescriptionId, pe.MedicineId });
-
-            modelBuilder.Entity<PrescriptionEntry>()
-                    .HasOne(pe => pe.Prescription)
-                    .WithMany(pe => pe.PrescriptionEntries)
-                    .HasForeignKey(pe => pe.PrescriptionId)
+            modelBuilder.Entity<Illness>()
+                    .HasMany(i => i.Medicines)
+                    .WithOne(m => m.Illness)
+                    .HasForeignKey(m => m.IllnessId)
                     .IsRequired();
 
-            modelBuilder.Entity<PrescriptionEntry>()
-                    .HasOne(pe => pe.Medicine)
-                    .WithMany(m => m.PrescriptionEntries)
-                    .HasForeignKey(pe => pe.MedicineId)
-                    .IsRequired();
+            //modelBuilder.Entity<PrescriptionEntry>()
+            //    .HasKey(pe => new { pe.PrescriptionId, pe.MedicineId });
 
-            modelBuilder.Entity<MedicineIllness>()
-                .HasKey(mi => new { mi.MedicineId, mi.IllnessId });
+            //modelBuilder.Entity<PrescriptionEntry>()
+            //    .HasOne(pe => pe.Prescription)
+            //    .WithMany(p => p.PrescriptionEntries)
+            //    .HasForeignKey(pe => pe.PrescriptionId)
+            //    .IsRequired();
 
-            modelBuilder.Entity<MedicineIllness>()
-                    .HasOne(mi => mi.Medicine)
-                    .WithMany(med => med.MedicinesIllnesses)
-                    .HasForeignKey(mi => mi.MedicineId)
-                    .IsRequired();
-
-            modelBuilder.Entity<MedicineIllness>()
-                    .HasOne(mi => mi.Illness)
-                    .WithMany(i => i.MedicinesIllnesses)
-                    .HasForeignKey(mi => mi.IllnessId)
-                    .IsRequired();
+            //modelBuilder.Entity<PrescriptionEntry>()
+            //       .HasOne(pe => pe.Medicine)
+            //       .WithMany(m => m.PrescriptionEntries)
+            //       .HasForeignKey(pe => pe.MedicineId)
+            //       .IsRequired();
 
             modelBuilder.Entity<ApplicationUser>(b =>
             {
