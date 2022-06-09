@@ -320,7 +320,7 @@ namespace eRecepta_projektDyplomowy.Migrations
 
                     b.ToTable("AspNetUsers");
 
-                    b.HasDiscriminator<int>("UserType").HasValue(0);
+                    b.HasDiscriminator<int>("UserType").HasValue(2);
                 });
 
             modelBuilder.Entity("eRecepta_projektDyplomowy.Models.Appointment", b =>
