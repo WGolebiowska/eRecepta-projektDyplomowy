@@ -406,6 +406,7 @@ function CustomForm() {
         </div>
         <div class="form-group-button">
           <button type="submit">
+            Wyślij
           </button>
         </div>
         <div className="message">{message ? <p>{message}</p> : null}</div>
